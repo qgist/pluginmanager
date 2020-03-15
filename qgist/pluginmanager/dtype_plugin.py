@@ -41,6 +41,7 @@ class dtype_plugin_class:
         - plugin to python packages (through source / other package manager)
     - Properties:
         - NAME / ID
+        - Active
         - Installed
         - Installed version
         - Available versions (from sources ...)
@@ -76,6 +77,14 @@ class dtype_plugin_class:
         pass
     def send_vote(self):
         pass
+    def load(self):
+        pass
+    def unload(self):
+        pass
+    def reload(self):
+        # if loaded ...
+        self.unload()
+        self.load()
     def _fetch_available_versions(self):
         """HTTP ..."""
         pass
