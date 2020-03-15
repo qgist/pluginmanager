@@ -23,3 +23,29 @@ specific language governing rights and limitations under the License.
 </LICENSE_BLOCK>
 
 """
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# CLASS
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class dtype_index_class:
+    """
+    # Index of repos
+
+    - properties:
+        - list of present/registered repos
+        - allow experimental
+        - allow deprecated
+        - SETTINGS
+    """
+
+    def add_repo(self, **kwargs):
+        pass
+    def remove_repo(self, **kwargs):
+        pass
+    def get_repos(self, **kwargs):
+        """Get list/iterator, filter for enabled, available, ..."""
+        pass
+    def refresh_repos(self):
+        """Reload index of every repo"""
+        pass
