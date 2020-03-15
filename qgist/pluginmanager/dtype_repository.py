@@ -23,3 +23,54 @@ specific language governing rights and limitations under the License.
 </LICENSE_BLOCK>
 
 """
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# CLASS
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class dtype_repository_class:
+    """
+    # Repo
+
+    This is abstract class representing a repository.
+    From this, classes for repo types (i.e. plugin sources) are derived.
+
+    - sources:
+        - remote (HTTP, FTP, ...)
+        - locally (drive, share, path)
+        - "links" (`ln -s`) to local folders for plugins
+    - types:
+        - pip (through pip API)
+        - conda (through conda API)
+        - traditional QGIS
+    - properties:
+        - NAME
+        - active/enabled
+        - writeable (FALSE for core plugins)
+        - autorefresh (on start)
+        - autorefresh_interval
+        - AUTH?
+        - priority
+        - available (i.e. contact to server?)
+        - meta ...
+        - LIST OF PLUGINS
+        - SETTINGS
+    """
+
+    def get_all_installed(self):
+        pass
+    def get_all_available(self):
+        """
+        Available plugins, compatible to QGIS version
+        """
+    def rename(self, new_name):
+        pass
+    def refresh(self):
+        pass
+    def _fetch_index(self):
+        """HTTP ..."""
+        pass
+    @classmethod
+    def from_directory(cls, path, writeable = False):
+
+        return cls()
