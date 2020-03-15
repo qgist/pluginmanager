@@ -6,7 +6,7 @@ QGIST PLUGIN MANAGER
 QGIS Plugin for Managing QGIS Plugins
 https://github.com/qgist/pluginmanager
 
-    qgist/workbench/const.py: Plugin constants
+    qgist/pluginmanager/const.py: Plugin constants
 
     Copyright (C) 2017-2020 QGIST project <info@qgist.org>
 
