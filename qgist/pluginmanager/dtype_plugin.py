@@ -23,3 +23,75 @@ specific language governing rights and limitations under the License.
 </LICENSE_BLOCK>
 
 """
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# CLASS
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class dtype_plugin_class:
+    """
+    # One single plugin
+
+    This is abstract class representing a plugin.
+    From this, classes for plugin types (i.e. plugin sources) are derived?
+    Or use repo type classes instead instead of having multiple plugin classes?
+
+    - Dependencies:
+        - inter-plugin
+        - plugin to python packages (through source / other package manager)
+    - Properties:
+        - NAME / ID
+        - Installed
+        - Installed version
+        - Available versions (from sources ...)
+        - upgradable
+        - downgradable
+        - orphan
+        - meta ...
+        - Caches
+        - SETTINGS
+    """
+
+    def install(self):
+        """
+        Allows dry runs
+        """
+        pass
+    def uninstall(self):
+        """
+        Allows dry runs
+        """
+        pass
+    def upgrade(self, version):
+        """
+        Allows dry runs
+        Also allows intentional downgrades
+        """
+        pass
+    def get_versions(self):
+        """
+        Get versions of plugin
+        Filter versions compatible to QGIS version
+        """
+        pass
+    def send_vote(self):
+        pass
+    def _fetch_available_versions(self):
+        """HTTP ..."""
+        pass
+    def _fetch_plugin(self):
+        """HTTP ..."""
+        pass
+    def _fetch_metadata(self):
+        """HTTP ..."""
+        pass
+    def _validate_install(self):
+        """
+        Post-install or post-update/-downgrade checks of files and folders
+        """
+        pass
+    def _validate_uninstall(self):
+        """
+        Post-uninstall checks of files and folders
+        """
+        pass
