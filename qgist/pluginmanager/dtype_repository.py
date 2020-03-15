@@ -35,6 +35,8 @@ class dtype_repository_class:
     This is abstract class representing a repository.
     From this, classes for repo types (i.e. plugin sources) are derived.
 
+    Auto-detect (and auto-import) repo types?
+
     - sources:
         - remote (HTTP, FTP, ...)
         - locally (drive, share, path)
