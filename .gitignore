@@ -1,0 +1,9 @@
+env
+.idea
+__pycache__
+*.pyc
+*.pro
+notes.md
+*.zip
+*.zip.asc
+release/
