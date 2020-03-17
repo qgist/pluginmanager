@@ -25,6 +25,15 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# CONST
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+VERSION_PREFIXES = (
+    'VERSION', 'VER.', 'VER', 'V.', 'V',
+    'REVISION', 'REV.', 'REV', 'R.', 'R'
+    )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -51,6 +60,23 @@ class dtype_version_class:
         return False
     def __gt__(self, other):
         return False
+
+    @staticmethod
+    def _normalize_version_string(version_string):
+        """ remove possible prefix from given string and convert to uppercase """
+
+        if not isinstance(version_string, str):
+            raise TypeError('version_string must be of type str')
+
+        if len(version_string) == 0:
+            return ''
+
+        version_string = version_string.upper().strip(' \t\n')
+        for prefix in VERSION_PREFIXES:
+            if version_string.startswith(prefix):
+                version_string = version_string[len(prefix):].strip(' \t\n')
+
+        return version_string
 
     @classmethod
     def from_pluginversion(cls, plugin_version):
