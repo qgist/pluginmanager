@@ -78,6 +78,27 @@ class dtype_version_class:
 
         return version_string
 
+    @staticmethod
+    def _split_version_string(version_string):
+        """ convert string to list of numbers and words """
+
+        if not isinstance(version_string, str):
+            raise TypeError('version_string must be of type str')
+
+        # return 0 for delimiter, 1 for digit and 2 for alphabetic character
+        char_type = lambda char: 0 if char in ('.', '-', '_', ' ') else (1 if char.isdigit() else 2)
+
+        elements = [version_string[0]]
+        for index in range(1, len(version_string)):
+            if char_type(version_string[index]) == 0:
+                pass
+            elif char_type(version_string[index]) == char_type(version_string[index - 1]):
+                elements[-1] += version_string[index]
+            else:
+                elements.append(version_string[index])
+
+        return elements
+
     @classmethod
     def from_pluginversion(cls, plugin_version):
 
