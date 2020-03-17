@@ -32,9 +32,11 @@ VERSION_PREFIXES = (
     'VERSION', 'VER.', 'VER', 'V.', 'V',
     'REVISION', 'REV.', 'REV', 'R.', 'R',
     )
-
 VERSION_SUFFIXES = (
     'ALPHA', 'BETA', 'PREVIEW', 'RC', 'TRUNK',
+    )
+VERSION_DELIMITERS = (
+    '.', '-', '_', ' ', # TODO commas, i.e. `,`???
     )
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -57,7 +59,8 @@ class dtype_version_class:
         self._elements = elements
 
     def __repr__(self):
-        return '<version>'
+
+        return f'<version {'.'.join((str(item) for item in self._elements)):s}>'
 
     def __eq__(self, other):
         return False
@@ -97,7 +100,7 @@ class dtype_version_class:
             raise TypeError('version_str must be of type str')
 
         # return 0 for delimiter, 1 for digit and 2 for alphabetic character
-        char_type = lambda char: 0 if char in ('.', '-', '_', ' ') else (1 if char.isdigit() else 2)
+        char_type = lambda char: 0 if char in VERSION_DELIMITERS else (1 if char.isdigit() else 2)
 
         elements = [version_str[0]]
         for index in range(1, len(version_str)):
@@ -116,7 +119,16 @@ class dtype_version_class:
         if not isinstance(plugin_version_str, str):
             raise TypeError('plugin_version_str must be of type str')
 
-        return cls()
+        plugin_version = cls._split_version_str(
+            cls._normalize_version_str(plugin_version_str)
+            )
+
+        plugin_version = [
+            int(item) if item.isnumeric() else item # TODO commas, i.e. `,`, i.e. floats???
+            for item in plugin_version
+            ]
+
+        return cls(*plugin_version)
 
     @classmethod
     def from_qgisversion(cls, qgis_version_str):
