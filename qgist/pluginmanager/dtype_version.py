@@ -32,3 +32,32 @@ class dtype_version_class:
     """
     Allows to represent and compare versions (of QGIS and plugins)
     """
+
+    def __init__(self, *elements):
+        pass
+
+    def __repr__(self):
+        return '<version>'
+
+    def __eq__(self, other):
+        return False
+    def __ne__(self, other):
+        return False
+    def __lt__(self, other):
+        return False
+    def __le__(self, other):
+        return False
+    def __ge__(self, other):
+        return False
+    def __gt__(self, other):
+        return False
+
+    @classmethod
+    def from_pluginversion(cls, plugin_version):
+
+        return cls()
+
+    @classmethod
+    def from_qgisversion(cls, qgis_version):
+
+        return cls()
