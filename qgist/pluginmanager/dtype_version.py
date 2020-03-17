@@ -33,6 +33,10 @@ VERSION_PREFIXES = (
     'REVISION', 'REV.', 'REV', 'R.', 'R',
     )
 
+VERSION_SUFFIXES = (
+    'ALPHA', 'BETA', 'PREVIEW', 'RC', 'TRUNK',
+    )
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -40,10 +44,17 @@ VERSION_PREFIXES = (
 class dtype_version_class:
     """
     Allows to represent and compare versions (of QGIS and plugins)
+
+    For compatibilty, this follows most logic of QGIS' `python/pyplugin_installer/version_compare.py`.
     """
 
     def __init__(self, *elements):
-        pass
+
+        for index, element in enumerate(elements):
+            if not isinstance(element, str) and not isinstance(element, int):
+                raise TypeError(f'parameter {index:d} is neither str nor int.')
+
+        self._elements = elements
 
     def __repr__(self):
         return '<version>'
@@ -62,49 +73,55 @@ class dtype_version_class:
         return False
 
     @staticmethod
-    def _normalize_version_string(version_string):
+    def _normalize_version_str(version_str):
         """ remove possible prefix from given string and convert to uppercase """
 
-        if not isinstance(version_string, str):
-            raise TypeError('version_string must be of type str')
+        if not isinstance(version_str, str):
+            raise TypeError('version_str must be of type str')
 
-        if len(version_string) == 0:
+        if len(version_str) == 0:
             return ''
 
-        version_string = version_string.upper().strip(' \t\n')
+        version_str = version_str.upper().strip(' \t\n')
         for prefix in VERSION_PREFIXES:
-            if version_string.startswith(prefix):
-                version_string = version_string[len(prefix):].strip(' \t\n')
+            if version_str.startswith(prefix):
+                version_str = version_str[len(prefix):].strip(' \t\n')
 
-        return version_string
+        return version_str
 
     @staticmethod
-    def _split_version_string(version_string):
+    def _split_version_str(version_str):
         """ convert string to list of numbers and words """
 
-        if not isinstance(version_string, str):
-            raise TypeError('version_string must be of type str')
+        if not isinstance(version_str, str):
+            raise TypeError('version_str must be of type str')
 
         # return 0 for delimiter, 1 for digit and 2 for alphabetic character
         char_type = lambda char: 0 if char in ('.', '-', '_', ' ') else (1 if char.isdigit() else 2)
 
-        elements = [version_string[0]]
-        for index in range(1, len(version_string)):
-            if char_type(version_string[index]) == 0:
+        elements = [version_str[0]]
+        for index in range(1, len(version_str)):
+            if char_type(version_str[index]) == 0:
                 pass
-            elif char_type(version_string[index]) == char_type(version_string[index - 1]):
-                elements[-1] += version_string[index]
+            elif char_type(version_str[index]) == char_type(version_str[index - 1]):
+                elements[-1] += version_str[index]
             else:
-                elements.append(version_string[index])
+                elements.append(version_str[index])
 
         return elements
 
     @classmethod
-    def from_pluginversion(cls, plugin_version):
+    def from_pluginversion(cls, plugin_version_str):
+
+        if not isinstance(plugin_version_str, str):
+            raise TypeError('plugin_version_str must be of type str')
 
         return cls()
 
     @classmethod
-    def from_qgisversion(cls, qgis_version):
+    def from_qgisversion(cls, qgis_version_str):
+
+        if not isinstance(qgis_version_str, str):
+            raise TypeError('qgis_version_str must be of type str')
 
         return cls()
