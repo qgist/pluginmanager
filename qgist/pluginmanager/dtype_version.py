@@ -30,7 +30,7 @@ specific language governing rights and limitations under the License.
 
 VERSION_PREFIXES = (
     'VERSION', 'VER.', 'VER', 'V.', 'V',
-    'REVISION', 'REV.', 'REV', 'R.', 'R'
+    'REVISION', 'REV.', 'REV', 'R.', 'R',
     )
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
