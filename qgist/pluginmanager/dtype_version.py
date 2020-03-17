@@ -70,16 +70,21 @@ class dtype_version_class:
         if len(self._elements) != len(other._elements):
             return False
 
-        return all((a == b for a, b in zip(self._elements, other._elements)))
+        return all((
+            a == b for a, b in zip(self._elements, other._elements)
+            ))
 
     def __ne__(self, other):
 
         return not self.__eq__(other)
 
     def __lt__(self, other):
-        return False
+
+        return self._greater_than(other, self)
+
     def __gt__(self, other):
-        return False
+
+        return self._greater_than(self, other)
 
     def __le__(self, other):
 
@@ -94,6 +99,11 @@ class dtype_version_class:
             return True
 
         return self.__gt__(other)
+
+    @staticmethod
+    def _greater_than(a, b):
+
+        pass
 
     @staticmethod
     def _normalize_version_str(version_str):
