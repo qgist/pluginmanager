@@ -36,7 +36,7 @@ VERSION_SUFFIXES = (
     'ALPHA', 'BETA', 'PREVIEW', 'RC', 'TRUNK',
     )
 VERSION_DELIMITERS = (
-    '.', '-', '_', ' ', # TODO commas, i.e. `,`???
+    '.', '-', '_', ' ', # TODO commas, i.e. `,`?
     )
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -154,7 +154,7 @@ class dtype_version_class:
             )
 
         plugin_version = [
-            int(item) if item.isnumeric() else item # TODO commas, i.e. `,`, i.e. floats???
+            int(item) if item.isnumeric() else item
             for item in plugin_version
             ]
 
