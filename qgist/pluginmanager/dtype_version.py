@@ -63,17 +63,37 @@ class dtype_version_class:
         return f'<version {'.'.join((str(item) for item in self._elements)):s}>'
 
     def __eq__(self, other):
-        return False
+
+        if not isinstance(other, type(self)):
+            raise TypeError('other is not a version')
+
+        if len(self._elements) != len(other._elements):
+            return False
+
+        return all((a == b for a, b in zip(self._elements, other._elements)))
+
     def __ne__(self, other):
-        return False
+
+        return not self.__eq__(other)
+
     def __lt__(self, other):
-        return False
-    def __le__(self, other):
-        return False
-    def __ge__(self, other):
         return False
     def __gt__(self, other):
         return False
+
+    def __le__(self, other):
+
+        if self.__eq__(other):
+            return True
+
+        return self.__lt__(other)
+
+    def __ge__(self, other):
+
+        if self.__eq__(other):
+            return True
+
+        return self.__gt__(other)
 
     @staticmethod
     def _normalize_version_str(version_str):
