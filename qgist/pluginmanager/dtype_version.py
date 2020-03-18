@@ -71,7 +71,20 @@ class dtype_version_class:
 
     def __repr__(self):
 
-        return f'<version {".".join(self._elements):s} ("{self._original:s}")>'
+        return f'<version {str(self):s} ("{self._original:s}")>'
+
+    def __str__(self):
+
+        return '.'.join(self._elements)
+
+    def __getitem__(self, index):
+
+        if not isinstance(index, int):
+            raise TypeError('index is not an int')
+        if index < 0 or index >= len(self):
+            raise IndexError(f'index {index:d} out of bounds (0 to {len(self)-1:d})')
+
+        return self._elements[index]
 
     def __len__(self):
 
@@ -121,6 +134,11 @@ class dtype_version_class:
 
         return self.__gt__(other)
 
+    @property
+    def original(self):
+
+        return self._original
+
     @classmethod
     def _greater_than(cls, a, b):
         "Compare two *unequal* versions a and b: Is a greater then b?"
@@ -147,7 +165,7 @@ class dtype_version_class:
             return cls._compare_elements(' ', b[base_len]) == 1
 
         # if everything else fails, compare original strings
-        return a._original > b._original
+        return a.original > b.original
 
     @classmethod
     def _compare_elements(cls, x, y):
