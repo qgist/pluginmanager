@@ -23,3 +23,89 @@ specific language governing rights and limitations under the License.
 </LICENSE_BLOCK>
 
 """
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+import os
+import platform
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Internal)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from .const import (
+    CONFIG_FN,
+    IFACE_SPEC,
+    )
+from .dtype_settings import dtype_settings_class
+from .typechecking import conforms_to_spec
+
+from ..const import (
+    ICON_FLD,
+    TRANSLATION_FLD,
+    )
+from ..config import (
+    config_class,
+    get_config_path,
+    )
+from ..error import (
+    QgistTypeError,
+    QgistValueError,
+    )
+from ..util import (
+    translate,
+    setupTranslation,
+    )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# CLASS: PLUGIN MANAGER CORE
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class pluginmanager:
+    """
+    Core class
+    """
+
+    def __init__(self, iface, plugin_root_fld):
+
+        if conforms_to_spec(iface, IFACE_SPEC):
+            raise QgistTypeError(translate('global', '"iface" must be a QGIS iface object. (pluginmanager)'))
+        if not isinstance(plugin_root_fld, str):
+            raise QgistTypeError(translate('global', '"plugin_root_fld" must be str. (pluginmanager)'))
+        if not os.path.exists(plugin_root_fld):
+            raise QgistValueError(translate('global', '"plugin_root_fld" must exists. (pluginmanager)'))
+        if not os.path.isdir(plugin_root_fld):
+            raise QgistValueError(translate('global', '"plugin_root_fld" must be a directory. (pluginmanager)'))
+
+        self._iface = iface
+        self._plugin_root_fld = plugin_root_fld
+
+        self._mainwindow = self._iface.mainWindow()
+        self._system = platform.system()
+
+    def initGui(self):
+        """
+        QGis Plugin Interface Routine
+        """
+
+        self._translator, self._translator_path = setupTranslation(os.path.join(
+            self._plugin_root_fld, TRANSLATION_FLD
+            ))
+
+        self._ui_dict = {}
+        self._ui_cleanup = []
+
+        # TODO self._init_ui()
+        # TODO self._connect_ui()
+
+        self._config = dtype_settings_class(config_class(os.path.join(get_config_path(), CONFIG_FN))) # TODO move ...
+
+    def unload(self):
+        """
+        QGis Plugin Interface Routine
+        """
+
+        for cleanup_action in self._ui_cleanup:
+            cleanup_action()

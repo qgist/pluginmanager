@@ -41,6 +41,6 @@ class dtype_settings_class:
     Mutable.
     """
 
-    def __init__(self):
+    def __init__(self, config):
 
         pass
