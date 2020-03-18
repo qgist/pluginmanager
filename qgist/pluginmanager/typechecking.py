@@ -28,17 +28,34 @@ specific language governing rights and limitations under the License.
 # ROUTINES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-def is_QgsSettings(obj):
+def conforms_to_spec(obj, spec):
+    "Checks whether object conforms with specification - returns bool"
 
-    obj_type = type(obj)
+    check_name = lambda o, n: n == getattr(o, '__name__', None)
 
-    if not hasattr(obj_type, '__name__'):
+    if not isinstance(spec, dict):
+        raise TypeError('spec must be a dict')
+    if not all((isinstance(item, str) for item in spec.keys())):
+        raise TypeError('keys in spec dict must be str')
+
+    name = spec.get('name', None)
+    typename = spec.get('typename', None)
+    attrs = spec.get('attrs', list())
+
+    if not isinstance(name, str) and name is not None:
+        raise TypeError('name in spec must either be str or None or not specified')
+    if not isinstance(typename, str) and typename is not None:
+        raise TypeError('typename in spec must either be str or None or not specified')
+    if not isinstance(attrs, list):
+        raise TypeError('attrs in spec dict must be a list')
+    if not all((isinstance(item, str) for item in attrs)):
+        raise TypeError('items in attrs in spec dict must be str')
+
+    if not check_name(name, obj):
         return False
-
-    if obj_type.__name__ != 'QgsSettings':
+    if not check_name(typename, type(obj)):
         return False
-
-    if not hasattr(obj, 'setValue') or not hasattr(obj, 'value'):
+    if not all((hasattr(obj, attr) for attr in attrs)):
         return False
 
     return True
