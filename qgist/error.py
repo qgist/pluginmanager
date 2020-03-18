@@ -37,6 +37,9 @@ class QgistConfigFormatError(KeyError):
 class QgistConfigKeyError(KeyError):
     pass
 
+class QgistIndexError(IndexError):
+    pass
+
 class QgistTranslationError(Exception):
     pass
 
