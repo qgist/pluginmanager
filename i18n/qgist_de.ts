@@ -47,6 +47,76 @@
         <source>&quot;plugin_root_fld&quot; must be a directory</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="67"/>
+        <source>parameter of following index is not a str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="69"/>
+        <source>original is not a str and not None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="85"/>
+        <source>index is not an int</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="87"/>
+        <source>following index out of bounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="98"/>
+        <source>other is not a version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="158"/>
+        <source>a is not a version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="160"/>
+        <source>b is not a version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="186"/>
+        <source>x is not a str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="188"/>
+        <source>y is not a str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="231"/>
+        <source>version_str must be of type str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="247"/>
+        <source>splitting elements failed, element of zero-length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="256"/>
+        <source>plugin_version_str must be of type str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="269"/>
+        <source>qgis_version_str must be of type str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_version.py" line="271"/>
+        <source>fix_plugin_compatibility must be of type bool</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>global</name>
