@@ -70,7 +70,7 @@ class pluginmanager:
 
     def __init__(self, iface, plugin_root_fld):
 
-        if conforms_to_spec(iface, IFACE_SPEC):
+        if not conforms_to_spec(iface, IFACE_SPEC):
             raise QgistTypeError(tr('"iface" must be a QGIS iface object'), self)
         if not isinstance(plugin_root_fld, str):
             raise QgistTypeError(tr('"plugin_root_fld" must be str'), self)
