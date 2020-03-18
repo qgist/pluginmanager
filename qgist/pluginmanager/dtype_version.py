@@ -50,28 +50,35 @@ class dtype_version_class:
     For compatibility, this follows most logic of QGIS' `python/pyplugin_installer/version_compare.py`.
     """
 
-    def __init__(self, *elements):
+    def __init__(self, *elements, original = None):
 
         for index, element in enumerate(elements):
-            if not isinstance(element, str) and not isinstance(element, int):
-                raise TypeError(f'parameter {index:d} is neither str nor int.')
+            if not isinstance(element, str):
+                raise TypeError(f'parameter {index:d} is not a str')
+        if not isinstance(original, str) and original is not None:
+            raise TypeError(f'original is not a str and not None')
 
         self._elements = elements
+        self._original = original
 
     def __repr__(self):
 
-        return f'<version {'.'.join((str(item) for item in self._elements)):s}>'
+        return f'<version {".".join(self._elements):s}>'
+
+    def __len__(self):
+
+        return len(self._elements)
 
     def __eq__(self, other):
 
         if not isinstance(other, type(self)):
             raise TypeError('other is not a version')
 
-        if len(self._elements) != len(other._elements):
+        if len(self) != len(other):
             return False
 
         return all((
-            a == b for a, b in zip(self._elements, other._elements)
+            (a == b) for a, b in zip(self._elements, other._elements)
             ))
 
     def __ne__(self, other):
@@ -80,9 +87,15 @@ class dtype_version_class:
 
     def __lt__(self, other):
 
+        if self.__eq__(other):
+            return False
+
         return self._greater_than(other, self)
 
     def __gt__(self, other):
+
+        if self.__eq__(other):
+            return False
 
         return self._greater_than(self, other)
 
@@ -100,14 +113,65 @@ class dtype_version_class:
 
         return self.__gt__(other)
 
-    @staticmethod
-    def _greater_than(a, b):
+    @classmethod
+    def _greater_than(cls, a, b):
+        "Compare two *unequal* versions a and b: Is a greater then b?"
 
-        pass
+        if not isinstance(a, cls):
+            raise TypeError('a is not a version')
+        if not isinstance(b, cls):
+            raise TypeError('b is not a version')
+
+        # set the shorter string as a base length
+        base_len = len(a) if len(a) < len(b) else len(b)
+
+        # try to determine within the common/base length
+        for index in range(base_len):
+            relation = cls._compare_elements(a[index], b[index])
+            if relation != 0:
+                return relation == 1
+
+        # if the lists are identical till the end of the shorther string, try to compare the odd tail
+        # with the simple space (because the 'alpha', 'beta', 'preview' and 'rc' are LESS then nothing)
+        if len(a) > base_len:
+            return cls._compare_elements(a[base_len], ' ') == 1
+        if len(b) > base_len:
+            return cls._compare_elements(' ', b[base_len]) == 1
+
+        # if everything else fails, compare original strings
+        return a._original > b._original # TODO can be None, raise error
+
+    @classmethod
+    def _compare_elements(cls, x, y):
+        "Compare version element x with version element y (0/==, 1/>, 2/<)"
+
+        if not isinstance(x, str):
+            raise TypeError('x is not a str')
+        if not isinstance(y, str):
+            raise TypeError('y is not a str')
+
+        if x == y:
+            return 0
+
+        is_numeric = lambda element: len(element) > 0 and element.isnumeric() and element[0] != '0'
+        rank_string = lambda element: 'Z' + element if element not in VERSION_SUFFIXES else element
+
+        # try to compare as numeric values (but only if the first character is not 0):
+        if is_numeric(x) and is_numeric(y):
+            if int(x) == int(y):
+                return 0
+            elif int(x) > int(y):
+                return 1
+            else:
+                return 2
+
+        # if the strings aren't numeric or start from 0, compare them as a strings:
+        # but first, set ALPHA < BETA < PREVIEW < RC < TRUNK < [NOTHING] < [ANYTHING_ELSE]
+        return 1 if rank_string(x) > rank_string(y) else 2
 
     @staticmethod
     def _normalize_version_str(version_str):
-        """ remove possible prefix from given string and convert to uppercase """
+        "Remove possible prefix from given string and convert to uppercase"
 
         if not isinstance(version_str, str):
             raise TypeError('version_str must be of type str')
@@ -124,7 +188,7 @@ class dtype_version_class:
 
     @staticmethod
     def _split_version_str(version_str):
-        """ convert string to list of numbers and words """
+        "Convert string to list of numbers and words"
 
         if not isinstance(version_str, str):
             raise TypeError('version_str must be of type str')
@@ -141,10 +205,15 @@ class dtype_version_class:
             else:
                 elements.append(version_str[index])
 
+        for element in elements:
+            if len(element) == 0:
+                raise ValueError('splitting elements failed, element of zero-length')
+
         return elements
 
     @classmethod
     def from_pluginversion(cls, plugin_version_str):
+        "Parse plugin version string and return version object"
 
         if not isinstance(plugin_version_str, str):
             raise TypeError('plugin_version_str must be of type str')
@@ -153,15 +222,11 @@ class dtype_version_class:
             cls._normalize_version_str(plugin_version_str)
             )
 
-        plugin_version = [
-            int(item) if item.isnumeric() else item
-            for item in plugin_version
-            ]
-
-        return cls(*plugin_version)
+        return cls(*plugin_version, original = plugin_version_str)
 
     @classmethod
     def from_qgisversion(cls, qgis_version_str):
+        "Parse QGIS version string and return version object"
 
         if not isinstance(qgis_version_str, str):
             raise TypeError('qgis_version_str must be of type str')
