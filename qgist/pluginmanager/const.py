@@ -25,9 +25,24 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# CONST
+# MISC
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 CONFIG_FN = 'pluginmanager.json'
 PLUGIN_ICON_FN = 'pluginmanager.svg'
 PLUGIN_NAME = 'QgistPluginManager'
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# VERSIONS
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+VERSION_PREFIXES = (
+    'VERSION', 'VER.', 'VER', 'V.', 'V',
+    'REVISION', 'REV.', 'REV', 'R.', 'R',
+    )
+VERSION_UNSTABLE_SUFFIXES = (
+    'ALPHA', 'BETA', 'PREVIEW', 'RC', 'TRUNK',
+    )
+VERSION_DELIMITERS = (
+    '.', '-', '_', ' ', # TODO commas, i.e. `,`?
+    )

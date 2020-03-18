@@ -31,18 +31,13 @@ specific language governing rights and limitations under the License.
 import re
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# CONST
+# IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-VERSION_PREFIXES = (
-    'VERSION', 'VER.', 'VER', 'V.', 'V',
-    'REVISION', 'REV.', 'REV', 'R.', 'R',
-    )
-VERSION_UNSTABLE_SUFFIXES = (
-    'ALPHA', 'BETA', 'PREVIEW', 'RC', 'TRUNK',
-    )
-VERSION_DELIMITERS = (
-    '.', '-', '_', ' ', # TODO commas, i.e. `,`?
+from .const import (
+    VERSION_PREFIXES,
+    VERSION_UNSTABLE_SUFFIXES,
+    VERSION_DELIMITERS,
     )
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
