@@ -38,7 +38,7 @@ VERSION_PREFIXES = (
     'VERSION', 'VER.', 'VER', 'V.', 'V',
     'REVISION', 'REV.', 'REV', 'R.', 'R',
     )
-VERSION_SUFFIXES = (
+VERSION_UNSTABLE_SUFFIXES = (
     'ALPHA', 'BETA', 'PREVIEW', 'RC', 'TRUNK',
     )
 VERSION_DELIMITERS = (
@@ -142,7 +142,7 @@ class dtype_version_class:
     @property
     def stable(self):
 
-        for suffix in VERSION_SUFFIXES:
+        for suffix in VERSION_UNSTABLE_SUFFIXES:
             if suffix in self._elements:
                 return False
 
@@ -189,7 +189,7 @@ class dtype_version_class:
             return 0
 
         is_numeric = lambda element: len(element) > 0 and element.isnumeric() and element[0] != '0'
-        rank_string = lambda element: 'Z' + element if element not in VERSION_SUFFIXES else element
+        rank_string = lambda element: 'Z' + element if element not in VERSION_UNSTABLE_SUFFIXES else element
 
         # try to compare as numeric values (but only if the first character is not 0):
         if is_numeric(x) and is_numeric(y):
