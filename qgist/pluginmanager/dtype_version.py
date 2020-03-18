@@ -25,6 +25,12 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+import re
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CONST
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -231,4 +237,13 @@ class dtype_version_class:
         if not isinstance(qgis_version_str, str):
             raise TypeError('qgis_version_str must be of type str')
 
-        return cls()
+        x, y, z = re.findall(r'^(\d*).(\d*).(\d*)', qgis_version_str)[0]
+
+        # Return current QGIS version number as X.Y.Z for testing plugin compatibility.
+        # If Y = 99, bump up to (X+1.0.0), so e.g. 2.99 becomes 3.0.0
+        # This way QGIS X.99 is only compatible with plugins for the upcoming major release.
+        if y == '99':
+            x = str(int(x) + 1)
+            y = z = '0'
+
+        return cls(x, y, z, original = qgis_version_str)
