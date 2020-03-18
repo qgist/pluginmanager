@@ -54,6 +54,8 @@ class dtype_version_class:
     Allows to represent and compare versions (of QGIS and plugins)
 
     For compatibility, this follows most logic of QGIS' `python/pyplugin_installer/version_compare.py`.
+
+    Immutable.
     """
 
     def __init__(self, *elements, original = None):
