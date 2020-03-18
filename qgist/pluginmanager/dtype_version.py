@@ -139,6 +139,15 @@ class dtype_version_class:
 
         return self._original
 
+    @property
+    def stable(self):
+
+        for suffix in VERSION_SUFFIXES:
+            if suffix in self._elements:
+                return False
+
+        return True
+
     @classmethod
     def _greater_than(cls, a, b):
         "Compare two *unequal* versions a and b: Is a greater then b?"
