@@ -260,18 +260,20 @@ class dtype_version_class:
         return cls(*plugin_version, original = plugin_version_str)
 
     @classmethod
-    def from_qgisversion(cls, qgis_version_str):
+    def from_qgisversion(cls, qgis_version_str, fix_plugin_compatibility = False):
         "Parse QGIS version string and return version object"
 
         if not isinstance(qgis_version_str, str):
             raise TypeError('qgis_version_str must be of type str')
+        if not isinstance(fix_plugin_compatibility, bool):
+            raise TypeError('fix_plugin_compatibility must be of type bool')
 
         x, y, z = re.findall(r'^(\d*).(\d*).(\d*)', qgis_version_str)[0]
 
         # Return current QGIS version number as X.Y.Z for testing plugin compatibility.
         # If Y = 99, bump up to (X+1.0.0), so e.g. 2.99 becomes 3.0.0
         # This way QGIS X.99 is only compatible with plugins for the upcoming major release.
-        if y == '99':
+        if fix_plugin_compatibility and y == '99':
             x = str(int(x) + 1)
             y = z = '0'
 
