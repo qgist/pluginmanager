@@ -37,7 +37,7 @@ from PyQt5.QtWidgets import QMessageBox
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from .error import QgistTypeError
-from .util import translate
+from .util import tr
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -46,23 +46,27 @@ from .util import translate
 
 def msg_critical(exception, widget = None):
 
-    _msg('critical', translate('global', 'Critical error'), exception, widget)
+    _msg('critical', tr('Critical error'), exception, widget)
 
 def msg_warning(exception, widget = None):
 
-    _msg('warning', translate('global', 'Warning'), exception, widget)
+    _msg('warning', tr('Warning'), exception, widget)
 
 def _msg(msg_type, msg_title, exception, widget = None):
 
     if not isinstance(exception, Exception):
-        raise QgistTypeError(translate('global', '"exception" must be of type Exception. (msg)'))
+        raise QgistTypeError(tr('"exception" must be of type Exception'), 'msg')
     if not isinstance(widget, QWidget) and widget is not None:
-        raise QgistTypeError(translate('global', '"widget" must be of type QWidget or None. (msg)'))
+        raise QgistTypeError(tr('"widget" must be of type QWidget or None'), 'msg')
 
     if len(exception.args) == 0:
-        msg = translate('global', 'Internal error. No description can be provided. Please file a bug. (msg)')
+        msg = tr('Internal error. No description can be provided. Please file a bug!')
     else:
         msg = str(exception.args[0])
+        if len(exception.args) > 1:
+            source = _analyze_exception_source(exception.args[1])
+            if source is not None:
+                msg = f'{msg:s} ({source:s})'
 
     getattr(QMessageBox, msg_type)(
         widget,
@@ -70,3 +74,21 @@ def _msg(msg_type, msg_title, exception, widget = None):
         msg,
         QMessageBox.Ok
         )
+
+def _analyze_exception_source(source):
+
+    if isinstance(source, str):
+        return source
+    if source is None:
+        return None
+
+    source_name = getattr(source, '__name__', None)
+    source_type = getattr(type(source), '__name__', None)
+
+    if source_name is None and source_type is None:
+        return None
+    if source_name is None:
+        return source_type
+    if source_type is None:
+        return source_name
+    return f'{source_name:s} | {source_type:s}'
