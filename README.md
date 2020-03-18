@@ -7,7 +7,7 @@ It is part of a larger effort, the [QGIST project](http://www.qgist.org).
 
 This project attempts to replace QGIS' original plugin manager.
 
-**ATTENTION: THIS PROJECT IS PRE-ALPHA! DO NOT USE!***
+**ATTENTION: THIS PROJECT IS PRE-ALPHA! DO NOT USE!**
 
 ## Screenshots
 
