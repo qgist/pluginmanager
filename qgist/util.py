@@ -30,7 +30,6 @@ specific language governing rights and limitations under the License.
 
 import os
 
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (External Dependencies)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -42,13 +41,14 @@ from PyQt5.QtCore import (
 )
 from PyQt5.QtWidgets import QApplication
 
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal Dependencies)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .error import QgistTranslationError
-
+from .error import (
+    QgistTranslationError,
+    QgistTypeError,
+    )
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ROUTINES: TRANSLATION
@@ -87,9 +87,23 @@ def setupTranslation(translationsPath):
     QCoreApplication.installTranslator(translator)
     return translator, localePath
 
-def translate(context, key):
+def translate(context, key): # OLD API
     """
+    Old translate API - use `tr` instead
     http://pyqt.sourceforge.net/Docs/PyQt5/i18n.html#differences-between-pyqt5-and-qt
     """
+
+    return QApplication.translate(context, key)
+
+def tr(key, context = 'global'): # NEW API
+    """
+    New translate API
+    http://pyqt.sourceforge.net/Docs/PyQt5/i18n.html#differences-between-pyqt5-and-qt
+    """
+
+    if not isinstance(key, str):
+        raise QgistTypeError('key must be str')
+    if not isinstance(context, str):
+        raise QgistTypeError('context must be str')
 
     return QApplication.translate(context, key)
