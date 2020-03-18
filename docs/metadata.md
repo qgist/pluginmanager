@@ -23,7 +23,7 @@ mRepositories = {
 
 ```python
 mPlugins = {
-    id : {
+    id: {
         "id": unicode,                     # module name
         "name": unicode,                   # human readable plugin name
         "description": unicode,            # short description of the plugin purpose only
