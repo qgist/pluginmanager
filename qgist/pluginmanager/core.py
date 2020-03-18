@@ -55,7 +55,7 @@ from ..error import (
     QgistValueError,
     )
 from ..util import (
-    translate,
+    tr,
     setupTranslation,
     )
 
@@ -71,13 +71,13 @@ class pluginmanager:
     def __init__(self, iface, plugin_root_fld):
 
         if conforms_to_spec(iface, IFACE_SPEC):
-            raise QgistTypeError(translate('global', '"iface" must be a QGIS iface object. (pluginmanager)'))
+            raise QgistTypeError(tr('"iface" must be a QGIS iface object'), self)
         if not isinstance(plugin_root_fld, str):
-            raise QgistTypeError(translate('global', '"plugin_root_fld" must be str. (pluginmanager)'))
+            raise QgistTypeError(tr('"plugin_root_fld" must be str'), self)
         if not os.path.exists(plugin_root_fld):
-            raise QgistValueError(translate('global', '"plugin_root_fld" must exists. (pluginmanager)'))
+            raise QgistValueError(tr('"plugin_root_fld" must exists'), self)
         if not os.path.isdir(plugin_root_fld):
-            raise QgistValueError(translate('global', '"plugin_root_fld" must be a directory. (pluginmanager)'))
+            raise QgistValueError(tr('"plugin_root_fld" must be a directory'), self)
 
         self._iface = iface
         self._plugin_root_fld = plugin_root_fld
