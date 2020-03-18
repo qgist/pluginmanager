@@ -37,6 +37,7 @@ class dtype_index_class:
         - allow experimental
         - allow deprecated
         - SETTINGS
+        - actions (stuff that must be committed or discarded)
     """
 
     def add_repo(self, **kwargs):
