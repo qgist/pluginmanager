@@ -25,6 +25,14 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Internal)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from ..error import (
+    QgistTypeError,
+    )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ROUTINES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -34,22 +42,22 @@ def conforms_to_spec(obj, spec):
     check_name = lambda o, n: n == getattr(o, '__name__', None)
 
     if not isinstance(spec, dict):
-        raise TypeError('spec must be a dict')
+        raise QgistTypeError('spec must be a dict')
     if not all((isinstance(item, str) for item in spec.keys())):
-        raise TypeError('keys in spec dict must be str')
+        raise QgistTypeError('keys in spec dict must be str')
 
     name = spec.get('name', None)
     typename = spec.get('typename', None)
     attrs = spec.get('attrs', list())
 
     if not isinstance(name, str) and name is not None:
-        raise TypeError('name in spec must either be str or None or not specified')
+        raise QgistTypeError('name in spec must either be str or None or not specified')
     if not isinstance(typename, str) and typename is not None:
-        raise TypeError('typename in spec must either be str or None or not specified')
+        raise QgistTypeError('typename in spec must either be str or None or not specified')
     if not isinstance(attrs, list):
-        raise TypeError('attrs in spec dict must be a list')
+        raise QgistTypeError('attrs in spec dict must be a list')
     if not all((isinstance(item, str) for item in attrs)):
-        raise TypeError('items in attrs in spec dict must be str')
+        raise QgistTypeError('items in attrs in spec dict must be str')
 
     if not check_name(name, obj):
         return False
