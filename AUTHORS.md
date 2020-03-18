@@ -12,7 +12,7 @@ Contributors, in alphabetical order:
 
 - [to be added]
 
-Portions of QGIST Plugin Manager are based on the original QGIS plugin manager and its earlier versions. It has been developed by the following people, among others:
+Portions of QGIST Plugin Manager are based on the original QGIS plugin manager (QGIS 3.12) and its earlier versions. It has been developed by the following people, among others:
 
 - Matthew Perry
 - Borys Jurgiel
