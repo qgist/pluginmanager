@@ -65,11 +65,11 @@ class dtype_version_class:
             raise TypeError(f'original is not a str and not None')
 
         self._elements = elements
-        self._original = original
+        self._original = original if original is not None else '.'.join(elements)
 
     def __repr__(self):
 
-        return f'<version {".".join(self._elements):s}>'
+        return f'<version {".".join(self._elements):s} ("{self._original:s}")>'
 
     def __len__(self):
 
@@ -145,7 +145,7 @@ class dtype_version_class:
             return cls._compare_elements(' ', b[base_len]) == 1
 
         # if everything else fails, compare original strings
-        return a._original > b._original # TODO can be None, raise error
+        return a._original > b._original
 
     @classmethod
     def _compare_elements(cls, x, y):
