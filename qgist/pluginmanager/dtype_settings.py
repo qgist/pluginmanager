@@ -84,6 +84,11 @@ class dtype_settings_class:
 
     def __getitem__(self, name):
 
+        if not isinstance(name, str):
+            raise QgistTypeError(tr('name is not str'), self)
+        if len(name) == 0:
+            raise QgistValueError(tr('name must not be empty'), self)
+
         setting = self._settings.value(name) if self._settings is not None else None
 
         if setting is None:
@@ -92,12 +97,22 @@ class dtype_settings_class:
 
     def __setitem__(self, name, value):
 
-        self._config[name] = value # does internal validity and type checks etc
+        if not isinstance(name, str):
+            raise QgistTypeError(tr('name is not str'), self)
+        if len(name) == 0:
+            raise QgistValueError(tr('name must not be empty'), self)
+
+        self._config[name] = value # does internal validity and type checks on value etc
 
         self._settings.setValue(name, value)
 
     def get(self, name, default):
         "dict get"
+
+        if not isinstance(name, str):
+            raise QgistTypeError(tr('name is not str'), self)
+        if len(name) == 0:
+            raise QgistValueError(tr('name must not be empty'), self)
 
         setting = self._settings.value(name) if self._settings is not None else None
 
