@@ -86,7 +86,9 @@ class dtype_settings_class:
 
     def __setitem__(self, name, value):
 
-        self._config[name] = value
+        self._config[name] = value # does internal type checks
+
+        self._settings.setValue(name, value)
 
     def get(self, name, default):
 
