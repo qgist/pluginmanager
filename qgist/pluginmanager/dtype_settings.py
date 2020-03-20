@@ -84,7 +84,7 @@ class dtype_settings_class:
 
     def __getitem__(self, name):
 
-        setting = self._settings.value() if self._settings is not None else None
+        setting = self._settings.value(name) if self._settings is not None else None
 
         if setting is None:
             return self._config[name]
@@ -99,7 +99,7 @@ class dtype_settings_class:
     def get(self, name, default):
         "dict get"
 
-        setting = self._settings.value() if self._settings is not None else None
+        setting = self._settings.value(name) if self._settings is not None else None
 
         if setting is None:
             return self._config.get(name, default)
