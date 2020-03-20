@@ -61,6 +61,8 @@ mPlugins = {
     }
 ```
 
+The **id** of a plugin equals the **name of its zip-file** (without its extension).
+
 ## Translations
 
 The following fields can be translated (i18n):
