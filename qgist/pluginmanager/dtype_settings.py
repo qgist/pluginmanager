@@ -41,7 +41,7 @@ from ..error import QgistTypeError
 from ..util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# CLASS
+# CLASS: SETTINGS MAIN
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class dtype_settings_class:
@@ -98,6 +98,13 @@ class dtype_settings_class:
             return self._config.get(name, default)
         return self._convert_qt_to_python(setting)
 
+    def get_group(self, name):
+
+        if not isinstance(name, str):
+            raise QgistTypeError(tr('name is not str'), self)
+
+        return _dtype_settings_group_class(self, name)
+
     def keys(self):
 
         keys = self._settings.allKeys() if self._settings is not None else None
@@ -116,3 +123,32 @@ class dtype_settings_class:
             return data.toPyDate().isoformat() # returns date-time iso string
 
         raise QgistTypeError(tr('unknown data type from QGIS settings'), 'settings')
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# CLASS: SETTINGS GROUP
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class _dtype_settings_group_class:
+    """
+    Mimics QgsSettings.beginGroup
+
+    Mutable.
+    """
+
+    def __init__(self, settings, root):
+
+        if not isinstance(settings, dtype_settings_class):
+            raise QgistTypeError(tr('settings must be an instance of config_class'), self)
+        if not isinstance(root, str):
+            raise QgistTypeError(tr('root must be a str'), self)
+
+        self._settings = settings
+        self._root = root
+
+    def keys(self):
+
+        keys = settings.keys()
+
+        # TODO filter
+
+        return keys
