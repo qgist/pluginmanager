@@ -117,6 +117,16 @@
         <source>fix_plugin_compatibility must be of type bool</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="54"/>
+        <source>config must be an instance of config_class</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="56"/>
+        <source>try_qgis_settings must be a bool</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>global</name>
