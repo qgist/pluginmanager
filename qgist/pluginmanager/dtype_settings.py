@@ -124,6 +124,14 @@ class dtype_settings_class:
             return (key for key in keys) # keys is a list, should be a generator/iterator
         return self._config.keys()
 
+    def keys_root(self):
+        "dict keys generator - at root"
+
+        return (item for item in set((
+            key.split(CONFIG_DELIMITER, 1)[0]
+            for key in self.keys()
+            )))
+
     @staticmethod
     def _convert_qt_to_python(data):
 
@@ -192,11 +200,11 @@ class _dtype_settings_group_class:
 
         return self._settings.get(self._base + name, default)
 
-    def keys(self):
-        "dict keys generator"
+    def keys_root(self):
+        "dict keys generator - at root"
 
-        return (
+        return (item for item in set((
             key[self._base_len:].split(CONFIG_DELIMITER, 1)[0]
-            for key in self._settings.keys()
+            for key in self._settings.all_keys()
             if key.startswith(self._base) and len(key) > self._base_len
-            )
+            )))
