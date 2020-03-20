@@ -67,6 +67,10 @@ class dtype_settings_class:
         if try_qgis_settings:
             self._load_qgis_settings()
 
+    def __repr__(self):
+
+        return f'<settings ({id(self):x})>'
+
     def _load_qgis_settings(self):
 
         try:
@@ -144,6 +148,10 @@ class _dtype_settings_group_class:
 
         self._settings = settings
         self._root = root
+
+    def __repr__(self):
+
+        return f'<settings group (attached to {id(self._settings):x}, root "{self._root:s}")>'
 
     def keys(self):
 
