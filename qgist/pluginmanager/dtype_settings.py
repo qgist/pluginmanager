@@ -64,23 +64,20 @@ class dtype_settings_class:
             raise QgistTypeError(tr('try_qgis_settings must be a bool'), self)
 
         self._config = config
+        self._settings = None
 
-        self._qgis_settings = None
-        if try_qgis_settings:
-            self._load_qgis_settings()
-
-    def __repr__(self):
-
-        return f'<settings ({id(self):x})>'
-
-    def _load_qgis_settings(self):
+        if not try_qgis_settings:
+            return
 
         try:
             from qgis.core import QgsSettings
         except ModuleNotFoundError:
             QgsSettings = None
-
         self._settings = QgsSettings() if QgsSettings is not None else None
+
+    def __repr__(self):
+
+        return f'<settings ({id(self):x})>'
 
     def __getitem__(self, name):
 
