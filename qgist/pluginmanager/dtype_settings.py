@@ -200,6 +200,16 @@ class _dtype_settings_group_class:
 
         return self._settings.get(self._base + name, default)
 
+    def get_group(self, root):
+        "get group by root"
+
+        if not isinstance(root, str):
+            raise QgistTypeError(tr('root is not str'), self)
+        if len(root) == 0:
+            raise QgistValueError(tr('root must not be empty'), self)
+
+        return type(self)(self._settings, self._base + root)
+
     def keys(self):
         "dict keys generator"
 
