@@ -96,6 +96,14 @@ class dtype_settings_class:
             return self._config.get(name, default)
         return self._convert_qt_to_python(setting)
 
+    def keys(self):
+
+        keys = self._settings.allKeys() if self._settings is not None else None
+
+        if keys is not None:
+            return (key for key in keys) # keys is a list, should be a generator/iterator
+        return self._config.keys()
+
     @staticmethod
     def _convert_qt_to_python(data):
 
