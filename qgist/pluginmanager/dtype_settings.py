@@ -41,6 +41,8 @@ from ..util import tr
 class dtype_settings_class:
     """
     Transparent wrapper around QgsSettings - so it can be exchanged (for testing etc)
+    Class enables redundant storage of settings: Into QgsSettings *and* config_class.
+    When read, data from QgsSettings is preferred.
 
     Mutable.
     """
@@ -66,3 +68,15 @@ class dtype_settings_class:
             QgsSettings = None
 
         self._settings = QgsSettings() if QgsSettings is not None else None
+
+    def __getitem__(self, name):
+
+        return self._config[name]
+
+    def __setitem__(self, name, value):
+
+        self._config[name] = value
+
+    def get(self, name, default):
+
+        return self._config.get(name, default)
