@@ -43,6 +43,7 @@ class dtype_settings_class:
     Transparent wrapper around QgsSettings - so it can be exchanged (for testing etc)
     Class enables redundant storage of settings: Into QgsSettings *and* config_class.
     When read, data from QgsSettings is preferred.
+    When written, data goes first into config_class, second into QgsSettings.
 
     Mutable.
     """
