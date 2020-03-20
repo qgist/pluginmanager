@@ -34,10 +34,9 @@ from PyQt5.QtCore import QDate
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .const import CONFIG_DELIMITER
 from ..config import config_class
-
 from ..error import QgistTypeError
-
 from ..util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -123,7 +122,7 @@ class dtype_settings_class:
         if config_class.check_value(data): # valid Python/JSON data type
             return data
 
-        if isinstance(data, QDate)
+        if isinstance(data, QDate):
             return data.toPyDate().isoformat() # returns date-time iso string
 
         raise QgistTypeError(tr('unknown data type from QGIS settings'), 'settings')
@@ -155,8 +154,10 @@ class _dtype_settings_group_class:
 
     def keys(self):
 
-        keys = settings.keys()
+        base = self._root + CONFIG_DELIMITER
 
-        # TODO filter
-
-        return keys
+        return (
+            key[len(base):].split(CONFIG_DELIMITER, 1)[0]
+            for key in self._settings.keys()
+            if key.startswith(base) and len(key) > len(base)
+            )
