@@ -92,7 +92,7 @@ class dtype_settings_class:
 
     def __setitem__(self, name, value):
 
-        self._config[name] = value # does internal type checks
+        self._config[name] = value # does internal validity and type checks etc
 
         self._settings.setValue(name, value)
 
@@ -163,6 +163,34 @@ class _dtype_settings_group_class:
     def __repr__(self):
 
         return f'<settings group (attached to {id(self._settings):x}, root "{self._root:s}")>'
+
+    def __getitem__(self, name):
+
+        if not isinstance(name, str):
+            raise QgistTypeError(tr('name is not str'), self)
+        if len(name) == 0:
+            raise QgistValueError(tr('name must not be empty'), self)
+
+        return self._settings[self._base + name]
+
+    def __setitem__(self, name, value):
+
+        if not isinstance(name, str):
+            raise QgistTypeError(tr('name is not str'), self)
+        if len(name) == 0:
+            raise QgistValueError(tr('name must not be empty'), self)
+
+        self._settings[self._base + name] = value
+
+    def get(self, name, default):
+        "dict get"
+
+        if not isinstance(name, str):
+            raise QgistTypeError(tr('name is not str'), self)
+        if len(name) == 0:
+            raise QgistValueError(tr('name must not be empty'), self)
+
+        return self._settings.get(self._base + name, default)
 
     def keys(self):
         "dict keys generator"
