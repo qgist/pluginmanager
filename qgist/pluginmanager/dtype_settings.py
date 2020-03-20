@@ -30,6 +30,10 @@ specific language governing rights and limitations under the License.
 
 from ..config import config_class
 
+from ..error import QgistTypeError
+
+from ..util import tr
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -41,6 +45,24 @@ class dtype_settings_class:
     Mutable.
     """
 
-    def __init__(self, config):
+    def __init__(self, config, try_qgis_settings = True):
 
-        pass
+        if not isinstance(config, config_class):
+            raise QgistTypeError(tr('config must be an instance of config_class'), self)
+        if not isinstance(try_qgis_settings, bool):
+            raise QgistTypeError(tr('try_qgis_settings must be a bool'), self)
+
+        self._config = config
+
+        self._qgis_settings = None
+        if try_qgis_settings:
+            self._load_qgis_settings()
+
+    def _load_qgis_settings(self):
+
+        try:
+            from qgis.core import QgsSettings
+        except ModuleNotFoundError:
+            QgsSettings = None
+
+        self._settings = QgsSettings() if QgsSettings is not None else None
