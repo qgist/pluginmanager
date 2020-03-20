@@ -142,6 +142,10 @@ class config_class:
         except QgistConfigKeyError:
             return default
 
+    def keys(self):
+
+        return self._data.keys()
+
     @classmethod
     def _check_value(cls, value): # OLD API, DO NOT USE
 
