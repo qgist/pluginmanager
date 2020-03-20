@@ -60,3 +60,12 @@ mPlugins = {
         }
     }
 ```
+
+## Translations
+
+The following fields can be translated (i18n):
+
+- name
+- description
+- about
+- tags
