@@ -200,6 +200,15 @@ class _dtype_settings_group_class:
 
         return self._settings.get(self._base + name, default)
 
+    def keys(self):
+        "dict keys generator"
+
+        return (item for item in set((
+            key[self._base_len:]
+            for key in self._settings.all_keys()
+            if key.startswith(self._base) and len(key) > self._base_len
+            )))
+
     def keys_root(self):
         "dict keys generator - at root"
 
