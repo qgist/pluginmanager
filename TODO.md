@@ -11,3 +11,7 @@ This plugin should not only be packaged as as QGIS plugin but also stand-alone a
 - fuzzing
 
 Are commas valid version element delimiters?
+
+# QGIS
+
+How do I determine the version of QGIS by looking at the files in its installation folder (i.e. NOT by running QGIS and/or importing `qgis` in Python)?
