@@ -149,7 +149,7 @@ class dtype_settings_class:
 
 class _dtype_settings_group_class:
     """
-    Mimics QgsSettings.beginGroup
+    Mimics QgsSettings.beginGroup & QgsSettings.endGroup, just without the change of state
 
     Mutable.
     """
