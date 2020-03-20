@@ -36,7 +36,10 @@ from PyQt5.QtCore import QDate
 
 from .const import CONFIG_DELIMITER
 from ..config import config_class
-from ..error import QgistTypeError
+from ..error import (
+    QgistTypeError,
+    QgistValueError,
+    )
 from ..util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -94,6 +97,7 @@ class dtype_settings_class:
         self._settings.setValue(name, value)
 
     def get(self, name, default):
+        "dict get"
 
         setting = self._settings.value() if self._settings is not None else None
 
@@ -101,14 +105,18 @@ class dtype_settings_class:
             return self._config.get(name, default)
         return self._convert_qt_to_python(setting)
 
-    def get_group(self, name):
+    def get_group(self, root):
+        "get group by root"
 
-        if not isinstance(name, str):
-            raise QgistTypeError(tr('name is not str'), self)
+        if not isinstance(root, str):
+            raise QgistTypeError(tr('root is not str'), self)
+        if len(root) == 0:
+            raise QgistValueError(tr('root must not be empty'), self)
 
-        return _dtype_settings_group_class(self, name)
+        return _dtype_settings_group_class(self, root)
 
     def keys(self):
+        "dict keys generator"
 
         keys = self._settings.allKeys() if self._settings is not None else None
 
@@ -144,20 +152,23 @@ class _dtype_settings_group_class:
             raise QgistTypeError(tr('settings must be an instance of config_class'), self)
         if not isinstance(root, str):
             raise QgistTypeError(tr('root must be a str'), self)
+        if len(root) == 0:
+            raise QgistValueError(tr('root must not be empty'), self)
 
         self._settings = settings
         self._root = root
+        self._base = self._root + CONFIG_DELIMITER
+        self._base_len = len(self._base)
 
     def __repr__(self):
 
         return f'<settings group (attached to {id(self._settings):x}, root "{self._root:s}")>'
 
     def keys(self):
-
-        base = self._root + CONFIG_DELIMITER
+        "dict keys generator"
 
         return (
-            key[len(base):].split(CONFIG_DELIMITER, 1)[0]
+            key[self._base_len:].split(CONFIG_DELIMITER, 1)[0]
             for key in self._settings.keys()
-            if key.startswith(base) and len(key) > len(base)
+            if key.startswith(self._base) and len(key) > self._base_len
             )
