@@ -129,7 +129,7 @@ class config_class:
 
         if not isinstance(name, str):
             raise QgistTypeError(translate('global', '"name" must be str. (config setitem)'))
-        if not config_class._check_value(value):
+        if not self.check_value(value):
             raise QgistTypeError(translate('global', '"value" contains not allowed types. (config setitem)'))
 
         self._data[name] = value
@@ -142,20 +142,25 @@ class config_class:
         except QgistConfigKeyError:
             return default
 
-    @staticmethod
-    def _check_value(value):
+    @classmethod
+    def _check_value(cls, value): # OLD API, DO NOT USE
+
+        return cls.check_value(value)
+
+    @classmethod
+    def check_value(cls, value): # NEW API
 
         if type(value) not in (int, float, bool, str, list, dict) and value is not None:
             return False
 
         if isinstance(value, list):
             for item in value:
-                if not config_class._check_value(item):
+                if not cls.check_value(item):
                     return False
 
         if isinstance(value, dict):
             for k, v in value.items():
-                if not config_class._check_value(k) or not config_class._check_value(v):
+                if not cls.check_value(k) or not cls.check_value(v):
                     return False
 
         return True
@@ -205,8 +210,8 @@ class config_class:
 
         return value
 
-    @staticmethod
-    def export_config(fn, value):
+    @classmethod
+    def export_config(cls, fn, value):
 
         if not isinstance(fn, str):
             raise QgistTypeError(translate('global', '"fn" must be str. (config export)'))
@@ -214,7 +219,7 @@ class config_class:
             raise QgistValueError(translate('global', 'Parent of "fn" must exists. (config export)'))
         if not os.path.isdir(os.path.dirname(fn)):
             raise QgistValueError(translate('global', 'Parent of "fn" must be a directory. (config export)'))
-        if not config_class._check_value(value):
+        if not cls.check_value(value):
             raise QgistTypeError(translate('global', '"value" contains not allowed types. (config export)'))
 
         with open(fn, 'w', encoding = 'utf-8') as f:
