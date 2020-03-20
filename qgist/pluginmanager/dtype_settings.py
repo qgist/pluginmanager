@@ -25,6 +25,12 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (External Dependencies)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from PyQt5.QtCore import QDate
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -72,7 +78,11 @@ class dtype_settings_class:
 
     def __getitem__(self, name):
 
-        return self._config[name]
+        setting = self._settings.value() if self._settings is not None else None
+
+        if setting is None:
+            return self._config[name]
+        return self._convert_qt_to_python(setting)
 
     def __setitem__(self, name, value):
 
@@ -80,4 +90,19 @@ class dtype_settings_class:
 
     def get(self, name, default):
 
-        return self._config.get(name, default)
+        setting = self._settings.value() if self._settings is not None else None
+
+        if setting is None:
+            return self._config.get(name, default)
+        return self._convert_qt_to_python(setting)
+
+    @staticmethod
+    def _convert_qt_to_python(data):
+
+        if config_class.check_value(data): # valid Python/JSON data type
+            return data
+
+        if isinstance(data, QDate)
+            return data.toPyDate().isoformat() # returns date-time iso string
+
+        raise QgistTypeError(tr('unknown data type from QGIS settings'), 'settings')
