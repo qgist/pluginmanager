@@ -161,7 +161,10 @@ class dtype_settings_class:
 
 class _dtype_settings_group_class:
     """
-    Mimics QgsSettings.beginGroup & QgsSettings.endGroup, just without the change of state
+    Mimics QgsSettings.beginGroup & QgsSettings.endGroup
+
+    QgsSettings objects are finite a state machines. The settings_group_class enables
+    the settings_class to just work without the change of any state.
 
     Mutable.
     """
