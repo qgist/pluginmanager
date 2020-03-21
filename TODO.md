@@ -15,3 +15,5 @@ Are commas valid version element delimiters?
 # QGIS
 
 How do I determine the version of QGIS by looking at the files in its installation folder (i.e. NOT by running QGIS and/or importing `qgis` in Python)?
+
+How can I use images / resources from QGIS? Import them into source tree or attach to QGIS API?
