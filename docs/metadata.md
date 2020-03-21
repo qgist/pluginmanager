@@ -19,7 +19,7 @@ mRepositories = {
     }
 ```
 
-# *mPlugins*: dict of dicts
+## *mPlugins*: dict of dicts
 
 ```python
 mPlugins = {
