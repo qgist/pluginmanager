@@ -24,6 +24,7 @@ pyuic = pyuic5
 
 release:
 	make clean
+	make ui
 	mkdir -p release/$(plugin)
 	cp --parents -a $$(git ls-tree -r $$(git rev-parse --abbrev-ref HEAD) --name-only) release/$(plugin)/
 	cd release/; zip -r $(plugin).zip $(plugin); gpg --detach-sign -a $(plugin).zip
