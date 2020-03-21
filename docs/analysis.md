@@ -28,8 +28,34 @@ Exposed as `qgis.utils.plugin_paths`. On conda:
 - $HOME/.local/share/QGIS/QGIS3/profiles/$PROFILE/python/plugins (`home_plugin_path`)
 - $CONDA/envs/$ENV/share/qgis/python/plugins (`sys_plugin_path`)
 
-`homePluginsPath()` returns a single path, exposed in `qgis.utils.sys_plugin_path`.
-`pluginsPath()` returns a single path, exposed in `qgis.utils.home_plugin_path`.
+Information sources:
+
+- `homePluginsPath()` returns a single path, `homePythonPath() + "/plugins"`, exposed in `qgis.utils.sys_plugin_path`.
+- `pluginsPath()` returns a single path, `pythonPath() + "/plugins"`, exposed in `qgis.utils.home_plugin_path`.
+- `extraPluginsPaths()` is parsing the `QGIS_PLUGINPATH` environment variable.
+
+```C++
+QString QgsPythonUtilsImpl::pythonPath() const
+{
+  if ( QgsApplication::isRunningFromBuildDir() )
+    return QgsApplication::buildOutputPath() + QStringLiteral( "/python" );
+  else
+    return QgsApplication::pkgDataPath() + QStringLiteral( "/python" );
+}
+
+QString QgsPythonUtilsImpl::homePythonPath() const
+{
+  QString settingsDir = QgsApplication::qgisSettingsDirPath();
+  if ( QDir::cleanPath( settingsDir ) == QDir::homePath() + QStringLiteral( "/.qgis3" ) )
+  {
+    return QStringLiteral( "\"%1/.qgis3/python\"" ).arg( QDir::homePath() );
+  }
+  else
+  {
+    return QStringLiteral( "\"" ) + settingsDir.replace( '\\', QLatin1String( "\\\\" ) ) + QStringLiteral( "python\"" );
+  }
+}
+```
 
 # `sys.path`
 
