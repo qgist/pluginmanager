@@ -83,3 +83,7 @@ On conda, in the following order, including all duplicate entries:
 - $HOME/.local/lib/python3.7/site-packages
 - $CONDA/envs/$ENV/lib/python3.7/site-packages
 - $HOME/.local/share/QGIS/QGIS3/profiles/$PROFILE/python
+
+# UI / Qt
+
+Plugin manager GUI uses `QgsScrollArea` and `QgsWebView`. The former, `QgsScrollArea`, is exposed as part of `qgis.gui`. The latter, `QgsWebView`, is not exposed. It is a wrapper around `QWebView`, see `/src/core/qgswebview.h`. If webkit is switched off at compile time, `QTextBrowser` is used instead.
