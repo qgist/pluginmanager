@@ -25,8 +25,11 @@ runString( QStringLiteral( "qgis.utils.plugin_paths = [%1]" ).arg( pluginpaths.j
 
 Exposed as `qgis.utils.plugin_paths`. On conda:
 
-- $HOME/.local/share/QGIS/QGIS3/profiles/$PROFILE/python/plugins
-- $CONDA/envs/$ENV/share/qgis/python/plugins
+- $HOME/.local/share/QGIS/QGIS3/profiles/$PROFILE/python/plugins (`home_plugin_path`)
+- $CONDA/envs/$ENV/share/qgis/python/plugins (`sys_plugin_path`)
+
+`homePluginsPath()` returns a single path, exposed in `qgis.utils.sys_plugin_path`.
+`pluginsPath()` returns a single path, exposed in `qgis.utils.home_plugin_path`.
 
 # `sys.path`
 
