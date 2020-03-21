@@ -32,7 +32,7 @@ Information sources:
 
 - `homePluginsPath()` returns a single path, `homePythonPath() + "/plugins"`, exposed in `qgis.utils.sys_plugin_path`.
 - `pluginsPath()` returns a single path, `pythonPath() + "/plugins"`, exposed in `qgis.utils.home_plugin_path`.
-- `extraPluginsPaths()` is parsing the `QGIS_PLUGINPATH` environment variable.
+- `extraPluginsPaths()` is parsing the `QGIS_PLUGINPATH` environment variable. Delimited by `:` on Unix, by `;` on Windows.
 
 ```C++
 QString QgsPythonUtilsImpl::pythonPath() const
