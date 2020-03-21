@@ -13,11 +13,15 @@ Underneath `/python/pyplugin_installer/`, The class `QgsPluginInstaller` from `i
 
 Populated in `/src/python/qgspythonutilsimpl.cpp`, `QgsPythonUtilsImpl::checkSystemImports()`.
 
-Sources:
-
-- `extraPluginsPaths()`
-- `homePluginsPath()`
-- `pluginsPath()`
+```C++
+QStringList pluginpaths;
+Q_FOREACH ( QString p, extraPluginsPaths() ) {
+  pluginpaths << '"' + p + '"';
+}
+pluginpaths << homePluginsPath();
+pluginpaths << '"' + pluginsPath() + '"';
+runString( QStringLiteral( "qgis.utils.plugin_paths = [%1]" ).arg( pluginpaths.join( ',' ) ) );
+```
 
 Exposed as `qgis.utils.plugin_paths`. On conda:
 
