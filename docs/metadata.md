@@ -63,6 +63,8 @@ mPlugins = {
 
 The **id** of a plugin equals the **name of its zip-file** (without its extension).
 
+There is also `hasProcessingProvider` (either `yes` or `no`). See [commit](https://github.com/qgis/QGIS/commit/558d5365b574a4f9e96d32ecdd7220c57b148266).
+
 ## Translations
 
 The following fields can be translated (i18n):
