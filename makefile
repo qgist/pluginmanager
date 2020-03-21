@@ -29,6 +29,7 @@ release:
 
 clean:
 	-rm -r release
+	find qgist/ -name 'ui*.py' -exec rm -f {} +
 	find qgist/ -name '*.pyc' -exec rm -f {} +
 	find qgist/ -name '*.pyo' -exec rm -f {} +
 	find qgist/ -name '*~' -exec rm -f {} +
