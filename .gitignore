@@ -8,3 +8,4 @@ notes.md
 *.zip.asc
 release/
 ui_*.py
+staging*.py
