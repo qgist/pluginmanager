@@ -174,6 +174,46 @@ ValueError: CCC!
 
 # Inventory of C++ plugins at runtime
 
+Relevant code in: `/src/app/pluginmanager/qgspluginmanager.cpp`, `QgsPluginManager::getCppPluginsMetadata()`
+
+Filter:
+
+```c++
+QString sharedLibExtension;
+#if defined(Q_OS_WIN) || defined(__CYGWIN__)
+sharedLibExtension = "*.dll";
+#else
+sharedLibExtension = QStringLiteral( "*.so*" );
+#endif
+```
+
+Then, list of paths:
+
+```c++
+QgsProviderRegistry *pr = QgsProviderRegistry::instance();
+QStringList myPathList( pr->libraryDirectory().path() );
+```
+
+Also works in Python:
+
+```python
+from qgis.core import QgsProviderRegistry
+myPathList = QgsProviderRegistry.instance().libraryDirectory().path()
+```
+
+Next, paths are taken from settings:
+
+```c++
+QgsSettings settings;
+QString myPaths = settings.value( QStringLiteral( "plugins/searchPathsForPlugins" ), "" ).toString();
+if ( !myPaths.isEmpty() )
+{
+  myPathList.append( myPaths.split( '|' ) );
+}
+```
+
+[TBD]
+
 <!--
 Relevant code in `/src/app/qgspluginregistry.cpp`, `QgsPluginRegistry::restoreSessionPlugins`.
 
