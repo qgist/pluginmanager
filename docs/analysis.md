@@ -172,6 +172,34 @@ Traceback (most recent call last):
 ValueError: CCC!
 ```
 
+# Inventory of C++ plugins at runtime
+
+<!--
+Relevant code in `/src/app/qgspluginregistry.cpp`, `QgsPluginRegistry::restoreSessionPlugins`.
+
+Similar to Python plugins, `QgsSettings` is used to store values for active/inactive: `"/Plugins/" + baseName` (`true or false` apparently). Similar to Python plugins, there is also a watchdog on load:
+
+```c++
+mySettings.setValue( QStringLiteral( "Plugins/watchDog/%1" ).arg( baseName ), true );
+loadCppPlugin( myFullPath );
+mySettings.remove( QStringLiteral( "/Plugins/watchDog/%1" ).arg( baseName ) );
+```
+
+Plugins are found in `pluginDirString` and matched as follows:
+
+```c++
+#if defined(Q_OS_WIN) || defined(__CYGWIN__)
+  QString pluginExt = "*.dll";
+#elif ANDROID
+  QString pluginExt = "*plugin.so";
+#else
+  QString pluginExt = QStringLiteral( "*.so" );
+#endif
+
+  QDir myPluginDir( pluginDirString, pluginExt, QDir::Name | QDir::IgnoreCase, QDir::Files | QDir::NoSymLinks );
+```
+-->
+
 # UI / Qt
 
 Plugin manager GUI uses `QgsScrollArea` and `QgsWebView`. The former, `QgsScrollArea`, is exposed as part of `qgis.gui`. The latter, `QgsWebView`, is not exposed. It is a wrapper around `QWebView`, see `/src/core/qgswebview.h`. If webkit is switched off at compile time, `QTextBrowser` is used instead.
