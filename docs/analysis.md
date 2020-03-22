@@ -84,6 +84,40 @@ On conda, in the following order, including all duplicate entries:
 - $CONDA/envs/$ENV/lib/python3.7/site-packages
 - $HOME/.local/share/QGIS/QGIS3/profiles/$PROFILE/python
 
+# Load / Reload / Unload - i.e. `import`
+
+- https://stackoverflow.com/questions/4111640/how-to-reimport-module-to-python-then-code-be-changed-after-import
+- https://stackoverflow.com/questions/437589/how-do-i-unload-reload-a-module
+- `del`
+
+LOAD != START
+
+Load DOES NOT happen automatically on startup of QGIS. Only once (and if) the plugin is "activated". Plugin registry?
+
+Loader traceback from crap test plugin:
+
+```python
+ValueError: YYY!
+Traceback (most recent call last):
+  File "$CONDA/envs/$ENV/share/qgis/python/qgis/utils.py", line 312, in loadPlugin
+    __import__(packageName)
+  File "$CONDA/envs/$ENV/share/qgis/python/qgis/utils.py", line 744, in _import
+    mod = _builtin_import(name, globals, locals, fromlist, level)
+  File "$HOME/.local/share/QGIS/QGIS3/profiles/$PROFILE/python/plugins/crap/__init__.py", line 3, in
+    raise ValueError('YYY!')
+ValueError: YYY!
+```
+
+There is an override in `utils.py`:
+
+```python
+if not os.environ.get('QGIS_NO_OVERRIDE_IMPORT'):
+    if _uses_builtins:
+        builtins.__import__ = _import
+    else:
+        __builtin__.__import__ = _import
+```
+
 # UI / Qt
 
 Plugin manager GUI uses `QgsScrollArea` and `QgsWebView`. The former, `QgsScrollArea`, is exposed as part of `qgis.gui`. The latter, `QgsWebView`, is not exposed. It is a wrapper around `QWebView`, see `/src/core/qgswebview.h`. If webkit is switched off at compile time, `QTextBrowser` is used instead.
