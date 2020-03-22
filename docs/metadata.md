@@ -65,6 +65,8 @@ The **id** of a plugin equals the **name of its zip-file** (without its extensio
 
 There is also `hasProcessingProvider` (either `yes` or `no`, i.e. a string). See [commit](https://github.com/qgis/QGIS/commit/558d5365b574a4f9e96d32ecdd7220c57b148266).
 
+And there is also `server` (either `True` or `False`, i.e. also a string). See `/src/server/qgsserverplugins.cpp`.
+
 ## Translations
 
 The following fields can be translated (i18n):

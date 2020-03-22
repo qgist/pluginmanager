@@ -11,6 +11,14 @@ Underneath `/python/pyplugin_installer/`, The class `QgsPluginInstaller` from `i
 
 `/tests/src/app/testqgisapppython.cpp` is used to test the infrastructure.
 
+# Plugin categories
+
+- Python plugins
+    - "regular" (with `classFactory`)
+    - server (with `serverClassFactory`)
+    - processing (with ... ?)
+- C++-plugins ("core plugins")
+
 # `plugin_paths` (in C++ named `pluginpaths`)
 
 Populated in `/src/python/qgspythonutilsimpl.cpp`, `QgsPythonUtilsImpl::checkSystemImports()`.
