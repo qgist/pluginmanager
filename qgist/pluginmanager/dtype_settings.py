@@ -163,7 +163,7 @@ class _dtype_settings_group_class:
     """
     Mimics QgsSettings.beginGroup & QgsSettings.endGroup
 
-    QgsSettings objects are finite a state machines. The settings_group_class enables
+    QgsSettings objects are finite state machines. The settings_group_class enables
     the settings_class to just work without the change of any state.
 
     Mutable.
