@@ -118,6 +118,43 @@ if not os.environ.get('QGIS_NO_OVERRIDE_IMPORT'):
         __builtin__.__import__ = _import
 ```
 
+# Init / unload - i.e. running the plugin and its GUI
+
+Plugin class constructor traceback:
+
+```python
+Traceback (most recent call last):
+  File "$CONDA/envs/$ENV/share/qgis/python/qgis/utils.py", line 334, in _startPlugin
+    plugins[packageName] = package.classFactory(iface)
+  File "$HOME/.local/share/QGIS/QGIS3/profiles/$PROFILE/python/plugins/crap/__init__.py", line 7, in classFactory
+    return crap_plugin(iface)
+  File "$HOME/.local/share/QGIS/QGIS3/profiles/$PROFILE/python/plugins/crap/__init__.py", line 12, in __init__
+    raise ValueError('AAA!')
+ValueError: AAA!
+```
+
+Plugin init GUI traceback:
+
+```python
+Traceback (most recent call last):
+  File "$CONDA/envs/$ENV/share/qgis/python/qgis/utils.py", line 359, in startPlugin
+    plugins[packageName].initGui()
+  File "$HOME/.local/share/QGIS/QGIS3/profiles/$PROFILE/python/plugins/crap/__init__.py", line 14, in initGui
+    raise ValueError('BBB!')
+ValueError: BBB!
+```
+
+Plugin unload traceback:
+
+```python
+Traceback (most recent call last):
+  File "$CONDA/envs/$ENV/share/qgis/python/qgis/utils.py", line 434, in unloadPlugin
+    plugins[packageName].unload()
+  File "$HOME/.local/share/QGIS/QGIS3/profiles/$PROFILE/python/plugins/crap/__init__.py", line 17, in unload
+    raise ValueError('CCC!')
+ValueError: CCC!
+```
+
 # UI / Qt
 
 Plugin manager GUI uses `QgsScrollArea` and `QgsWebView`. The former, `QgsScrollArea`, is exposed as part of `qgis.gui`. The latter, `QgsWebView`, is not exposed. It is a wrapper around `QWebView`, see `/src/core/qgswebview.h`. If webkit is switched off at compile time, `QTextBrowser` is used instead.
