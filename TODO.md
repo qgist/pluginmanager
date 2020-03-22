@@ -17,3 +17,7 @@ Are commas valid version element delimiters?
 How do I determine the version of QGIS by looking at the files in its installation folder (i.e. NOT by running QGIS and/or importing `qgis` in Python)?
 
 How can I use images / resources from QGIS? Import them into source tree or attach to QGIS API?
+
+# UI
+
+Should the manager also work in CLI mode (for server use)?
