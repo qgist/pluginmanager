@@ -9,6 +9,8 @@ Underneath `/python/pyplugin_installer/`, The class `QgsPluginInstaller` from `i
 
 `/src/app/qgspluginregistry.cpp` offers a class named `QgsPluginRegistry` (which is being used by `QgsPluginManager`). I have not found a way to access this class (or an/the instance of it) from Python. I figure it is required to handle both Python *and* C++ plugins. `QgsPluginRegistry` makes heavy use of `mPythonUtils`, which appears to be a C++ wrapper around `/python/utils.py` (through `/src/python/qgspythonutilsimpl.cpp`). So this portion of `QgsPluginRegistry` (about 50%) can be rewritten in Python rather quickly. Methods such as `loadCppPlugin` or `unloadCppPlugin` are a lot more problematic. As far as I can tell, those would need to remain in C++ and they would need to be exposed to Python somehow (if they are not already).
 
+`/tests/src/app/testqgisapppython.cpp` is used to test the infrastructure.
+
 # `plugin_paths` (in C++ named `pluginpaths`)
 
 Populated in `/src/python/qgspythonutilsimpl.cpp`, `QgsPythonUtilsImpl::checkSystemImports()`.
