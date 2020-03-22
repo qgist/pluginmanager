@@ -17,7 +17,14 @@ Underneath `/python/pyplugin_installer/`, The class `QgsPluginInstaller` from `i
     - "regular" (with `classFactory`)
     - server (with `serverClassFactory`)
     - processing (with ... ?)
-- C++-plugins ("core plugins")
+- C++-plugins
+
+There also core and non-core plugins. I.e. some Python plugins are considered "core" and enabled by default. They are hard-coded in C++, see `/src/app/qgspluginregistry.cpp` in `QgsPluginRegistry::restoreSessionPlugins`:
+
+- GdalTools
+- db_manager
+- processing
+- MetaSearch
 
 # `plugin_paths` (in C++ named `pluginpaths`)
 
