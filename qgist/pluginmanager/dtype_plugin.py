@@ -42,6 +42,7 @@ class dtype_plugin_class:
     - Properties:
         - NAME / ID
         - Active
+        - Watchdog
         - Installed
         - Installed version
         - Available versions (from sources ...)
