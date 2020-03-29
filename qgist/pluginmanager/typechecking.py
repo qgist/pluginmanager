@@ -59,9 +59,9 @@ def conforms_to_spec(obj, spec):
     if not all((isinstance(item, str) for item in attrs)):
         raise QgistTypeError('items in attrs in spec dict must be str')
 
-    if not check_name(name, obj):
+    if not check_name(obj, name):
         return False
-    if not check_name(typename, type(obj)):
+    if not check_name(type(obj), typename):
         return False
     if not all((hasattr(obj, attr) for attr in attrs)):
         return False
