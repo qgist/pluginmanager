@@ -32,12 +32,24 @@ import os
 import platform
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (External Dependencies)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from PyQt5.QtGui import (
+    QIcon,
+    )
+from PyQt5.QtWidgets import (
+    QAction,
+    )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from .const import (
     CONFIG_FN,
     IFACE_SPEC,
+    PLUGIN_ICON_FN,
     )
 from .dtype_settings import dtype_settings_class
 from .typechecking import conforms_to_spec
@@ -53,7 +65,9 @@ from ..config import (
 from ..error import (
     QgistTypeError,
     QgistValueError,
+    Qgist_ALL_Errors,
     )
+from ..msg import msg_critical
 from ..util import (
     tr,
     setupTranslation,
@@ -97,10 +111,40 @@ class pluginmanager:
         self._ui_dict = {}
         self._ui_cleanup = []
 
+        self._ui_dict['action_manage'] = QAction(tr('&Plugin &Manager'))
+        self._ui_dict['action_manage'].setEnabled(False)
+        self._ui_dict['action_manage'].setIcon(QIcon(os.path.join(
+            self._plugin_root_fld, ICON_FLD, PLUGIN_ICON_FN
+            )))
+
+        pluginManagerMenuText = tr('Qgist Plugin &Manager')
+        self._iface.addPluginToMenu(pluginManagerMenuText, self._ui_dict['action_manage'])
+        self._ui_cleanup.append(
+            lambda: self._iface.removePluginMenu(pluginManagerMenuText, self._ui_dict['action_manage'])
+            )
+
         # TODO self._init_ui()
         # TODO self._connect_ui()
 
-        self._config = dtype_settings_class(config_class(os.path.join(get_config_path(), CONFIG_FN))) # TODO move ...
+        self._wait_for_mainwindow = True
+        self._iface.initializationCompleted.connect(self._connect_ui)
+
+    def _connect_ui(self):
+
+        if not self._wait_for_mainwindow:
+            return
+        self._wait_for_mainwindow = False
+        self._iface.initializationCompleted.disconnect(self._connect_ui)
+
+        try:
+            self._config = dtype_settings_class(config_class(os.path.join(get_config_path(), CONFIG_FN)))
+            # TODO fsm / index init
+        except Qgist_ALL_Errors as e:
+            msg_critical(e, self._mainwindow)
+            return
+
+        # self._ui_dict['action_manage'].triggered.connect(self._open_manager) # TODO
+        self._ui_dict['action_manage'].setEnabled(True)
 
     def unload(self):
         """
