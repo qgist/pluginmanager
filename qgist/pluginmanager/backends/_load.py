@@ -68,19 +68,13 @@ class _backend:
     """
 
     def __init__(self, path, name, isfile):
+
         self._path = path
         self._name = name
         self._isfile = isfile
         self._module = None
         self._src = None
         self._meta = None
-
-    def __call__(self, *args, **kwargs):
-        "provides access to backend class constructor"
-
-        if self._module is None:
-            raise QgistSyntaxError('backend module has not been loaded')
-        return self._module.dtype_repository_class(*args, **kwargs)
 
     def __getitem__(self, key):
         "provides access to backend meta data dict"
@@ -89,8 +83,17 @@ class _backend:
             raise QgistSyntaxError('backend metadata has not been loaded')
         return self._meta[key]
 
-    def get_class(self):
-        "returns backend class"
+    @property
+    def dtype_plugin_class(self):
+        "returns backend plugin class"
+
+        if self._module is None:
+            raise QgistSyntaxError('backend module has not been loaded')
+        return self._module.dtype_plugin_class
+
+    @property
+    def dtype_repository_class(self):
+        "returns backend repository class"
 
         if self._module is None:
             raise QgistSyntaxError('backend module has not been loaded')
