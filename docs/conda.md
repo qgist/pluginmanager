@@ -308,3 +308,48 @@
   "success": true
 }
 ```
+
+`conda uninstall -d --json --yes jupyterlab` uninstalls correspondingly (without `-d`).
+
+An error uninstalling `pandas` (which is not present):
+
+```json
+{
+  "caused_by": "None",
+  "channel_urls": [],
+  "channels_formatted": [],
+  "error": "PackagesNotFoundError: The following packages are missing from the target environment:\n  - pandas\n",
+  "exception_name": "PackagesNotFoundError",
+  "exception_type": "<class 'conda.exceptions.PackagesNotFoundError'>",
+  "message": "The following packages are missing from the target environment:\n  - pandas\n",
+  "packages": [
+    "pandas"
+  ],
+  "packages_formatted": "  - pandas"
+}
+```
+
+An error installing `foobarfooo`, which does not exist:
+
+```json
+{
+  "caused_by": "None",
+  "channel_urls": [
+    "https://conda.anaconda.org/conda-forge/linux-64",
+    "https://conda.anaconda.org/conda-forge/noarch",
+    "https://repo.anaconda.com/pkgs/main/linux-64",
+    "https://repo.anaconda.com/pkgs/main/noarch",
+    "https://repo.anaconda.com/pkgs/r/linux-64",
+    "https://repo.anaconda.com/pkgs/r/noarch"
+  ],
+  "channels_formatted": "  - https://conda.anaconda.org/conda-forge/linux-64\n  - https://conda.anaconda.org/conda-forge/noarch\n  - https://repo.anaconda.com/pkgs/main/linux-64\n  - https://repo.anaconda.com/pkgs/main/noarch\n  - https://repo.anaconda.com/pkgs/r/linux-64\n  - https://repo.anaconda.com/pkgs/r/noarch",
+  "error": "PackagesNotFoundError: The following packages are not available from current channels:\n\n  - foobarfooo\n\nCurrent channels:\n\n  - https://conda.anaconda.org/conda-forge/linux-64\n  - https://conda.anaconda.org/conda-forge/noarch\n  - https://repo.anaconda.com/pkgs/main/linux-64\n  - https://repo.anaconda.com/pkgs/main/noarch\n  - https://repo.anaconda.com/pkgs/r/linux-64\n  - https://repo.anaconda.com/pkgs/r/noarch\n\nTo search for alternate channels that may provide the conda package you're\nlooking for, navigate to\n\n    https://anaconda.org\n\nand use the search bar at the top of the page.\n",
+  "exception_name": "PackagesNotFoundError",
+  "exception_type": "<class 'conda.exceptions.PackagesNotFoundError'>",
+  "message": "The following packages are not available from current channels:\n\n  - foobarfooo\n\nCurrent channels:\n\n  - https://conda.anaconda.org/conda-forge/linux-64\n  - https://conda.anaconda.org/conda-forge/noarch\n  - https://repo.anaconda.com/pkgs/main/linux-64\n  - https://repo.anaconda.com/pkgs/main/noarch\n  - https://repo.anaconda.com/pkgs/r/linux-64\n  - https://repo.anaconda.com/pkgs/r/noarch\n\nTo search for alternate channels that may provide the conda package you're\nlooking for, navigate to\n\n    https://anaconda.org\n\nand use the search bar at the top of the page.\n",
+  "packages": [
+    "foobarfooo"
+  ],
+  "packages_formatted": "  - foobarfooo"
+}
+```
