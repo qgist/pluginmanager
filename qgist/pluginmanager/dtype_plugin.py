@@ -42,10 +42,7 @@ class dtype_plugin_base_class:
     From this, classes for plugin types (i.e. plugin sources) are derived?
     Or use repo type classes instead instead of having multiple plugin classes?
 
-    - Dependencies:
-        - inter-plugin
-        - plugin to python packages (through source / other package manager)
-    - Properties:
+    - Properties
         - NAME / ID
         - Active
         - Watchdog
@@ -56,8 +53,15 @@ class dtype_plugin_base_class:
         - downgradable
         - orphan
         - meta ...
-        - Caches
         - SETTINGS
+
+    # Subject to backends:
+
+    - Properties
+        - Caches
+        - Dependencies
+            - inter-plugin
+            - plugin to python packages (through source / other package manager)
     """
 
     def __init__(self, *args, **kwargs): # TODO
