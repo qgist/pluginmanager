@@ -34,7 +34,7 @@ from ..error import QgistNotImplementedError
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_plugin_class:
+class dtype_plugin_base_class:
     """
     # One single plugin
 

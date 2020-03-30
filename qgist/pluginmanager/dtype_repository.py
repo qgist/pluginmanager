@@ -34,7 +34,7 @@ from ..error import QgistNotImplementedError
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_repository_class:
+class dtype_repository_base_class:
     """
     # Repo
 
