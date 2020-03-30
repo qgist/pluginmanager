@@ -25,6 +25,12 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+import traceback
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (External Dependencies)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -63,10 +69,8 @@ def _msg(msg_type, msg_title, exception, widget = None):
         msg = tr('Internal error. No description can be provided. Please file a bug!')
     else:
         msg = str(exception.args[0])
-        if len(exception.args) > 1:
-            source = _analyze_exception_source(exception.args[1])
-            if source is not None:
-                msg = f'{msg:s} ({source:s})'
+
+    msg += '\n\n---------------------------\n\n' + traceback.format_exc()
 
     getattr(QMessageBox, msg_type)(
         widget,
@@ -74,21 +78,3 @@ def _msg(msg_type, msg_title, exception, widget = None):
         msg,
         QMessageBox.Ok
         )
-
-def _analyze_exception_source(source):
-
-    if isinstance(source, str):
-        return source
-    if source is None:
-        return None
-
-    source_name = getattr(source, '__name__', None)
-    source_type = getattr(type(source), '__name__', None)
-
-    if source_name is None and source_type is None:
-        return None
-    if source_name is None:
-        return source_type
-    if source_type is None:
-        return source_name
-    return f'{source_name:s} | {source_type:s}'
