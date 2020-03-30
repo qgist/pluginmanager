@@ -60,22 +60,63 @@ class dtype_plugin_base_class:
         - SETTINGS
     """
 
+    def __init__(self, *args, **kwargs): # TODO
+
+        self._id = '' # str
+        self._name = '' # str
+        self._plugin_type = '' # str: {regular, processing, server}
+        self._installed = False # bool
+        self._active = False # bool
+
+        # self._watchdog = False # bool
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PROPERTIES
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def plugin_type(self):
+        return self._plugin_type
+
+    @property
+    def installed(self):
+        return self._installed
+
+    @property
+    def active(self):
+        return self._active
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# INSTALL / UNINSTALL
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     def install(self):
         """
         Allows dry runs
         """
         raise QgistNotImplementedError()
+
     def uninstall(self):
         """
         Allows dry runs
         """
         raise QgistNotImplementedError()
+
     def upgrade(self, version):
         """
         Allows dry runs
         Also allows intentional downgrades
         """
         raise QgistNotImplementedError()
+
     def get_versions(self):
         """
         Get versions of plugin
@@ -83,22 +124,42 @@ class dtype_plugin_base_class:
         """
         raise QgistNotImplementedError()
 
-    def send_vote(self):
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# VOTING
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def load(self):
         """
-        Only relevant if plugin comes from QGIS package repo.
+        Loads, i.e. imports plugin (that is actually a Python module), and calls plugin's `initGui`
         """
         raise QgistNotImplementedError()
 
-    def load(self):
-        raise QgistNotImplementedError()
     def unload(self):
+        """
+        Triggers plugin's `unload` method.
+        """
         raise QgistNotImplementedError()
+
     def reload(self):
         """
         Triggers an unload/load sequence.
         """
         self.unload()
         self.load()
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# VOTING
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def send_vote(self):
+        """
+        Only relevant if plugin comes from QGIS package repo.
+        """
+        raise QgistNotImplementedError()
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ETC
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     def _fetch_available_versions(self):
         """HTTP ..."""
