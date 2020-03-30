@@ -25,6 +25,12 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Internal)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from ..error import QgistNotImplementedError
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -60,19 +66,22 @@ class dtype_repository_class:
     """
 
     def get_all_installed(self):
-        pass
+        raise QgistNotImplementedError()
     def get_all_available(self):
         """
         Available plugins, compatible to QGIS version
         """
+        raise QgistNotImplementedError()
     def rename(self, new_name):
-        pass
+        raise QgistNotImplementedError()
     def refresh(self):
-        pass
+        raise QgistNotImplementedError()
+
     def _fetch_index(self):
         """HTTP ..."""
         pass
+
     @classmethod
     def from_directory(cls, path, writeable = False):
-
+        # TODO
         return cls()
