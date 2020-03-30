@@ -54,7 +54,7 @@ class dtype_repository_class:
     - properties:
         - NAME
         - active/enabled
-        - writeable (FALSE for core plugins)
+        - writeable/protected (FALSE for core plugins "repo"/directory and QGIS Python plugins repo)
         - autorefresh (on start)
         - autorefresh_interval
         - AUTH?
