@@ -25,6 +25,12 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Internal)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from ..error import QgistNotImplementedError
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -58,34 +64,42 @@ class dtype_plugin_class:
         """
         Allows dry runs
         """
-        pass
+        raise QgistNotImplementedError()
     def uninstall(self):
         """
         Allows dry runs
         """
-        pass
+        raise QgistNotImplementedError()
     def upgrade(self, version):
         """
         Allows dry runs
         Also allows intentional downgrades
         """
-        pass
+        raise QgistNotImplementedError()
     def get_versions(self):
         """
         Get versions of plugin
         Filter versions compatible to QGIS version
         """
-        pass
+        raise QgistNotImplementedError()
+
     def send_vote(self):
-        pass
+        """
+        Only relevant if plugin comes from QGIS package repo.
+        """
+        raise QgistNotImplementedError()
+
     def load(self):
-        pass
+        raise QgistNotImplementedError()
     def unload(self):
-        pass
+        raise QgistNotImplementedError()
     def reload(self):
-        # if loaded ...
+        """
+        Triggers an unload/load sequence.
+        """
         self.unload()
         self.load()
+
     def _fetch_available_versions(self):
         """HTTP ..."""
         pass
