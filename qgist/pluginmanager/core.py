@@ -85,13 +85,13 @@ class pluginmanager:
     def __init__(self, iface, plugin_root_fld):
 
         if not conforms_to_spec(iface, IFACE_SPEC):
-            raise QgistTypeError(tr('"iface" must be a QGIS iface object'), self)
+            raise QgistTypeError(tr('"iface" must be a QGIS iface object'))
         if not isinstance(plugin_root_fld, str):
-            raise QgistTypeError(tr('"plugin_root_fld" must be str'), self)
+            raise QgistTypeError(tr('"plugin_root_fld" must be str'))
         if not os.path.exists(plugin_root_fld):
-            raise QgistValueError(tr('"plugin_root_fld" must exists'), self)
+            raise QgistValueError(tr('"plugin_root_fld" must exists'))
         if not os.path.isdir(plugin_root_fld):
-            raise QgistValueError(tr('"plugin_root_fld" must be a directory'), self)
+            raise QgistValueError(tr('"plugin_root_fld" must be a directory'))
 
         self._iface = iface
         self._plugin_root_fld = plugin_root_fld

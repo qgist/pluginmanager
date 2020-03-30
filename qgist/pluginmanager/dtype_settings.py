@@ -59,9 +59,9 @@ class dtype_settings_class:
     def __init__(self, config, try_qgis_settings = True):
 
         if not isinstance(config, config_class):
-            raise QgistTypeError(tr('config must be an instance of config_class'), self)
+            raise QgistTypeError(tr('config must be an instance of config_class'))
         if not isinstance(try_qgis_settings, bool):
-            raise QgistTypeError(tr('try_qgis_settings must be a bool'), self)
+            raise QgistTypeError(tr('try_qgis_settings must be a bool'))
 
         self._config = config
         self._settings = None
@@ -82,9 +82,9 @@ class dtype_settings_class:
     def __getitem__(self, name):
 
         if not isinstance(name, str):
-            raise QgistTypeError(tr('name is not str'), self)
+            raise QgistTypeError(tr('name is not str'))
         if len(name) == 0:
-            raise QgistValueError(tr('name must not be empty'), self)
+            raise QgistValueError(tr('name must not be empty'))
 
         setting = self._settings.value(name) if self._settings is not None else None
 
@@ -95,9 +95,9 @@ class dtype_settings_class:
     def __setitem__(self, name, value):
 
         if not isinstance(name, str):
-            raise QgistTypeError(tr('name is not str'), self)
+            raise QgistTypeError(tr('name is not str'))
         if len(name) == 0:
-            raise QgistValueError(tr('name must not be empty'), self)
+            raise QgistValueError(tr('name must not be empty'))
 
         self._config[name] = value # does internal validity and type checks on value etc
 
@@ -107,9 +107,9 @@ class dtype_settings_class:
         "dict get"
 
         if not isinstance(name, str):
-            raise QgistTypeError(tr('name is not str'), self)
+            raise QgistTypeError(tr('name is not str'))
         if len(name) == 0:
-            raise QgistValueError(tr('name must not be empty'), self)
+            raise QgistValueError(tr('name must not be empty'))
 
         setting = self._settings.value(name) if self._settings is not None else None
 
@@ -121,9 +121,9 @@ class dtype_settings_class:
         "get group by root"
 
         if not isinstance(root, str):
-            raise QgistTypeError(tr('root is not str'), self)
+            raise QgistTypeError(tr('root is not str'))
         if len(root) == 0:
-            raise QgistValueError(tr('root must not be empty'), self)
+            raise QgistValueError(tr('root must not be empty'))
 
         return _dtype_settings_group_class(self, root)
 
@@ -153,7 +153,7 @@ class dtype_settings_class:
         if isinstance(data, QDate):
             return data.toPyDate().isoformat() # returns date-time iso string
 
-        raise QgistTypeError(tr('unknown data type from QGIS settings'), 'settings')
+        raise QgistTypeError(tr('unknown data type from QGIS settings'))
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS: SETTINGS GROUP
@@ -172,11 +172,11 @@ class _dtype_settings_group_class:
     def __init__(self, settings, root):
 
         if not isinstance(settings, dtype_settings_class):
-            raise QgistTypeError(tr('settings must be an instance of config_class'), self)
+            raise QgistTypeError(tr('settings must be an instance of config_class'))
         if not isinstance(root, str):
-            raise QgistTypeError(tr('root must be a str'), self)
+            raise QgistTypeError(tr('root must be a str'))
         if len(root) == 0:
-            raise QgistValueError(tr('root must not be empty'), self)
+            raise QgistValueError(tr('root must not be empty'))
 
         self._settings = settings
         self._root = root
@@ -190,18 +190,18 @@ class _dtype_settings_group_class:
     def __getitem__(self, name):
 
         if not isinstance(name, str):
-            raise QgistTypeError(tr('name is not str'), self)
+            raise QgistTypeError(tr('name is not str'))
         if len(name) == 0:
-            raise QgistValueError(tr('name must not be empty'), self)
+            raise QgistValueError(tr('name must not be empty'))
 
         return self._settings[self._base + name]
 
     def __setitem__(self, name, value):
 
         if not isinstance(name, str):
-            raise QgistTypeError(tr('name is not str'), self)
+            raise QgistTypeError(tr('name is not str'))
         if len(name) == 0:
-            raise QgistValueError(tr('name must not be empty'), self)
+            raise QgistValueError(tr('name must not be empty'))
 
         self._settings[self._base + name] = value
 
@@ -209,9 +209,9 @@ class _dtype_settings_group_class:
         "dict get"
 
         if not isinstance(name, str):
-            raise QgistTypeError(tr('name is not str'), self)
+            raise QgistTypeError(tr('name is not str'))
         if len(name) == 0:
-            raise QgistValueError(tr('name must not be empty'), self)
+            raise QgistValueError(tr('name must not be empty'))
 
         return self._settings.get(self._base + name, default)
 
@@ -219,9 +219,9 @@ class _dtype_settings_group_class:
         "get group by root"
 
         if not isinstance(root, str):
-            raise QgistTypeError(tr('root is not str'), self)
+            raise QgistTypeError(tr('root is not str'))
         if len(root) == 0:
-            raise QgistValueError(tr('root must not be empty'), self)
+            raise QgistValueError(tr('root must not be empty'))
 
         return type(self)(self._settings, self._base + root)
 
