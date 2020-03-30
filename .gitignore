@@ -9,3 +9,5 @@ notes.md
 release/
 ui_*.py
 staging*.py
+.ipynb_checkpoints
+*.ipynb
