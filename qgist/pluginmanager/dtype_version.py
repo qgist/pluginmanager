@@ -64,9 +64,9 @@ class dtype_version_class:
 
         for index, element in enumerate(elements):
             if not isinstance(element, str):
-                raise QgistTypeError(tr('parameter of following index is not a str') + f': {index:d}', self)
+                raise QgistTypeError(tr('parameter of following index is not a str') + f': {index:d}')
         if not isinstance(original, str) and original is not None:
-            raise QgistTypeError(tr('original is not a str and not None'), self)
+            raise QgistTypeError(tr('original is not a str and not None'))
 
         self._elements = elements
         self._original = original if original is not None else '.'.join(elements)
@@ -82,9 +82,9 @@ class dtype_version_class:
     def __getitem__(self, index):
 
         if not isinstance(index, int):
-            raise QgistTypeError(tr('index is not an int'), self)
+            raise QgistTypeError(tr('index is not an int'))
         if index < 0 or index >= len(self):
-            raise QgistIndexError(tr('following index out of bounds') + f': {index:d} (0 ... {len(self)-1:d})', self)
+            raise QgistIndexError(tr('following index out of bounds') + f': {index:d} (0 ... {len(self)-1:d})')
 
         return self._elements[index]
 
@@ -95,7 +95,7 @@ class dtype_version_class:
     def __eq__(self, other):
 
         if not isinstance(other, type(self)):
-            raise QgistTypeError(tr('other is not a version'), self)
+            raise QgistTypeError(tr('other is not a version'))
 
         if len(self) != len(other):
             return False
@@ -155,9 +155,9 @@ class dtype_version_class:
         "Compare two *unequal* versions a and b: Is a greater then b?"
 
         if not isinstance(a, cls):
-            raise QgistTypeError(tr('a is not a version'), cls)
+            raise QgistTypeError(tr('a is not a version'))
         if not isinstance(b, cls):
-            raise QgistTypeError(tr('b is not a version'), cls)
+            raise QgistTypeError(tr('b is not a version'))
 
         # set the shorter string as a base length
         base_len = len(a) if len(a) < len(b) else len(b)
@@ -183,9 +183,9 @@ class dtype_version_class:
         "Compare version element x with version element y (0/==, 1/>, 2/<)"
 
         if not isinstance(x, str):
-            raise QgistTypeError(tr('x is not a str'), cls)
+            raise QgistTypeError(tr('x is not a str'))
         if not isinstance(y, str):
-            raise QgistTypeError(tr('y is not a str'), cls)
+            raise QgistTypeError(tr('y is not a str'))
 
         if x == y:
             return 0
@@ -211,7 +211,7 @@ class dtype_version_class:
         "Remove possible prefix from given string and convert to uppercase"
 
         if not isinstance(version_str, str):
-            raise QgistTypeError(tr('version_str must be of type str'), 'version')
+            raise QgistTypeError(tr('version_str must be of type str'))
 
         if len(version_str) == 0:
             return ''
@@ -228,7 +228,7 @@ class dtype_version_class:
         "Convert string to list of numbers and words"
 
         if not isinstance(version_str, str):
-            raise QgistTypeError(tr('version_str must be of type str'), 'version')
+            raise QgistTypeError(tr('version_str must be of type str'))
 
         # return 0 for delimiter, 1 for digit and 2 for alphabetic character
         char_type = lambda char: 0 if char in VERSION_DELIMITERS else (1 if char.isdigit() else 2)
@@ -244,7 +244,7 @@ class dtype_version_class:
 
         for element in elements:
             if len(element) == 0:
-                raise QgistValueError(tr('splitting elements failed, element of zero-length'), 'version')
+                raise QgistValueError(tr('splitting elements failed, element of zero-length'))
 
         return elements
 
@@ -253,7 +253,7 @@ class dtype_version_class:
         "Parse plugin version string and return version object"
 
         if not isinstance(plugin_version_str, str):
-            raise QgistTypeError(tr('plugin_version_str must be of type str'), cls)
+            raise QgistTypeError(tr('plugin_version_str must be of type str'))
 
         plugin_version = cls._split_version_str(
             cls._normalize_version_str(plugin_version_str)
@@ -266,9 +266,9 @@ class dtype_version_class:
         "Parse QGIS version string and return version object"
 
         if not isinstance(qgis_version_str, str):
-            raise QgistTypeError(tr('qgis_version_str must be of type str'), cls)
+            raise QgistTypeError(tr('qgis_version_str must be of type str'))
         if not isinstance(fix_plugin_compatibility, bool):
-            raise QgistTypeError(tr('fix_plugin_compatibility must be of type bool'), cls)
+            raise QgistTypeError(tr('fix_plugin_compatibility must be of type bool'))
 
         x, y, z = re.findall(r'^(\d*).(\d*).(\d*)', qgis_version_str)[0]
 
