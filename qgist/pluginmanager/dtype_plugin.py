@@ -136,7 +136,7 @@ class dtype_plugin_base_class:
 
     def unload(self):
         """
-        Triggers plugin's `unload` method.
+        Triggers plugin's `unload` method and attempts to "unimport" it.
         """
         raise QgistNotImplementedError()
 
