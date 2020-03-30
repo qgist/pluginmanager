@@ -52,6 +52,9 @@ class QgistValueError(ValueError):
 class QgistNotImplementedError(NotImplementedError):
     pass
 
+class QgistSyntaxError(SyntaxError):
+    pass
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ALL EXCEPTIONS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
