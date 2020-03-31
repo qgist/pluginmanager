@@ -155,6 +155,27 @@ class dtype_settings_class:
 
         raise QgistTypeError(tr('unknown data type from QGIS settings'))
 
+    @staticmethod
+    def str_to_bool(value):
+
+        if not isinstance(value, str):
+            raise QgistTypeError(tr('value is not str'))
+
+        if value.lower() in ('yes', 'true', '1'):
+            return True
+        if value.lower() in ('no', 'false', '0'):
+            return False
+
+        raise QgistValueError(tr('value can not be converted to bool'))
+
+    @staticmethod
+    def bool_to_str(value):
+
+        if not isinstance(value, bool):
+            raise QgistTypeError(tr('value is not bool'))
+
+        return str(value).lower()
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS: SETTINGS GROUP
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

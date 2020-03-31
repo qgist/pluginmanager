@@ -32,7 +32,14 @@ CONFIG_FN = 'pluginmanager.json'
 PLUGIN_ICON_FN = 'pluginmanager.svg'
 PLUGIN_NAME = 'QgistPluginManager'
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# TYPE SPECS
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 CONFIG_DELIMITER = '/'
+
+CONFIG_KEY_ALLOW_DEPRECATED = 'app/plugin_installer/allowDeprecated' # TODO
+CONFIG_KEY_ALLOW_EXPERIMENTAL = 'app/plugin_installer/allowExperimental' # TODO
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # TYPE SPECS

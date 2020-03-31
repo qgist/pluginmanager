@@ -28,6 +28,10 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .const import (
+    CONFIG_KEY_ALLOW_DEPRECATED,
+    CONFIG_KEY_ALLOW_EXPERIMENTAL,
+    )
 from .backends import backends
 from .dtype_settings import dtype_settings_class
 
@@ -61,6 +65,9 @@ class dtype_index_class:
         self._config = config
         self._repos = [] # From high to low priority
 
+        self._allow_deprecated = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_DEPRECATED])
+        self._allow_experimental = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL])
+
     def __repr__(self):
 
         return f'<index ({id(self):x})>'
@@ -76,6 +83,26 @@ class dtype_index_class:
     @property
     def repos(self):
         return (repo for repo in self._repos)
+
+    @property
+    def allow_deprecated(self):
+        return self._allow_deprecated
+    @allow_deprecated.setter
+    def allow_deprecated(self, value):
+        if not isinstance(value, bool):
+            raise QgistTypeError(tr('value is not bool'))
+        self._allow_deprecated = value
+        self._config[CONFIG_KEY_ALLOW_DEPRECATED] = self._config.bool_to_str(value)
+
+    @property
+    def allow_experimental(self):
+        return self._allow_experimental
+    @allow_experimental.setter
+    def allow_experimental(self, value):
+        if not isinstance(value, bool):
+            raise QgistTypeError(tr('value is not bool'))
+        self._allow_experimental = value
+        self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL] = self._config.bool_to_str(value)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: REPOSITORIES
