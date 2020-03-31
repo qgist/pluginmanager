@@ -47,14 +47,9 @@ from ..util import tr
 
 class dtype_index_class:
     """
-    # Index of repos
+    Index of repositories
 
-    - properties:
-        - list of present/registered repos
-        - allow experimental
-        - allow deprecated
-        - SETTINGS
-        - actions (stuff that must be committed or discarded) ... its own class?
+    Mutable.
     """
 
     def __init__(self, config):
@@ -197,6 +192,11 @@ class dtype_index_class:
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class dtype_plugin_repos_class(list):
+    """
+    List of plugin objects from multiple repositories for one single plugin id
+
+    Mutable.
+    """
 
     def __init__(self, plugin_id, *args, **kwargs):
 
