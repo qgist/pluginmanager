@@ -35,4 +35,14 @@ from ...dtype_repository import dtype_repository_base_class
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class dtype_repository_class(dtype_repository_base_class):
+
+    """
+    - sources
+        - remote (HTTP, FTP, ...)
+        - locally (drive, share, path)
+        - "links" (`ln -s`) to local folders for plugins
+    - special properties
+        - AUTH?
+    """
+
     pass

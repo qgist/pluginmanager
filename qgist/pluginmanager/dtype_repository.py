@@ -47,29 +47,6 @@ class dtype_repository_base_class:
     From this, classes for repo types (i.e. plugin sources) are derived.
 
     Mutable.
-
-    Auto-detect (and auto-import) repo types?
-
-    - sources:
-        - remote (HTTP, FTP, ...)
-        - locally (drive, share, path)
-        - "links" (`ln -s`) to local folders for plugins
-    - types:
-        - pip (through pip API)
-        - conda (through conda API)
-        - traditional QGIS Python
-        - traditional QGIS C++
-    - properties:
-        - id (NAME)
-        - active/enabled
-        - writeable/protected (FALSE for core plugins "repo"/directory and QGIS Python plugins repo)
-        - autorefresh (on start)
-        - autorefresh_interval
-        - AUTH?
-        - available (i.e. contact to server?)
-        - meta ...
-        - LIST OF PLUGINS
-        - SETTINGS
     """
 
     def __init__(self, *args, **kwargs): # TODO
@@ -79,7 +56,6 @@ class dtype_repository_base_class:
         self._active = True # bool
         self._protected = False # bool
         self._repository_type = '' # str: {backends: conda, pip, conda, qgis}
-        self._priority = 0 # int
 
         self._plugins = [] # list of all relevant plugins
 

@@ -1,4 +1,8 @@
 
+# Repository refresh
+
+Currently, all repositories are refreshed when opening the plugin manager. There could be a cache and a "refresh interval option".
+
 # Packaging
 
 This plugin should not only be packaged as as QGIS plugin but also stand-alone as wheel and conda package. How does a reasonable project / directory structure look like?
