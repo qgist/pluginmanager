@@ -98,8 +98,27 @@ class dtype_index_class:
         if method not in (item[5:] for item in dir(repository_class) if item.startswith('from_')):
             raise QgistValueError(tr('"method" is unknown.'))
 
-        repo = getattr(repository_class, f'from_{method:s}')(*args, **kwargs)
+        repo = getattr(repository_class, f'from_{method:s}')(*args, **kwargs) # TODO: Catch user abort
         self._repos.append(repo) # Add to list at the end, i.e. with lowers priority
+
+    def change_repo_priority(self, repo_id, direction):
+
+        if not isinstance(direction, int):
+            raise QgistTypeError(tr('"direction" must be a str.'))
+        if direction not in (1, -1):
+            raise QgistValueError(tr('"direction" must either be 1 or -1.'))
+
+        repo = self.get_repo(repo_id)
+        index = self._repos.index(repo)
+
+        if len(self) < 2:
+            return
+        if index == 0 and direction == -1:
+            return
+        if index == (len(self) - 1) and direction == 1:
+            return
+
+        self._repos[index + direction], self._repos[index] = self._repos[index], self._repos[index + direction]
 
     def get_repo(self, repo_id):
 
