@@ -202,10 +202,10 @@ class dtype_plugin_repos_class(list):
 
         super().__init__(*args, **kwargs)
 
-        if not isinstance(repo_id, str):
-            raise QgistTypeError(tr('"repo_id" must be a str.'))
-        if len(repo_id) == 0:
-            raise QgistValueError(tr('"repo_id" must not be empty.'))
+        if not isinstance(plugin_id, str):
+            raise QgistTypeError(tr('"plugin_id" must be a str.'))
+        if len(plugin_id) == 0:
+            raise QgistValueError(tr('"plugin_id" must not be empty.'))
 
         self._id = plugin_id
 
