@@ -56,22 +56,36 @@ class dtype_index_class:
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
         self._config = config
+        self._repos = []
 
     def __repr__(self):
 
         return f'<index ({id(self):x})>'
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PROPERTIES
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @property
+    def repos(self):
+        return (repo for repo in self._repos)
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# MANAGEMENT
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     def add_repo(self, repo_type, **kwargs):
+        """
+        What type? Get right class, get configuration or user input.
+        """
 
         pass
 
     def remove_repo(self, **kwargs):
         pass
 
-    def get_repos(self, **kwargs):
-        """Get list/iterator, filter for enabled, available, ..."""
-        pass
-
     def refresh_repos(self):
         """Reload index of every repo"""
-        pass
+
+        for repo in self._repos:
+            repo.refresh()
