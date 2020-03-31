@@ -30,6 +30,7 @@ specific language governing rights and limitations under the License.
 
 from .const import PLUGIN_TYPES
 from .dtype_repository import dtype_repository_base_class
+from .dtype_settings import dtype_settings_class
 
 from ..error import (
     QgistNotImplementedError,
@@ -66,7 +67,7 @@ class dtype_plugin_base_class:
         - SETTINGS
     """
 
-    def __init__(self, plugin_id, name, plugin_type, installed, protected, active, repo):
+    def __init__(self, plugin_id, name, plugin_type, installed, protected, active, repo, config):
 
         if not isinstance(plugin_id, str):
             raise QgistTypeError(tr('"plugin_id" must be a str.'))
@@ -88,6 +89,8 @@ class dtype_plugin_base_class:
             raise QgistTypeError(tr('"active" must be a bool.'))
         if not isinstance(repo, dtype_repository_base_class):
             raise QgistTypeError(tr('"repo" must be a repository.'))
+        if not isinstance(config, dtype_settings_class):
+            raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
         self._id = plugin_id # unique
         self._name = name # TODO enable translations!
@@ -96,6 +99,8 @@ class dtype_plugin_base_class:
         self._protected = protected
         self._active = active
         self._repo = repo # parent repository
+
+        self._config = config
 
         # Implement in derived class!
         self._available = None # bool. Always static? Source available (online), matching QGIS version requirement

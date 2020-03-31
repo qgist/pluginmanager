@@ -29,6 +29,7 @@ specific language governing rights and limitations under the License.
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from .backends import backends
+from .dtype_settings import dtype_settings_class
 
 from ..error import (
     QgistNotImplementedError,
@@ -51,7 +52,7 @@ class dtype_repository_base_class:
     Mutable.
     """
 
-    def __init__(self, repo_id, name, active, protected, repository_type):
+    def __init__(self, repo_id, name, active, protected, repository_type, config):
 
         if not isinstance(repo_id, str):
             raise QgistTypeError(tr('"repo_id" must be a str.'))
@@ -69,6 +70,8 @@ class dtype_repository_base_class:
             raise QgistTypeError(tr('"repository_type" must be a str.'))
         if repository_type not in backends.keys():
             raise QgistValueError(tr('"repository_type" is unknown.'))
+        if not isinstance(config, dtype_settings_class):
+            raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
         self._id = repo_id # unique
         self._name = name # TODO: enable translations!
@@ -76,6 +79,7 @@ class dtype_repository_base_class:
         self._protected = protected
         self._repository_type = repository_type
 
+        self._config = config
         self._plugins = [] # list of all relevant plugins
 
     def __repr__(self):
@@ -150,11 +154,11 @@ class dtype_repository_base_class:
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
-    def from_directory(cls, path, writeable = False):
+    def from_directory(cls, config, path, writeable = False):
         raise QgistNotImplementedError()
 
     @classmethod
-    def from_userinput(cls):
+    def from_userinput(cls, config):
         raise QgistNotImplementedError()
 
     @classmethod
