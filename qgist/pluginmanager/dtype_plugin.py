@@ -143,6 +143,16 @@ class dtype_plugin_base_class:
     @property
     def active(self):
         return self._active
+    @active.setter
+    def active(self, value):
+        if not isinstance(value, bool):
+            raise QgistTypeError(tr('"value" must be a bool.'))
+        if value == self._active:
+            return
+        if value == True:
+            self.load()
+        else:
+            self.unload()
 
     @property
     def available(self):
@@ -159,19 +169,21 @@ class dtype_plugin_base_class:
     def install(self):
         """
         Allows dry runs
+        Sets installed to True!
         """
         raise QgistNotImplementedError()
 
     def uninstall(self):
         """
         Allows dry runs
+        Sets installed to False!
         """
         raise QgistNotImplementedError()
 
     def upgrade(self, version):
         """
         Allows dry runs
-        Also allows intentional downgrades
+        Also allows (intentional) downgrades
         """
         raise QgistNotImplementedError()
 
@@ -189,12 +201,14 @@ class dtype_plugin_base_class:
     def load(self):
         """
         Loads, i.e. imports plugin (that is actually a Python module), and calls plugin's `initGui`
+        Sets active to True!
         """
         raise QgistNotImplementedError()
 
     def unload(self):
         """
         Triggers plugin's `unload` method and attempts to "unimport" it.
+        Sets active to False!
         """
         raise QgistNotImplementedError()
 
