@@ -57,6 +57,10 @@ class dtype_index_class:
 
         self._config = config
 
+    def __repr__(self):
+
+        return f'<index ({id(self):x})>'
+
     def add_repo(self, **kwargs):
         pass
     def remove_repo(self, **kwargs):
