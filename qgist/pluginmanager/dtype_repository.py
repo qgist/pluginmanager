@@ -143,5 +143,5 @@ class dtype_repository_base_class:
         raise QgistNotImplementedError()
 
     @classmethod
-    def from_config(cls, config_group):
+    def from_config(cls, config):
         raise QgistNotImplementedError()
