@@ -31,6 +31,7 @@ specific language governing rights and limitations under the License.
 from .const import PLUGIN_TYPES
 from .dtype_repository import dtype_repository_base_class
 from .dtype_settings import dtype_settings_class
+from .dtype_version import dtype_version_class
 
 from ..error import (
     QgistNotImplementedError,
@@ -105,6 +106,8 @@ class dtype_plugin_base_class:
         # Implement in derived class!
         self._available = None # bool. Always static? Source available (online), matching QGIS version requirement
         self._watchdog = None # bool
+        self._installed_version = None # dtype_version
+        self._available_versions = [] # list of dtype_version. Source available (online), matching QGIS version requirement
 
     def __repr__(self):
 
@@ -135,10 +138,27 @@ class dtype_plugin_base_class:
     @property
     def installed(self):
         return self._installed
+    @installed.setter
+    def installed(self, value):
+        if not isinstance(value, bool):
+            raise QgistTypeError(tr('"value" must be a bool.'))
+        if value == self._installed:
+            return
+        if value:
+            self.install()
+        else:
+            self.uninstall()
 
     @property
     def protected(self):
         return self._protected
+    @protected.setter
+    def protected(self, value):
+        if not isinstance(value, bool):
+            raise QgistTypeError(tr('"value" must be a bool.'))
+        if not self._installed:
+            raise QgistValueError(tr('plugin is not installed'))
+        self._protected = value
 
     @property
     def active(self):
@@ -149,7 +169,7 @@ class dtype_plugin_base_class:
             raise QgistTypeError(tr('"value" must be a bool.'))
         if value == self._active:
             return
-        if value == True:
+        if value:
             self.load()
         else:
             self.unload()
@@ -161,6 +181,46 @@ class dtype_plugin_base_class:
     @property
     def repo(self):
         return self._repo
+
+    @property
+    def installed_version(self):
+        if not self._installed:
+            raise QgistValueError(tr('plugin is not installed'))
+        if not isinstance(self._installed_version, dtype_version_class):
+            raise QgistValueError(tr('internal error: plugin is installed but has no version'))
+        return self._installed_version
+
+    @property
+    def available_versions(self):
+        return (version for version in self._available_versions)
+
+    @property
+    def upgradable(self):
+        if not self._installed:
+            return False
+        if len(self._available_versions) == 0:
+            return False
+        if not isinstance(self._installed_version, dtype_version_class):
+            raise QgistValueError(tr('internal error: plugin is installed but has no version'))
+        return any((version > self._installed_version for version in self._available_versions))
+
+    @property
+    def downgradable(self):
+        if not self._installed:
+            return False
+        if len(self._available_versions) == 0:
+            return False
+        if not isinstance(self._installed_version, dtype_version_class):
+            raise QgistValueError(tr('internal error: plugin is installed but has no version'))
+        return any((version < self._installed_version for version in self._available_versions))
+
+    @property
+    def orphan(self):
+        if not self._installed:
+            return False
+        if not isinstance(self._installed_version, dtype_version_class):
+            raise QgistValueError(tr('internal error: plugin is installed but has no version'))
+        return all((version != self._installed_version for version in self._available_versions))
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # INSTALL / UNINSTALL
