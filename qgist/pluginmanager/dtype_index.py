@@ -25,6 +25,16 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Internal)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from .backends import backends
+from .dtype_settings import dtype_settings_class
+
+from ..error import QgistTypeError
+from ..util import tr
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -39,6 +49,13 @@ class dtype_index_class:
         - SETTINGS
         - actions (stuff that must be committed or discarded) ... its own class?
     """
+
+    def __init__(self, config):
+
+        if not isinstance(config, dtype_settings_class):
+            raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
+
+        self._config = config
 
     def add_repo(self, **kwargs):
         pass
