@@ -83,5 +83,12 @@ class dtype_repository_base_class:
 
     @classmethod
     def from_directory(cls, path, writeable = False):
-        # TODO
-        return cls()
+        raise QgistNotImplementedError()
+
+    @classmethod
+    def from_userinput(cls):
+        raise QgistNotImplementedError()
+
+    @classmethod
+    def from_config(cls, config_group):
+        raise QgistNotImplementedError()
