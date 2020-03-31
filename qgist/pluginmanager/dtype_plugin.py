@@ -56,16 +56,6 @@ class dtype_plugin_base_class:
 
     - Properties
         - meta ...
-
-    - Backends
-        - Installed version
-        - Available versions (from sources ...)
-
-        - upgradable
-        - downgradable
-        - orphan
-
-        - SETTINGS
     """
 
     def __init__(self, plugin_id, name, plugin_type, installed, protected, active, repo, config):
