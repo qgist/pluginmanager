@@ -78,13 +78,11 @@ class dtype_index_class:
         return (repo for repo in self._repos)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# MANAGEMENT: REPO
+# MANAGEMENT: REPOSITORIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     def add_repo(self, repo_type, method, *args, **kwargs):
-        """
-        What type? Get right class, get configuration or user input.
-        """
+        "Initialize and add repository based on type, method and arbitrary parameters"
 
         if not isinstance(repo_type, str):
             raise QgistTypeError(tr('"repo_type" must be a str.'))
@@ -102,6 +100,7 @@ class dtype_index_class:
         self._repos.append(repo) # Add to list at the end, i.e. with lowers priority
 
     def change_repo_priority(self, repo_id, direction):
+        "Repository can be moved up (lower priority) or down (higher priority) by one"
 
         if not isinstance(direction, int):
             raise QgistTypeError(tr('"direction" must be a str.'))
@@ -121,6 +120,7 @@ class dtype_index_class:
         self._repos[index + direction], self._repos[index] = self._repos[index], self._repos[index + direction]
 
     def get_repo(self, repo_id):
+        "Get repository by id (if id is present)"
 
         if not isinstance(repo_id, str):
             raise QgistTypeError(tr('"repo_id" must be a str.'))
@@ -132,6 +132,7 @@ class dtype_index_class:
         return {repo.id: repo for repo in self._repos}[repo_id]
 
     def remove_repo(self, repo_id):
+        "Remove repository by id (if id is present)"
 
         repo = self.get_repo(repo_id)
         repo.remove()
