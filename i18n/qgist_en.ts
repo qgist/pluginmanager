@@ -128,22 +128,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="212"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="233"/>
         <source>name is not str</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="214"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="235"/>
         <source>name must not be empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="222"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="243"/>
         <source>root is not str</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="224"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="245"/>
         <source>root must not be empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -153,12 +153,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="175"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="196"/>
         <source>settings must be an instance of config_class</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="177"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="198"/>
         <source>root must be a str</source>
         <translation type="unfinished"></translation>
     </message>
@@ -173,8 +173,118 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="56"/>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="58"/>
         <source>&quot;config&quot; must be a &quot;dtype_settings_class&quot; object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="148"/>
+        <source>&quot;repo_id&quot; must be a str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="150"/>
+        <source>&quot;repo_id&quot; must not be empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository.py" line="61"/>
+        <source>&quot;name&quot; must be a str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository.py" line="63"/>
+        <source>&quot;name&quot; must not be empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository.py" line="65"/>
+        <source>&quot;active&quot; must be a bool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository.py" line="67"/>
+        <source>&quot;protected&quot; must be a bool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository.py" line="69"/>
+        <source>&quot;repository_type&quot; must be a str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository.py" line="71"/>
+        <source>&quot;repository_type&quot; is unknown.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository.py" line="105"/>
+        <source>New value of &quot;name&quot; must be a str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository.py" line="107"/>
+        <source>New value of &quot;name&quot; must not be empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="162"/>
+        <source>value is not str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="169"/>
+        <source>value can not be converted to bool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="98"/>
+        <source>value is not bool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="110"/>
+        <source>&quot;repo_type&quot; must be a str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="112"/>
+        <source>&quot;repo_type&quot; is unknown.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="114"/>
+        <source>&quot;method&quot; must be a str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="119"/>
+        <source>&quot;method&quot; is unknown.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="128"/>
+        <source>&quot;direction&quot; must be a str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="130"/>
+        <source>&quot;direction&quot; must either be 1 or -1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="152"/>
+        <source>&quot;repo_id&quot; is unknown. There is no such repository.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="206"/>
+        <source>&quot;plugin_id&quot; must be a str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="208"/>
+        <source>&quot;plugin_id&quot; must not be empty.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
