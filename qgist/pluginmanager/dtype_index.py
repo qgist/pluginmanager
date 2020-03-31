@@ -38,7 +38,7 @@ from ..error import (
 from ..util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# CLASS
+# CLASS: INDEX
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class dtype_index_class:
@@ -139,7 +139,7 @@ class dtype_index_class:
         self._repos.remove(repo)
 
     def refresh_repos(self):
-        """Reload index of every repo"""
+        "Reload index of every repo"
 
         for repo in self._repos:
             repo.refresh()
@@ -147,3 +147,45 @@ class dtype_index_class:
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: PLUGINS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def get_all_installed_plugins(self):
+        "Currently installed plugins"
+
+        return (plugin for repo in self._repos for plugin in repo.get_all_installed_plugins())
+
+    def get_all_available_plugins(self):
+        "Available plugins, compatible to QGIS version"
+
+        plugins = {}
+        for repo in self._repos:
+            for plugin in repo.get_all_available_plugins():
+                if plugin.id not in plugins.keys():
+                    plugins[plugin.id] = dtype_plugin_repos_class(plugin.id)
+                plugins[plugin.id].append(plugin)
+
+        return (plugin_index for plugin_index in plugins.values())
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# CLASS: PLUGIN INDEX
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class dtype_plugin_repos_class(list):
+
+    def __init__(self, plugin_id, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        if not isinstance(repo_id, str):
+            raise QgistTypeError(tr('"repo_id" must be a str.'))
+        if len(repo_id) == 0:
+            raise QgistValueError(tr('"repo_id" must not be empty.'))
+
+        self._id = plugin_id
+
+    def __repr__(self):
+
+        return f'<plugin_repos id="{self._id:s}" len={len(self):d}>'
+
+    @property
+    def id(self):
+        return self._id
