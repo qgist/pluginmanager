@@ -28,6 +28,8 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .backends import backends
+
 from ..error import (
     QgistNotImplementedError,
     QgistValueError,
@@ -49,13 +51,30 @@ class dtype_repository_base_class:
     Mutable.
     """
 
-    def __init__(self, *args, **kwargs): # TODO
+    def __init__(self, repo_id, name, active, protected, repository_type):
 
-        self._id = '' # str (unique)
-        self._name = '' # str (enable translations!)
-        self._active = True # bool
-        self._protected = False # bool
-        self._repository_type = '' # str: {backends: conda, pip, conda, qgis}
+        if not isinstance(repo_id, str):
+            raise QgistTypeError(tr('"repo_id" must be a str.'))
+        if len(repo_id) == 0:
+            raise QgistValueError(tr('"repo_id" must not be empty.'))
+        if not isinstance(name, str):
+            raise QgistTypeError(tr('"name" must be a str.'))
+        if len(name) == 0:
+            raise QgistValueError(tr('"name" must not be empty.'))
+        if not isinstance(active, bool):
+            raise QgistTypeError(tr('"active" must be a bool.'))
+        if not isinstance(protected, bool):
+            raise QgistTypeError(tr('"protected" must be a bool.'))
+        if not isinstance(repository_type, str):
+            raise QgistTypeError(tr('"repository_type" must be a str.'))
+        if repository_type not in backends.keys():
+            raise QgistValueError(tr('"repository_type" is unknown.'))
+
+        self._id = repo_id # unique
+        self._name = name # TODO: enable translations!
+        self._active = active
+        self._protected = protected
+        self._repository_type = repository_type
 
         self._plugins = [] # list of all relevant plugins
 
