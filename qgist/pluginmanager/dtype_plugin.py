@@ -42,6 +42,8 @@ class dtype_plugin_base_class:
     From this, classes for plugin types (i.e. plugin sources) are derived?
     Or use repo type classes instead instead of having multiple plugin classes?
 
+    Mutable.
+
     - Properties
         - NAME / ID
         - Active
@@ -54,6 +56,7 @@ class dtype_plugin_base_class:
         - orphan
         - meta ...
         - SETTINGS
+        - Available (can download, works with current QGIS version)
 
     # Subject to backends:
 
@@ -66,12 +69,13 @@ class dtype_plugin_base_class:
 
     def __init__(self, *args, **kwargs): # TODO
 
-        self._id = '' # str
-        self._name = '' # str
+        self._id = '' # str (unique)
+        self._name = '' # str (enable translations!)
         self._plugin_type = '' # str: {regular, processing, server}
         self._installed = False # bool
         self._active = False # bool
 
+        self._available = True # Probably not static in all cases?
         # self._watchdog = False # bool
 
     def __repr__(self):
@@ -107,6 +111,10 @@ class dtype_plugin_base_class:
     @property
     def active(self):
         return self._active
+
+    @property
+    def available(self):
+        return self._available
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # INSTALL / UNINSTALL
