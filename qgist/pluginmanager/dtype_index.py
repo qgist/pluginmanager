@@ -61,13 +61,17 @@ class dtype_index_class:
 
         return f'<index ({id(self):x})>'
 
-    def add_repo(self, **kwargs):
+    def add_repo(self, repo_type, **kwargs):
+
         pass
+
     def remove_repo(self, **kwargs):
         pass
+
     def get_repos(self, **kwargs):
         """Get list/iterator, filter for enabled, available, ..."""
         pass
+
     def refresh_repos(self):
         """Reload index of every repo"""
         pass
