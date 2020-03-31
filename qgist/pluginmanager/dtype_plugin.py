@@ -74,6 +74,16 @@ class dtype_plugin_base_class:
 
         # self._watchdog = False # bool
 
+    def __repr__(self):
+
+        return (
+            '<plugin '
+            f'id="{self._id:s}" name="{self._name:s}" type="{self._plugin_type:s}" '
+            f'installed={"yes" if self._installed else "no":s} '
+            f'active={"yes" if self._active else "no":s} '
+            '>'
+            )
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
