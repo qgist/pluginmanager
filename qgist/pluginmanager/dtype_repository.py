@@ -28,7 +28,12 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from ..error import QgistNotImplementedError
+from ..error import (
+    QgistNotImplementedError,
+    QgistValueError,
+    QgistTypeError,
+    )
+from ..util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
@@ -41,6 +46,8 @@ class dtype_repository_base_class:
     This is abstract class representing a repository.
     From this, classes for repo types (i.e. plugin sources) are derived.
 
+    Mutable.
+
     Auto-detect (and auto-import) repo types?
 
     - sources:
@@ -50,9 +57,10 @@ class dtype_repository_base_class:
     - types:
         - pip (through pip API)
         - conda (through conda API)
-        - traditional QGIS
+        - traditional QGIS Python
+        - traditional QGIS C++
     - properties:
-        - NAME
+        - id (NAME)
         - active/enabled
         - writeable/protected (FALSE for core plugins "repo"/directory and QGIS Python plugins repo)
         - autorefresh (on start)
@@ -65,21 +73,89 @@ class dtype_repository_base_class:
         - SETTINGS
     """
 
+    def __init__(self, *args, **kwargs): # TODO
+
+        self._id = '' # str (unique)
+        self._name = '' # str (enable translations!)
+        self._active = True # bool
+        self._protected = False # bool
+        self._repository_type = '' # str: {backends: conda, pip, conda, qgis}
+        self._priority = 0 # int
+
+        self._plugins = [] # list of all relevant plugins
+
+    def __repr__(self):
+
+        return (
+            '<repository '
+            f'id="{self._id:s}" name="{self._name:s}" type="{self._repository_type:s}" '
+            f'protected={"yes" if self._protected else "no":s} '
+            f'active={"yes" if self._active else "no":s} '
+            f'priority={self._priority:d} '
+            '>'
+            )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PROPERTIES
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def name(self):
+        return self._name
+    @name.setter
+    def name(self, value):
+        if not isinstance(value, str):
+            raise QgistTypeError(tr('New value of "name" must be a str.'))
+        if len(value) == 0:
+            raise QgistValueError(tr('New value of "name" must not be empty.'))
+        self._name = value
+
+    @property
+    def active(self):
+        return self._active
+
+    @property
+    def protected(self):
+        return self._protected
+
+    @property
+    def repository_type(self):
+        return self._repository_type
+
+    @property
+    def priority(self):
+        return self._priority
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# MANAGEMENT
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     def get_all_installed(self):
-        raise QgistNotImplementedError()
+        "Currently installed plugins"
+
+        return (plugin for plugin in self._plugins if plugin.installed)
+
     def get_all_available(self):
-        """
-        Available plugins, compatible to QGIS version
-        """
-        raise QgistNotImplementedError()
-    def rename(self, new_name):
-        raise QgistNotImplementedError()
+        "Available plugins, compatible to QGIS version"
+
+        return (plugin for plugin in self._plugins if plugin.available)
+
     def refresh(self):
+        "Rebuild index and/or reload metadata"
+
         raise QgistNotImplementedError()
 
     def _fetch_index(self):
         """HTTP ..."""
         pass
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PRE-CONSTRUCTOR
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
     def from_directory(cls, path, writeable = False):
