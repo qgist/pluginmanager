@@ -28,7 +28,15 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from ..error import QgistNotImplementedError
+from .const import PLUGIN_TYPES
+from .dtype_repository import dtype_repository_base_class
+
+from ..error import (
+    QgistNotImplementedError,
+    QgistTypeError,
+    QgistValueError,
+    )
+from ..util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
@@ -45,40 +53,53 @@ class dtype_plugin_base_class:
     Mutable.
 
     - Properties
-        - NAME / ID
-        - Active
-        - Watchdog
-        - Installed
+        - meta ...
+
+    - Backends
         - Installed version
         - Available versions (from sources ...)
+
         - upgradable
         - downgradable
         - orphan
-        - meta ...
+
         - SETTINGS
-        - Available (can download, works with current QGIS version)
-
-    # Subject to backends:
-
-    - Properties
-        - Caches
-        - Dependencies
-            - inter-plugin
-            - plugin to python packages (through source / other package manager)
     """
 
-    def __init__(self, *args, **kwargs): # TODO
+    def __init__(self, plugin_id, name, plugin_type, installed, protected, active, repo):
 
-        self._id = '' # str (unique)
-        self._name = '' # str (enable translations!)
-        self._plugin_type = '' # str: {regular, processing, server}
-        self._installed = False # bool
-        self._protected = False # C++ plugins can not be removed ...
-        self._active = False # bool
-        self._repo = repo # parent repo
+        if not isinstance(plugin_id, str):
+            raise QgistTypeError(tr('"plugin_id" must be a str.'))
+        if len(plugin_id) == 0:
+            raise QgistValueError(tr('"plugin_id" must not be empty.'))
+        if not isinstance(name, str):
+            raise QgistTypeError(tr('"name" must be a str.'))
+        if len(name) == 0:
+            raise QgistValueError(tr('"name" must not be empty.'))
+        if not isinstance(plugin_type, str):
+            raise QgistTypeError(tr('"plugin_type" must be a str.'))
+        if plugin_type not in PLUGIN_TYPES:
+            raise QgistValueError(tr('"plugin_type" is unknown.'))
+        if not isinstance(installed, bool):
+            raise QgistTypeError(tr('"installed" must be a bool.'))
+        if not isinstance(protected, bool):
+            raise QgistTypeError(tr('"protected" must be a bool.'))
+        if not isinstance(active, bool):
+            raise QgistTypeError(tr('"active" must be a bool.'))
+        if not isinstance(repo, dtype_repository_base_class):
+            raise QgistTypeError(tr('"repo" must be a repository.'))
 
-        # self._available = True # Always static? Source available (online), matching QGIS version requirement
-        # TODO: self._watchdog = False # bool
+        self._id = plugin_id # unique
+        self._name = name # TODO enable translations!
+        self._plugin_type = plugin_type
+        self._installed = installed
+        self._protected = protected
+        self._active = active
+        self._repo = repo # parent repository
+
+        # Implement in derived class!
+        self._available = None # bool. Always static? Source available (online), matching QGIS version requirement
+        self._watchdog = None # bool
 
     def __repr__(self):
 

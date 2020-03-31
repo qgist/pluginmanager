@@ -71,6 +71,11 @@ PLUGIN_TRANSLATABLE_ATTRIBUTES = (
     'about',
     'tags',
     )
+PLUGIN_TYPES = (
+    'regular',
+    'processing',
+    'server',
+    )
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # REPO META

@@ -35,4 +35,10 @@ from ...dtype_plugin import dtype_plugin_base_class
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class dtype_plugin_class(dtype_plugin_base_class):
-    pass
+    """
+    - Properties
+        - Caches
+        - Dependencies
+            - inter-plugin
+            - plugin to python packages (through source / other package manager)
+    """
