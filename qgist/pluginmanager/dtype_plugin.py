@@ -73,10 +73,12 @@ class dtype_plugin_base_class:
         self._name = '' # str (enable translations!)
         self._plugin_type = '' # str: {regular, processing, server}
         self._installed = False # bool
+        self._protected = False # C++ plugins can not be removed ...
         self._active = False # bool
+        self._repo = repo # parent repo
 
-        self._available = True # Probably not static in all cases?
-        # self._watchdog = False # bool
+        # self._available = True # Always static? Source available (online), matching QGIS version requirement
+        # TODO: self._watchdog = False # bool
 
     def __repr__(self):
 
@@ -109,12 +111,20 @@ class dtype_plugin_base_class:
         return self._installed
 
     @property
+    def protected(self):
+        return self._protected
+
+    @property
     def active(self):
         return self._active
 
     @property
     def available(self):
         return self._available
+
+    @property
+    def repo(self):
+        return self._repo
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # INSTALL / UNINSTALL
