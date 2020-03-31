@@ -66,7 +66,6 @@ class dtype_repository_base_class:
         - autorefresh (on start)
         - autorefresh_interval
         - AUTH?
-        - priority
         - available (i.e. contact to server?)
         - meta ...
         - LIST OF PLUGINS
@@ -90,8 +89,7 @@ class dtype_repository_base_class:
             '<repository '
             f'id="{self._id:s}" name="{self._name:s}" type="{self._repository_type:s}" '
             f'protected={"yes" if self._protected else "no":s} '
-            f'active={"yes" if self._active else "no":s} '
-            f'priority={self._priority:d} '
+            f'active={"yes" if self._active else "no":s}'
             '>'
             )
 
@@ -125,10 +123,6 @@ class dtype_repository_base_class:
     @property
     def repository_type(self):
         return self._repository_type
-
-    @property
-    def priority(self):
-        return self._priority
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT

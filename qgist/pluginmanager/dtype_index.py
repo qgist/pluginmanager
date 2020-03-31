@@ -59,7 +59,7 @@ class dtype_index_class:
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
         self._config = config
-        self._repos = []
+        self._repos = [] # From high to low priority
 
     def __repr__(self):
 
@@ -77,12 +77,25 @@ class dtype_index_class:
 # MANAGEMENT: REPO
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def add_repo(self, repo_type, **kwargs):
+    def add_repo(self, repo_type, method, *args, **kwargs):
         """
         What type? Get right class, get configuration or user input.
         """
 
-        pass
+        if not isinstance(repo_type, str):
+            raise QgistTypeError(tr('"repo_type" must be a str.'))
+        if repo_type not in backends.keys():
+            raise QgistValueError(tr('"repo_type" is unknown.'))
+        if not isinstance(method, str):
+            raise QgistTypeError(tr('"method" must be a str.'))
+
+        repository_class = backends[repo_type].dtype_repository_class
+
+        if method not in (item[5:] for item in dir(repository_class) if item.startswith('from_')):
+            raise QgistValueError(tr('"method" is unknown.'))
+
+        repo = getattr(repository_class, f'from_{method:s}')(*args, **kwargs)
+        self._repos.append(repo) # Add to list at the end, i.e. with lowers priority
 
     def get_repo(self, repo_id):
 
