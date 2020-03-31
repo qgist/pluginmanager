@@ -31,7 +31,10 @@ specific language governing rights and limitations under the License.
 from .backends import backends
 from .dtype_settings import dtype_settings_class
 
-from ..error import QgistTypeError
+from ..error import (
+    QgistTypeError,
+    QgistValueError,
+    )
 from ..util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -71,7 +74,7 @@ class dtype_index_class:
         return (repo for repo in self._repos)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# MANAGEMENT
+# MANAGEMENT: REPO
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     def add_repo(self, repo_type, **kwargs):
@@ -81,11 +84,29 @@ class dtype_index_class:
 
         pass
 
-    def remove_repo(self, **kwargs):
-        pass
+    def get_repo(self, repo_id):
+
+        if not isinstance(repo_id, str):
+            raise QgistTypeError(tr('"repo_id" must be a str.'))
+        if len(repo_id) == 0:
+            raise QgistValueError(tr('"repo_id" must not be empty.'))
+        if repo_id not in (repo.id for repo in self._repos):
+            raise QgistValueError(tr('"repo_id" is unknown. There is no such repository.'))
+
+        return {repo.id: repo for repo in self._repos}[repo_id]
+
+    def remove_repo(self, repo_id):
+
+        repo = self.get_repo(repo_id)
+        repo.remove()
+        self._repos.remove(repo)
 
     def refresh_repos(self):
         """Reload index of every repo"""
 
         for repo in self._repos:
             repo.refresh()
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# MANAGEMENT: PLUGINS
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
