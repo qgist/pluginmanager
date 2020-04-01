@@ -37,6 +37,8 @@ class dtype_metadata_class:
 
         self._id = '' # TODO plugin id
 
+        self._fields = tuple([_dtype_metadata_field_class(**field) for field in _fields_spec])
+
     def __repr__(self):
 
         return f'<metadata id="{self._id:s}">'
@@ -251,5 +253,3 @@ _fields_spec = (
         'name': 'plugin_dependencies',
     },
 )
-
-_fields = tuple([_dtype_metadata_field_class(**field) for field in _fields_spec])
