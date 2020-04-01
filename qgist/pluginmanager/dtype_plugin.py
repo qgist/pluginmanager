@@ -28,7 +28,6 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .const import PLUGIN_TYPES
 from .dtype_repository import dtype_repository_base_class
 from .dtype_settings import dtype_settings_class
 from .dtype_version import dtype_version_class
@@ -59,7 +58,7 @@ class dtype_plugin_base_class:
     """
 
     def __init__(self,
-        plugin_id, name, plugin_type, installed, protected, active, deprecated, has_processingprovider,
+        plugin_id, name, installed, protected, active, deprecated, has_processingprovider,
         repo, config,
         ):
 
@@ -71,10 +70,6 @@ class dtype_plugin_base_class:
             raise QgistTypeError(tr('"name" must be a str.'))
         if len(name) == 0:
             raise QgistValueError(tr('"name" must not be empty.'))
-        if not isinstance(plugin_type, str):
-            raise QgistTypeError(tr('"plugin_type" must be a str.'))
-        if plugin_type not in PLUGIN_TYPES:
-            raise QgistValueError(tr('"plugin_type" is unknown.'))
         if not isinstance(installed, bool):
             raise QgistTypeError(tr('"installed" must be a bool.'))
         if not isinstance(protected, bool):
@@ -92,7 +87,6 @@ class dtype_plugin_base_class:
 
         self._id = plugin_id # unique
         self._name = name # TODO enable translations!
-        self._plugin_type = plugin_type
         self._installed = installed
         self._protected = protected
         self._active = active
@@ -112,7 +106,7 @@ class dtype_plugin_base_class:
 
         return (
             '<plugin '
-            f'id="{self._id:s}" name="{self._name:s}" type="{self._plugin_type:s}" '
+            f'id="{self._id:s}" name="{self._name:s}" '
             f'installed={"yes" if self._installed else "no":s} '
             f'active={"yes" if self._active else "no":s} '
             '>'
@@ -129,10 +123,6 @@ class dtype_plugin_base_class:
     @property
     def name(self):
         return self._name
-
-    @property
-    def plugin_type(self):
-        return self._plugin_type
 
     @property
     def installed(self):
