@@ -47,14 +47,10 @@ class dtype_plugin_base_class:
     """
     # One single plugin
 
-    This is abstract class representing a plugin.
-    From this, classes for plugin types (i.e. plugin sources) are derived?
-    Or use repo type classes instead instead of having multiple plugin classes?
+    This is abstract class representing a plugin (all of its versions).
+    From this, classes for plugin types (i.e. plugin sources) are derived.
 
     Mutable.
-
-    - Properties
-        - meta ...
     """
 
     def __init__(self,
