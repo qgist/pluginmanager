@@ -159,6 +159,8 @@ class _dtype_metadata_field_class:
         if not any((isinstance(new_value, dtype) for dtype in METADATA_FIELD_DTYPES)):
             raise QgistTypeError(tr('"new_value" does not have valid type'))
 
+        if self._dtype == str:
+            new_value = str(new_value)
         if self._dtype == bool:
             new_value = dtype_settings_class.str_to_bool(new_value)
 
