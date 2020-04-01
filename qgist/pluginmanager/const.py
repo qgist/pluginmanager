@@ -85,12 +85,14 @@ METADATA_FIELDS_SPEC = (
         'dtype': str,
         'i18n': True,
         'name': 'description',
+        'is_required': True,
     },
     {
         'comment': 'longer description: how does it work, where does it install, how to run it?',
         'dtype': str,
         'i18n': True,
         'name': 'about',
+        'is_required': True,
     },
     {
         'comment': 'will be removed?',
@@ -110,11 +112,13 @@ METADATA_FIELDS_SPEC = (
     },
     {
         'dtype': str,
-        'name': 'author_name',
+        'name': 'author', # author_name
+        'is_required': True,
     },
     {
         'dtype': str,
-        'name': 'author_email',
+        'name': 'email', # author_email
+        'is_required': True,
     },
     {
         'comment': 'url to the plugin homepage',
@@ -129,59 +133,60 @@ METADATA_FIELDS_SPEC = (
     {
         'comment': 'url to the source code repository',
         'dtype': str,
-        'name': 'code_repository',
+        'name': 'repository', # 'code_repository'
+        'is_required': True,
     },
-    {
-        'comment': 'installed instance version',
-        'dtype': str,
-        'name': 'version_installed',
-    },
-    {
-        'comment': 'absolute path to the installed library / Python module',
-        'dtype': str,
-        'name': 'library',
-    },
+    # {
+    #     'comment': 'installed instance version',
+    #     'dtype': str,
+    #     'name': 'version_installed',
+    # },
+    # {
+    #     'comment': 'absolute path to the installed library / Python module',
+    #     'dtype': str,
+    #     'name': 'library',
+    # },
     {
         'comment': 'path to the first:(INSTALLED | AVAILABLE) icon',
         'dtype': str,
         'name': 'icon',
     },
-    {
-        'comment': 'True if Python plugin',
-        'dtype': bool,
-        'default_value': True,
-        'name': 'pythonic',
-    },
-    {
-        'comment': 'True if core plugin',
-        'dtype': bool,
-        'name': 'readonly',
-    },
-    {
-        'comment': 'True if installed',
-        'dtype': bool,
-        'name': 'installed',
-    },
-    {
-        'comment': 'True if available in repositories',
-        'dtype': bool,
-        'name': 'available',
-    },
-    {
-        'comment': '( not installed | new ) | ( installed | upgradeable | orphan | newer )',
-        'dtype': str,
-        'name': 'status',
-    }, # TODO
-    {
-        'comment': 'NULL | broken | incompatible | dependent',
-        'dtype': str,
-        'name': 'error',
-    }, # TODO
-    {
-        'comment': 'error description',
-        'dtype': str,
-        'name': 'error_details',
-    }, # TODO
+    # {
+    #     'comment': 'True if Python plugin',
+    #     'dtype': bool,
+    #     'default_value': True,
+    #     'name': 'pythonic',
+    # },
+    # {
+    #     'comment': 'True if core plugin',
+    #     'dtype': bool,
+    #     'name': 'readonly',
+    # },
+    # {
+    #     'comment': 'True if installed',
+    #     'dtype': bool,
+    #     'name': 'installed',
+    # },
+    # {
+    #     'comment': 'True if available in repositories',
+    #     'dtype': bool,
+    #     'name': 'available',
+    # },
+    # {
+    #     'comment': '( not installed | new ) | ( installed | upgradeable | orphan | newer )',
+    #     'dtype': str,
+    #     'name': 'status',
+    # }, # TODO
+    # {
+    #     'comment': 'NULL | broken | incompatible | dependent',
+    #     'dtype': str,
+    #     'name': 'error',
+    # }, # TODO
+    # {
+    #     'comment': 'error description',
+    #     'dtype': str,
+    #     'name': 'error_details',
+    # }, # TODO
     {
         'comment': 'true if experimental, false if stable',
         'dtype': bool,
@@ -192,50 +197,76 @@ METADATA_FIELDS_SPEC = (
         'dtype': bool,
         'name': 'deprecated',
     },
-    {
-        'comment': 'true if trusted, false if not trusted',
-        'dtype': bool,
-        'name': 'trusted',
-    }, # TODO
-    {
-        'comment': 'available version',
-        'dtype': str,
-        'name': 'version_available',
-    },
-    {
-        'comment': 'the remote repository id',
-        'dtype': str,
-        'name': 'zip_repository',
-    }, # TODO
-    {
-        'comment': 'url for downloading the plugin',
-        'dtype': str,
-        'name': 'download_url',
-    },
-    {
-        'comment': 'the zip file name to be unzipped after downloaded',
-        'dtype': str,
-        'name': 'filename',
-    },
-    {
-        'comment': 'number of downloads',
-        'dtype': str,
-        'name': 'downloads',
-    },
-    {
-        'comment': 'average vote',
-        'dtype': str,
-        'name': 'average_vote',
-    },
-    {
-        'comment': 'number of votes',
-        'dtype': str,
-        'name': 'rating_votes',
-    },
+    # {
+    #     'comment': 'true if trusted, false if not trusted',
+    #     'dtype': bool,
+    #     'name': 'trusted',
+    # }, # TODO
+    # {
+    #     'comment': 'available version',
+    #     'dtype': str,
+    #     'name': 'version_available',
+    # },
+    # {
+    #     'comment': 'the remote repository id',
+    #     'dtype': str,
+    #     'name': 'zip_repository',
+    # }, # TODO
+    # {
+    #     'comment': 'url for downloading the plugin',
+    #     'dtype': str,
+    #     'name': 'download_url',
+    # },
+    # {
+    #     'comment': 'the zip file name to be unzipped after downloaded',
+    #     'dtype': str,
+    #     'name': 'filename',
+    # },
+    # {
+    #     'comment': 'number of downloads',
+    #     'dtype': str,
+    #     'name': 'downloads',
+    # },
+    # {
+    #     'comment': 'average vote',
+    #     'dtype': str,
+    #     'name': 'average_vote',
+    # },
+    # {
+    #     'comment': 'number of votes',
+    #     'dtype': str,
+    #     'name': 'rating_votes',
+    # },
     {
         'comment': 'PIP-style comma separated list of plugin dependencies',
         'dtype': str,
         'name': 'plugin_dependencies',
+    },
+    {
+        'comment': 'dotted notation of minimum QGIS version',
+        'dtype': str,
+        'name': 'qgisMinimumVersion',
+        'is_required': True,
+    },
+    {
+        'comment': 'dotted notation of maximum QGIS version',
+        'dtype': str,
+        'name': 'qgisMaximumVersion',
+    },
+    {
+        'dtype': str,
+        'name': 'version',
+        'is_required': True,
+    },
+    {
+        'comment': 'determines if the plugin provides processing algorithms',
+        'dtype': bool,
+        'name': 'hasProcessingProvider',
+    },
+    {
+        'comment': 'determines if the plugin provides functionallity for server',
+        'dtype': bool,
+        'name': 'server',
     },
 )
 
