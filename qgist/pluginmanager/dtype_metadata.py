@@ -29,7 +29,7 @@ specific language governing rights and limitations under the License.
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from .const import (
-    METADATA_FIELD_TYPES,
+    METADATA_FIELD_DTYPES,
     METADATA_FIELDS_SPEC,
     )
 from .dtype_settings import dtype_settings_class
@@ -118,7 +118,7 @@ class _dtype_metadata_field_class:
             raise QgistTypeError(tr('"name" must be a str.'))
         if len(name) == 0:
             raise QgistValueError(tr('"name" must not be empty.'))
-        if dtype not in METADATA_FIELD_TYPES:
+        if dtype not in METADATA_FIELD_DTYPES:
             raise QgistTypeError(tr('"dtype" unknown.'))
         if not isinstance(is_required, bool):
             raise QgistTypeError(tr('"is_required" must be a bool.'))
@@ -156,7 +156,7 @@ class _dtype_metadata_field_class:
     @value.setter
     def value(self, new_value):
 
-        if not any((isinstance(new_value, dtype) for dtype in METADATA_FIELD_TYPES)):
+        if not any((isinstance(new_value, dtype) for dtype in METADATA_FIELD_DTYPES)):
             raise QgistTypeError(tr('"new_value" does not have valid type'))
 
         if self._dtype == bool:
@@ -171,7 +171,3 @@ class _dtype_metadata_field_class:
     def is_required(self):
 
         return self._is_required
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# LIST OF FIELDS
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

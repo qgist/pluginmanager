@@ -65,7 +65,7 @@ QGSSETTINGS_SPEC = {
 # PLUGIN META
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-METADATA_FIELD_TYPES = (str, bool)
+METADATA_FIELD_DTYPES = (str, bool)
 METADATA_FIELDS_SPEC = (
     {
         'comment': 'module name',
