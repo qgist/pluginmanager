@@ -109,7 +109,7 @@ _fields_spec = (
         'comment': 'will be removed?',
         'dtype': str,
         'name': 'category',
-    },
+    }, # TODO
     {
         'comment': 'comma separated, spaces allowed',
         'dtype': str,
@@ -122,12 +122,10 @@ _fields_spec = (
         'name': 'changelog',
     },
     {
-        'comment': 'author name',
         'dtype': str,
         'name': 'author_name',
     },
     {
-        'comment': 'author email',
         'dtype': str,
         'name': 'author_email',
     },
@@ -186,17 +184,17 @@ _fields_spec = (
         'comment': '( not installed | new ) | ( installed | upgradeable | orphan | newer )',
         'dtype': str,
         'name': 'status',
-    },
+    }, # TODO
     {
         'comment': 'NULL | broken | incompatible | dependent',
         'dtype': str,
         'name': 'error',
-    },
+    }, # TODO
     {
         'comment': 'error description',
         'dtype': str,
         'name': 'error_details',
-    },
+    }, # TODO
     {
         'comment': 'true if experimental, false if stable',
         'dtype': bool,
@@ -211,7 +209,7 @@ _fields_spec = (
         'comment': 'true if trusted, false if not trusted',
         'dtype': bool,
         'name': 'trusted',
-    },
+    }, # TODO
     {
         'comment': 'available version',
         'dtype': str,
@@ -221,7 +219,7 @@ _fields_spec = (
         'comment': 'the remote repository id',
         'dtype': str,
         'name': 'zip_repository',
-    },
+    }, # TODO
     {
         'comment': 'url for downloading the plugin',
         'dtype': str,
