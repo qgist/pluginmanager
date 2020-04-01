@@ -58,7 +58,10 @@ class dtype_plugin_base_class:
         - meta ...
     """
 
-    def __init__(self, plugin_id, name, plugin_type, installed, protected, active, repo, config):
+    def __init__(self,
+        plugin_id, name, plugin_type, installed, protected, active, deprecated,
+        repo, config,
+        ):
 
         if not isinstance(plugin_id, str):
             raise QgistTypeError(tr('"plugin_id" must be a str.'))
@@ -78,6 +81,8 @@ class dtype_plugin_base_class:
             raise QgistTypeError(tr('"protected" must be a bool.'))
         if not isinstance(active, bool):
             raise QgistTypeError(tr('"active" must be a bool.'))
+        if not isinstance(deprecated, bool):
+            raise QgistTypeError(tr('"deprecated" must be a bool.'))
         if not isinstance(repo, dtype_repository_base_class):
             raise QgistTypeError(tr('"repo" must be a repository.'))
         if not isinstance(config, dtype_settings_class):
@@ -89,6 +94,7 @@ class dtype_plugin_base_class:
         self._installed = installed
         self._protected = protected
         self._active = active
+        self._deprecated = deprecated
         self._repo = repo # parent repository
 
         self._config = config
@@ -163,6 +169,10 @@ class dtype_plugin_base_class:
             self.load()
         else:
             self.unload()
+
+    @property
+    def deprecated(self):
+        return self._deprecated
 
     @property
     def available(self):
