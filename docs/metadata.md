@@ -1,6 +1,6 @@
 # Data structures
 
-Notes based on comment in `python/pyplugin_installer/installer_data.py`
+Notes based on comment in `/python/pyplugin_installer/installer_data.py`
 
 ## *mRepositories*: dict of dicts
 
@@ -63,9 +63,9 @@ mPlugins = {
 
 The **id** of a plugin equals the **name of its zip-file** (without its extension).
 
-There is also `hasProcessingProvider` (either `yes` or `no`, i.e. a string). See [commit](https://github.com/qgis/QGIS/commit/558d5365b574a4f9e96d32ecdd7220c57b148266).
+There is also `hasProcessingProvider` (either `yes` or `no`, i.e. a string). See [commit](https://github.com/qgis/QGIS/commit/558d5365b574a4f9e96d32ecdd7220c57b148266). Not being used at the moment?
 
-And there is also `server` (either `True` or `False`, i.e. also a string). See `/src/server/qgsserverplugins.cpp`.
+And there is also `server` (either `True` or `False`, i.e. also a string). See `/src/server/qgsserverplugins.cpp`. Plugin then must expose `serverClassFactory` which is given `serverClassFactory` as a parameter, see `startServerPlugin` in `/python/utils.py`.
 
 ## Translations
 
