@@ -30,3 +30,9 @@ specific language governing rights and limitations under the License.
 
 class QgistInstallFailed(Exception):
     pass
+
+class QgistMetaKeyError(KeyError):
+    pass
+
+class QgistMetaRequirementError(Exception):
+    pass
