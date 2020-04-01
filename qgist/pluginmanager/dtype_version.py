@@ -103,9 +103,13 @@ class dtype_version_class:
         if len(self) != len(other):
             return False
 
-        return all((
+        versions_equal = all((
             (a == b) for a, b in zip(self._elements, other._elements)
             ))
+        if versions_equal and self._experimental != other._experimental:
+            raise QgistValueError(tr('versions are equal but only one is experimental'))
+
+        return versions_equal
 
     def __ne__(self, other):
 
