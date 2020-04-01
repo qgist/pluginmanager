@@ -114,6 +114,8 @@ class dtype_plugin_base_class:
             f'id="{self._id:s}" name="{self._name:s}" '
             f'installed={"yes" if self._installed else "no":s} '
             f'active={"yes" if self._active else "no":s} '
+            f'deprecated={"yes" if self._deprecated else "no":s} '
+            f'protected={"yes" if self._protected else "no":s}'
             '>'
             )
 
