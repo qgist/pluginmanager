@@ -59,7 +59,7 @@ class dtype_plugin_base_class:
     """
 
     def __init__(self,
-        plugin_id, name, plugin_type, installed, protected, active, deprecated,
+        plugin_id, name, plugin_type, installed, protected, active, deprecated, has_processingprovider,
         repo, config,
         ):
 
@@ -83,6 +83,8 @@ class dtype_plugin_base_class:
             raise QgistTypeError(tr('"active" must be a bool.'))
         if not isinstance(deprecated, bool):
             raise QgistTypeError(tr('"deprecated" must be a bool.'))
+        if not isinstance(has_processingprovider, bool):
+            raise QgistTypeError(tr('"has_processingprovider" must be a bool.'))
         if not isinstance(repo, dtype_repository_base_class):
             raise QgistTypeError(tr('"repo" must be a repository.'))
         if not isinstance(config, dtype_settings_class):
@@ -95,6 +97,7 @@ class dtype_plugin_base_class:
         self._protected = protected
         self._active = active
         self._deprecated = deprecated
+        self._has_processingprovider = has_processingprovider
         self._repo = repo # parent repository
 
         self._config = config
@@ -173,6 +176,10 @@ class dtype_plugin_base_class:
     @property
     def deprecated(self):
         return self._deprecated
+
+    @property
+    def has_processingprovider(self):
+        return self._has_processingprovider
 
     @property
     def available(self):
