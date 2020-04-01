@@ -83,167 +83,167 @@ _fields_spec = (
     {
         'comment': 'module name',
         'dtype': 'unicode',
-        'name': 'id'
+        'name': 'id',
     },
     {
         'comment': 'human readable plugin name',
         'dtype': 'unicode',
-        'name': 'name'
+        'name': 'name',
     },
     {
         'comment': 'short description of the plugin purpose only',
         'dtype': 'unicode',
-        'name': 'description'
+        'name': 'description',
     },
     {
         'comment': 'longer description: how does it work, where does it install, how to run it?',
         'dtype': 'unicode',
-        'name': 'about'
+        'name': 'about',
     },
     {
         'comment': 'will be removed?',
         'dtype': 'unicode',
-        'name': 'category'
+        'name': 'category',
     },
     {
         'comment': 'comma separated, spaces allowed',
         'dtype': 'unicode',
-        'name': 'tags'
+        'name': 'tags',
     },
     {
         'comment': 'may be multiline',
         'dtype': 'unicode',
-        'name': 'changelog'
+        'name': 'changelog',
     },
     {
         'comment': 'author name',
         'dtype': 'unicode',
-        'name': 'author_name'
+        'name': 'author_name',
     },
     {
         'comment': 'author email',
         'dtype': 'unicode',
-        'name': 'author_email'
+        'name': 'author_email',
     },
     {
         'comment': 'url to the plugin homepage',
         'dtype': 'unicode',
-        'name': 'homepage'
+        'name': 'homepage',
     },
     {
         'comment': 'url to a tracker site',
         'dtype': 'unicode',
-        'name': 'tracker'
+        'name': 'tracker',
     },
     {
         'comment': 'url to the source code repository',
         'dtype': 'unicode',
-        'name': 'code_repository'
+        'name': 'code_repository',
     },
     {
         'comment': 'installed instance version',
         'dtype': 'unicode',
-        'name': 'version_installed'
+        'name': 'version_installed',
     },
     {
         'comment': 'absolute path to the installed library / Python module',
         'dtype': 'unicode',
-        'name': 'library'
+        'name': 'library',
     },
     {
         'comment': 'path to the first:(INSTALLED | AVAILABLE) icon',
         'dtype': 'unicode',
-        'name': 'icon'
+        'name': 'icon',
     },
     {
         'comment': 'True if Python plugin',
         'dtype': 'const bool=True',
-        'name': 'pythonic'
+        'name': 'pythonic',
     },
     {
         'comment': 'True if core plugin',
         'dtype': 'boolean',
-        'name': 'readonly'
+        'name': 'readonly',
     },
     {
         'comment': 'True if installed',
         'dtype': 'boolean',
-        'name': 'installed'
+        'name': 'installed',
     },
     {
         'comment': 'True if available in repositories',
         'dtype': 'boolean',
-        'name': 'available'
+        'name': 'available',
     },
     {
         'comment': '( not installed | new ) | ( installed | upgradeable | orphan | newer )',
         'dtype': 'unicode',
-        'name': 'status'
+        'name': 'status',
     },
     {
         'comment': 'NULL | broken | incompatible | dependent',
         'dtype': 'unicode',
-        'name': 'error'
+        'name': 'error',
     },
     {
         'comment': 'error description',
         'dtype': 'unicode',
-        'name': 'error_details'
+        'name': 'error_details',
     },
     {
         'comment': 'true if experimental, false if stable',
         'dtype': 'boolean',
-        'name': 'experimental'
+        'name': 'experimental',
     },
     {
         'comment': 'true if deprecated, false if actual',
         'dtype': 'boolean',
-        'name': 'deprecated'
+        'name': 'deprecated',
     },
     {
         'comment': 'true if trusted, false if not trusted',
         'dtype': 'boolean',
-        'name': 'trusted'
+        'name': 'trusted',
     },
     {
         'comment': 'available version',
         'dtype': 'unicode',
-        'name': 'version_available'
+        'name': 'version_available',
     },
     {
         'comment': 'the remote repository id',
         'dtype': 'unicode',
-        'name': 'zip_repository'
+        'name': 'zip_repository',
     },
     {
         'comment': 'url for downloading the plugin',
         'dtype': 'unicode',
-        'name': 'download_url'
+        'name': 'download_url',
     },
     {
         'comment': 'the zip file name to be unzipped after downloaded',
         'dtype': 'unicode',
-        'name': 'filename'
+        'name': 'filename',
     },
     {
         'comment': 'number of downloads',
         'dtype': 'unicode',
-        'name': 'downloads'
+        'name': 'downloads',
     },
     {
         'comment': 'average vote',
         'dtype': 'unicode',
-        'name': 'average_vote'
+        'name': 'average_vote',
     },
     {
         'comment': 'number of votes',
         'dtype': 'unicode',
-        'name': 'rating_votes'
+        'name': 'rating_votes',
     },
     {
         'comment': 'PIP-style comma separated list of plugin dependencies',
         'dtype': 'unicode',
-        'name': 'plugin_dependencies'
+        'name': 'plugin_dependencies',
     },
 )
 
