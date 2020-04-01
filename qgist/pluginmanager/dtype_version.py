@@ -60,20 +60,23 @@ class dtype_version_class:
     Immutable.
     """
 
-    def __init__(self, *elements, original = None):
+    def __init__(self, *elements, original = None, experimental = False):
 
         for index, element in enumerate(elements):
             if not isinstance(element, str):
                 raise QgistTypeError(tr('parameter of following index is not a str') + f': {index:d}')
         if not isinstance(original, str) and original is not None:
             raise QgistTypeError(tr('original is not a str and not None'))
+        if not isinstance(experimental, bool):
+            raise QgistTypeError(tr('"experimental" must be a bool.'))
 
         self._elements = elements
         self._original = original if original is not None else '.'.join(elements)
+        self._experimental = experimental
 
     def __repr__(self):
 
-        return f'<version {str(self):s} ("{self._original:s}")>'
+        return f'<version {str(self):s} ("{self._original:s}") experimental={"yes" if self._experimental else "no":s}>'
 
     def __str__(self):
 
@@ -140,6 +143,11 @@ class dtype_version_class:
     def original(self):
 
         return self._original
+
+    @property
+    def experimental(self):
+
+        return self._experimental
 
     @property
     def stable(self):
@@ -249,17 +257,19 @@ class dtype_version_class:
         return elements
 
     @classmethod
-    def from_pluginversion(cls, plugin_version_str):
+    def from_pluginversion(cls, plugin_version_str, experimental = False):
         "Parse plugin version string and return version object"
 
         if not isinstance(plugin_version_str, str):
             raise QgistTypeError(tr('plugin_version_str must be of type str'))
+        if not isinstance(experimental, bool):
+            raise QgistTypeError(tr('"experimental" must be a bool.'))
 
         plugin_version = cls._split_version_str(
             cls._normalize_version_str(plugin_version_str)
             )
 
-        return cls(*plugin_version, original = plugin_version_str)
+        return cls(*plugin_version, original = plugin_version_str, experimental = experimental)
 
     @classmethod
     def from_qgisversion(cls, qgis_version_str, fix_plugin_compatibility = False):
@@ -279,4 +289,4 @@ class dtype_version_class:
             x = str(int(x) + 1)
             y = z = '0'
 
-        return cls(x, y, z, original = qgis_version_str)
+        return cls(x, y, z, original = qgis_version_str, experimental = False)
