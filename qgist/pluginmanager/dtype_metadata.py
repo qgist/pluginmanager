@@ -84,12 +84,14 @@ _fields_spec = (
         'comment': 'module name',
         'dtype': 'unicode',
         'name': 'id',
+        'is_required': True,
     },
     {
         'comment': 'human readable plugin name',
         'dtype': 'unicode',
         'i18n': True,
         'name': 'name',
+        'is_required': True,
     },
     {
         'comment': 'short description of the plugin purpose only',
