@@ -28,9 +28,9 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .dtype_pluginrelease import dtype_plugin_release_class
 from .dtype_repository import dtype_repository_base_class
 from .dtype_settings import dtype_settings_class
-from .dtype_version import dtype_version_class
 
 from ..error import (
     QgistNotImplementedError,
@@ -54,8 +54,7 @@ class dtype_plugin_base_class:
     """
 
     def __init__(self,
-        plugin_id, name, installed, installed_version,
-        protected, active, deprecated, has_processingprovider,
+        plugin_id, installed, installed_release, available_releases, protected, active, deprecated,
         repo, config,
         ):
 
@@ -63,37 +62,32 @@ class dtype_plugin_base_class:
             raise QgistTypeError(tr('"plugin_id" must be a str.'))
         if len(plugin_id) == 0:
             raise QgistValueError(tr('"plugin_id" must not be empty.'))
-        if not isinstance(name, str):
-            raise QgistTypeError(tr('"name" must be a str.'))
-        if len(name) == 0:
-            raise QgistValueError(tr('"name" must not be empty.'))
         if not isinstance(installed, bool):
             raise QgistTypeError(tr('"installed" must be a bool.'))
-        if installed and not isinstance(installed_version, dtype_version_class):
-            raise QgistTypeError(tr('plugin is installed, i.e. "installed_version" must be a version.'))
-        if not installed and installed_version is not None:
-            raise QgistTypeError(tr('plugin is not installed, i.e. "installed_version" must be None.'))
+        if installed and not isinstance(installed_release, dtype_plugin_release_class):
+            raise QgistTypeError(tr('plugin is installed, i.e. "installed_release" must be a plugin release.'))
+        if not installed and installed_release is not None:
+            raise QgistTypeError(tr('plugin is not installed, i.e. "installed_release" must be None.'))
+
+        # TODO check available_releases!
+
         if not isinstance(protected, bool):
             raise QgistTypeError(tr('"protected" must be a bool.'))
         if not isinstance(active, bool):
             raise QgistTypeError(tr('"active" must be a bool.'))
         if not isinstance(deprecated, bool):
             raise QgistTypeError(tr('"deprecated" must be a bool.'))
-        if not isinstance(has_processingprovider, bool):
-            raise QgistTypeError(tr('"has_processingprovider" must be a bool.'))
         if not isinstance(repo, dtype_repository_base_class):
             raise QgistTypeError(tr('"repo" must be a repository.'))
         if not isinstance(config, dtype_settings_class):
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
         self._id = plugin_id # unique
-        self._name = name # TODO enable translations!
         self._installed = installed
-        self._installed_version = installed_version
+        self._installed_release = installed_release
         self._protected = protected
         self._active = active
         self._deprecated = deprecated
-        self._has_processingprovider = has_processingprovider
         self._repo = repo # parent repository
 
         self._config = config
@@ -101,13 +95,13 @@ class dtype_plugin_base_class:
         # Implement in derived class!
         self._available = None # bool. Always static? Source available (online), matching QGIS version requirement
         self._watchdog = None # bool
-        self._available_versions = [] # list of dtype_version. Source available (online), matching QGIS version requirement
+        self._available_releases = [] # list of dtype_pluginrelease. Source available (online), matching QGIS version requirement
 
     def __repr__(self):
 
         return (
             '<plugin '
-            f'id="{self._id:s}" name="{self._name:s}" '
+            f'id="{self._id:s}" '
             f'installed={"yes" if self._installed else "no":s} '
             f'active={"yes" if self._active else "no":s} '
             f'deprecated={"yes" if self._deprecated else "no":s} '
@@ -122,10 +116,6 @@ class dtype_plugin_base_class:
     @property
     def id(self):
         return self._id
-
-    @property
-    def name(self):
-        return self._name
 
     @property
     def installed(self):
@@ -171,10 +161,6 @@ class dtype_plugin_base_class:
         return self._deprecated
 
     @property
-    def has_processingprovider(self):
-        return self._has_processingprovider
-
-    @property
     def available(self):
         return self._available
 
@@ -183,44 +169,53 @@ class dtype_plugin_base_class:
         return self._repo
 
     @property
-    def installed_version(self):
+    def installed_release(self):
         if not self._installed:
             raise QgistValueError(tr('plugin is not installed'))
-        if not isinstance(self._installed_version, dtype_version_class):
-            raise QgistValueError(tr('internal error: plugin is installed but has no version'))
-        return self._installed_version
+        if not isinstance(self._installed_release, dtype_plugin_release_class):
+            raise QgistValueError(tr('internal error: plugin is installed but has no release'))
+        return self._installed_release
 
     @property
-    def available_versions(self):
-        return (version for version in self._available_versions)
+    def available_releases(self):
+        return (release for release in self._available_releases)
 
     @property
     def upgradable(self):
         if not self._installed:
             return False
-        if len(self._available_versions) == 0:
+        if len(self._available_releases) == 0:
             return False
-        if not isinstance(self._installed_version, dtype_version_class):
-            raise QgistValueError(tr('internal error: plugin is installed but has no version'))
-        return any((version > self._installed_version for version in self._available_versions))
+        if not isinstance(self._installed_release, dtype_plugin_release_class):
+            raise QgistValueError(tr('internal error: plugin is installed but has no release'))
+        return any((
+            available_release.version > self._installed_release.version
+            for available_release in self._available_releases
+            ))
 
     @property
     def downgradable(self):
         if not self._installed:
             return False
-        if len(self._available_versions) == 0:
+        if len(self._available_releases) == 0:
             return False
-        if not isinstance(self._installed_version, dtype_version_class):
-            raise QgistValueError(tr('internal error: plugin is installed but has no version'))
-        return any((version < self._installed_version for version in self._available_versions))
+        if not isinstance(self._installed_release, dtype_plugin_release_class):
+            raise QgistValueError(tr('internal error: plugin is installed but has no release'))
+        return any((
+            available_release.version < self._installed_release.version
+            for available_release in self._available_releases
+            ))
 
     @property
     def orphan(self):
         if not self._installed:
             return False
-        if not isinstance(self._installed_version, dtype_version_class):
-            raise QgistValueError(tr('internal error: plugin is installed but has no version'))
-        return all((version != self._installed_version for version in self._available_versions))
+        if not isinstance(self._installed_release, dtype_plugin_release_class):
+            raise QgistValueError(tr('internal error: plugin is installed but has no release'))
+        return all((
+            available_release.version != self._installed_release.version
+            for available_release in self._available_releases
+            ))
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # INSTALL / UNINSTALL
