@@ -25,7 +25,7 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# CLASS
+# CLASS: META DATA
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class dtype_metadata_class:
@@ -33,7 +33,7 @@ class dtype_metadata_class:
     Meta data of one single plugin
     """
 
-    def __init__(self):
+    def __init__(self, **fields):
 
         self._id = '' # TODO plugin id
 
@@ -45,3 +45,25 @@ class dtype_metadata_class:
     def from_xml(cls, xml_string):
 
         return cls()
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# CLASS: META DATA FIELD
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class _dtype_metadata_field_class:
+
+    def __init__(self, name, dtype, is_required, default_value = None):
+
+        self._name = name
+        self._dtype = dtype
+        self._is_required = is_required
+        self._default_value = default_value
+
+    def __repr__(self):
+
+        return (
+            '<meta_field '
+            f'name="{self._name:s}" dtype={self._dtype.__name__} '
+            f'required={"yes" if self._is_required else "no"}'
+            '>'
+            )
