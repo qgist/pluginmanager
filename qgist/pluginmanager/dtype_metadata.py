@@ -32,3 +32,11 @@ class dtype_metadata_class:
     """
     Meta data of one single plugin
     """
+
+    def __init__(self):
+
+        self._id = '' # TODO plugin id
+
+    def __repr__(self):
+
+        return f'<metadata id="{self._id:s}">'
