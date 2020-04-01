@@ -88,16 +88,19 @@ _fields_spec = (
     {
         'comment': 'human readable plugin name',
         'dtype': 'unicode',
+        'i18n': True,
         'name': 'name',
     },
     {
         'comment': 'short description of the plugin purpose only',
         'dtype': 'unicode',
+        'i18n': True,
         'name': 'description',
     },
     {
         'comment': 'longer description: how does it work, where does it install, how to run it?',
         'dtype': 'unicode',
+        'i18n': True,
         'name': 'about',
     },
     {
@@ -108,6 +111,7 @@ _fields_spec = (
     {
         'comment': 'comma separated, spaces allowed',
         'dtype': 'unicode',
+        'i18n': True,
         'name': 'tags',
     },
     {

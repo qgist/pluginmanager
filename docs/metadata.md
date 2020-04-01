@@ -2,6 +2,8 @@
 
 Notes based on comment in `/python/pyplugin_installer/installer_data.py`
 
+Also see [QGIS docs](https://docs.qgis.org/3.10/en/docs/pyqgis_developer_cookbook/plugins/plugins.html#plugin-metadata).
+
 ## *mRepositories*: dict of dicts
 
 ```python
