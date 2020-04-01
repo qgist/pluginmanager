@@ -40,3 +40,8 @@ class dtype_metadata_class:
     def __repr__(self):
 
         return f'<metadata id="{self._id:s}">'
+
+    @classmethod
+    def from_xml(cls, xml_string):
+
+        return cls()
