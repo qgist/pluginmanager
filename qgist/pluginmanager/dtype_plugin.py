@@ -58,7 +58,8 @@ class dtype_plugin_base_class:
     """
 
     def __init__(self,
-        plugin_id, name, installed, protected, active, deprecated, has_processingprovider,
+        plugin_id, name, installed, installed_version,
+        protected, active, deprecated, has_processingprovider,
         repo, config,
         ):
 
@@ -72,6 +73,10 @@ class dtype_plugin_base_class:
             raise QgistValueError(tr('"name" must not be empty.'))
         if not isinstance(installed, bool):
             raise QgistTypeError(tr('"installed" must be a bool.'))
+        if installed and not isinstance(installed_version, dtype_version_class):
+            raise QgistTypeError(tr('plugin is installed, i.e. "installed_version" must be a version.'))
+        if not installed and installed_version is not None:
+            raise QgistTypeError(tr('plugin is not installed, i.e. "installed_version" must be None.'))
         if not isinstance(protected, bool):
             raise QgistTypeError(tr('"protected" must be a bool.'))
         if not isinstance(active, bool):
@@ -88,6 +93,7 @@ class dtype_plugin_base_class:
         self._id = plugin_id # unique
         self._name = name # TODO enable translations!
         self._installed = installed
+        self._installed_version = installed_version
         self._protected = protected
         self._active = active
         self._deprecated = deprecated
@@ -99,7 +105,6 @@ class dtype_plugin_base_class:
         # Implement in derived class!
         self._available = None # bool. Always static? Source available (online), matching QGIS version requirement
         self._watchdog = None # bool
-        self._installed_version = None # dtype_version
         self._available_versions = [] # list of dtype_version. Source available (online), matching QGIS version requirement
 
     def __repr__(self):
