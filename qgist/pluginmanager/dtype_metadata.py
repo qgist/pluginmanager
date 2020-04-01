@@ -58,7 +58,10 @@ class dtype_metadata_class:
             }
 
         for key in fields.keys():
+            if key not in self._fields.keys():
+                raise QgistMetaKeyError(tr('"key" is not a valid meta data field'))
             self._fields[key].value = fields[key]
+
         for key in self._fields.keys():
             if self._fields[key].value is None and self._fields[key].is_required:
                 raise QgistMetaRequirementError(tr('meta data field not present but required'))
