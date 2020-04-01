@@ -65,12 +65,179 @@ QGSSETTINGS_SPEC = {
 # PLUGIN META
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-PLUGIN_TRANSLATABLE_ATTRIBUTES = (
-    'name',
-    'description',
-    'about',
-    'tags',
-    )
+METADATA_FIELD_TYPES = (str, bool)
+METADATA_FIELDS_SPEC = (
+    {
+        'comment': 'module name',
+        'dtype': str,
+        'name': 'id',
+        'is_required': True,
+    },
+    {
+        'comment': 'human readable plugin name',
+        'dtype': str,
+        'i18n': True,
+        'name': 'name',
+        'is_required': True,
+    },
+    {
+        'comment': 'short description of the plugin purpose only',
+        'dtype': str,
+        'i18n': True,
+        'name': 'description',
+    },
+    {
+        'comment': 'longer description: how does it work, where does it install, how to run it?',
+        'dtype': str,
+        'i18n': True,
+        'name': 'about',
+    },
+    {
+        'comment': 'will be removed?',
+        'dtype': str,
+        'name': 'category',
+    }, # TODO
+    {
+        'comment': 'comma separated, spaces allowed',
+        'dtype': str,
+        'i18n': True,
+        'name': 'tags',
+    },
+    {
+        'comment': 'may be multiline',
+        'dtype': str,
+        'name': 'changelog',
+    },
+    {
+        'dtype': str,
+        'name': 'author_name',
+    },
+    {
+        'dtype': str,
+        'name': 'author_email',
+    },
+    {
+        'comment': 'url to the plugin homepage',
+        'dtype': str,
+        'name': 'homepage',
+    },
+    {
+        'comment': 'url to a tracker site',
+        'dtype': str,
+        'name': 'tracker',
+    },
+    {
+        'comment': 'url to the source code repository',
+        'dtype': str,
+        'name': 'code_repository',
+    },
+    {
+        'comment': 'installed instance version',
+        'dtype': str,
+        'name': 'version_installed',
+    },
+    {
+        'comment': 'absolute path to the installed library / Python module',
+        'dtype': str,
+        'name': 'library',
+    },
+    {
+        'comment': 'path to the first:(INSTALLED | AVAILABLE) icon',
+        'dtype': str,
+        'name': 'icon',
+    },
+    {
+        'comment': 'True if Python plugin',
+        'dtype': bool,
+        'default_value': True,
+        'name': 'pythonic',
+    },
+    {
+        'comment': 'True if core plugin',
+        'dtype': bool,
+        'name': 'readonly',
+    },
+    {
+        'comment': 'True if installed',
+        'dtype': bool,
+        'name': 'installed',
+    },
+    {
+        'comment': 'True if available in repositories',
+        'dtype': bool,
+        'name': 'available',
+    },
+    {
+        'comment': '( not installed | new ) | ( installed | upgradeable | orphan | newer )',
+        'dtype': str,
+        'name': 'status',
+    }, # TODO
+    {
+        'comment': 'NULL | broken | incompatible | dependent',
+        'dtype': str,
+        'name': 'error',
+    }, # TODO
+    {
+        'comment': 'error description',
+        'dtype': str,
+        'name': 'error_details',
+    }, # TODO
+    {
+        'comment': 'true if experimental, false if stable',
+        'dtype': bool,
+        'name': 'experimental',
+    },
+    {
+        'comment': 'true if deprecated, false if actual',
+        'dtype': bool,
+        'name': 'deprecated',
+    },
+    {
+        'comment': 'true if trusted, false if not trusted',
+        'dtype': bool,
+        'name': 'trusted',
+    }, # TODO
+    {
+        'comment': 'available version',
+        'dtype': str,
+        'name': 'version_available',
+    },
+    {
+        'comment': 'the remote repository id',
+        'dtype': str,
+        'name': 'zip_repository',
+    }, # TODO
+    {
+        'comment': 'url for downloading the plugin',
+        'dtype': str,
+        'name': 'download_url',
+    },
+    {
+        'comment': 'the zip file name to be unzipped after downloaded',
+        'dtype': str,
+        'name': 'filename',
+    },
+    {
+        'comment': 'number of downloads',
+        'dtype': str,
+        'name': 'downloads',
+    },
+    {
+        'comment': 'average vote',
+        'dtype': str,
+        'name': 'average_vote',
+    },
+    {
+        'comment': 'number of votes',
+        'dtype': str,
+        'name': 'rating_votes',
+    },
+    {
+        'comment': 'PIP-style comma separated list of plugin dependencies',
+        'dtype': str,
+        'name': 'plugin_dependencies',
+    },
+)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # REPO META
