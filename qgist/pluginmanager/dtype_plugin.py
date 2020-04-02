@@ -25,6 +25,12 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from typing import Generator, Iterator
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -68,9 +74,11 @@ class dtype_plugin_base_class:
             raise QgistTypeError(tr('plugin is installed, i.e. "installed_release" must be a plugin release.'))
         if not installed and installed_release is not None:
             raise QgistTypeError(tr('plugin is not installed, i.e. "installed_release" must be None.'))
-
-        # TODO check available_releases!
-
+        if not any((isinstance(available_releases, dtype) for dtype in (Generator, Iterator, list, tuple))):
+            raise QgistTypeError(tr('"available_releases" must be any of the floowing: list, tuple, generator, iterator.'))
+        available_releases = list(available_releases)
+        if not all((isinstance(release, dtype_plugin_release_class) for release in available_releases)):
+            raise QgistTypeError(tr('All available releases must be plugin releases.'))
         if not isinstance(protected, bool):
             raise QgistTypeError(tr('"protected" must be a bool.'))
         if not isinstance(active, bool):
@@ -85,6 +93,7 @@ class dtype_plugin_base_class:
         self._id = plugin_id # unique
         self._installed = installed
         self._installed_release = installed_release
+        self._available_releases = available_releases # list of dtype_pluginrelease. Source available (online), matching QGIS version requirement
         self._protected = protected
         self._active = active
         self._deprecated = deprecated
@@ -95,7 +104,6 @@ class dtype_plugin_base_class:
         # Implement in derived class!
         self._available = None # bool. Always static? Source available (online), matching QGIS version requirement
         self._watchdog = None # bool
-        self._available_releases = [] # list of dtype_pluginrelease. Source available (online), matching QGIS version requirement
 
     def __repr__(self):
 
