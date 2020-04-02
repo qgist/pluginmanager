@@ -29,6 +29,7 @@ specific language governing rights and limitations under the License.
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from configparser import ConfigParser
+from collections import OrderedDict
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
@@ -74,9 +75,10 @@ class dtype_metadata_class:
             else:
                 self._fields[key].value = fields[key]
 
-        for key in self._fields.keys():
-            if self._fields[key].value is None and self._fields[key].is_required:
-                raise QgistMetaRequirementError(tr('meta data field not present but required'))
+        # TODO "email" is required but e.g. not exposed in plugins.xml from plugins.qgis.org
+        # for key in self._fields.keys():
+        #     if self._fields[key].value is None and self._fields[key].is_required:
+        #         raise QgistMetaRequirementError(tr('meta data field not present but required'))
 
         self._id = self._fields['id'].value
 
@@ -94,10 +96,36 @@ class dtype_metadata_class:
         return self._fields[name].value
 
     @classmethod
-    def from_xml(cls, xml_string):
-        "Parses an XML string and returns a meta data object"
+    def from_xmldict(cls, xml_dict):
+        "Fixes an XML dict from xmltodict and returns a meta data object"
 
-        return cls()
+        if not isinstance(xml_dict, dict) and not isinstance(xml_dict, OrderedDict):
+            raise QgistTypeError(tr('"name" must be a dict.'))
+
+        xml_dict = dict(xml_dict) # gets rid of OrderedDict and copies dict!
+
+        if not all((isinstance(key, str) for key in xml_dict.keys())):
+            raise QgistTypeError(tr('All keys in xml_dict must be str'))
+        if not all(((isinstance(value, str) or value is None) for value in xml_dict.values())):
+            raise QgistTypeError(tr('All values in xml_dict must be str or None'))
+
+        for key in ('name', 'plugin_id'):
+            xml_dict[key] = xml_dict.pop(f'@{key:s}')
+
+        if xml_dict['@version'] != xml_dict['version']:
+            raise QgistValueError('One single plugin release has two versions')
+        xml_dict.pop('@version')
+
+        if 'id' not in xml_dict.keys():
+            if 'file_name' not in xml_dict.keys():
+                raise QgistMetaKeyError(tr('Neither "id" nor "file_name" in XML meta data - no way to determine plugin id'))
+            if not xml_dict['file_name'].lower().endswith('.zip'):
+                raise QgistValueError(tr('Unusual value for "file_name", does not end on ".zip"'))
+            if xml_dict['version'] not in xml_dict['file_name']:
+                raise QgistValueError(tr('Version is not part of "file_name"'))
+            xml_dict['id'] = xml_dict['file_name'][:-1*(len('.zip') + len(xml_dict['version']) + len('..'))]
+
+        return cls(**xml_dict)
 
     @classmethod
     def from_metadatatxt(cls, plugin_id, metadatatxt_string):

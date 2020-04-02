@@ -11,3 +11,4 @@ ui_*.py
 staging*.py
 .ipynb_checkpoints
 *.ipynb
+plugins.xml*

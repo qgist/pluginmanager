@@ -11,7 +11,11 @@ This project attempts to replace QGIS' original plugin manager.
 
 ## For developers (how to contribute)
 
-This is a CPython 3.6+ project. Keep exposure to PyQt and QGIS APIs to a minimum, i.e. Python standard library first wherever possible and strict conversions of (Py)Qt data types to Python data types. For now, no Python (or other) dependencies. PyQt is assumed to be importable, but the code should run without QGIS importable wherever possible. Type hints are considered, possibly enforced by [typeguard](https://github.com/agronholm/typeguard), but for now every API does "manual" type and bounds checks on all parameters. 
+This is a CPython 3.6+ project. Keep exposure to PyQt and QGIS APIs to a minimum, i.e. Python standard library first wherever possible and strict conversions of (Py)Qt data types to Python data types. For now, no Python (or other) dependencies. PyQt is assumed to be importable, but the code should run without QGIS importable wherever possible. Type hints are considered, possibly enforced by [typeguard](https://github.com/agronholm/typeguard), but for now every API does "manual" type and bounds checks on all parameters.
+
+Exceptions (i.e. current dependencies beyond PyQt):
+
+- xmltodict
 
 ## Screenshots
 
