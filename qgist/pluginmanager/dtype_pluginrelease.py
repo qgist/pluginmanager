@@ -51,7 +51,8 @@ class dtype_plugin_release_class:
     def __init__(self,
         plugin_id, version,
         has_processingprovider, has_serverfuncs, experimental,
-        meta):
+        meta
+        ):
 
         if not isinstance(plugin_id, str):
             raise QgistTypeError(tr('"plugin_id" must be a str.'))
