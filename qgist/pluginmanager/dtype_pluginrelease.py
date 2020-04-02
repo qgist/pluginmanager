@@ -79,22 +79,34 @@ class dtype_plugin_release_class:
     def __repr__(self):
 
         return (
-            '<plugin_version '
-            f'id="{self._id:s}" name="{self._name:s}" '
-            f'installed={"yes" if self._installed else "no":s} '
-            f'active={"yes" if self._active else "no":s} '
-            f'deprecated={"yes" if self._deprecated else "no":s} '
-            f'protected={"yes" if self._protected else "no":s}'
+            '<plugin_release '
+            f'id="{self._id:s}" '
+            f'experimental={"yes" if self._experimental else "no":s} '
+            f'processingprovider={"yes" if self.has_processingprovider else "no":s} '
+            f'serverfuncs={"yes" if self.has_serverfuncs else "no":s}'
             '>'
             )
 
-    def __eq__(self):
+    def __eq__(self, other):
 
-        pass
+        return all((
+            self.version == other.version,
+            self.experimental == other.experimental,
+            self.has_processingprovider == other.has_processingprovider,
+            self.has_serverfuncs == other.has_serverfuncs,
+            ))
 
     @property
     def has_processingprovider(self):
         return self._has_processingprovider
+
+    @property
+    def has_serverfuncs(self):
+        return self._has_serverfuncs
+
+    @property
+    def experimental(self):
+        return self._experimental
 
     @property
     def version(self):
