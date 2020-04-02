@@ -110,7 +110,7 @@ class _dtype_metadata_field_class:
 
     def __init__(self,
         name, dtype,
-        is_required = False, default_value = None, i18n = False,
+        is_required = False, value = None, i18n = False,
         comment = '',
         ):
 
@@ -122,8 +122,8 @@ class _dtype_metadata_field_class:
             raise QgistTypeError(tr('"dtype" unknown.'))
         if not isinstance(is_required, bool):
             raise QgistTypeError(tr('"is_required" must be a bool.'))
-        if not isinstance(default_value, dtype) and default_value is not None:
-            raise QgistTypeError(tr('"default_value" does not have matching type.'))
+        if not isinstance(value, dtype) and value is not None:
+            raise QgistTypeError(tr('"value" does not have matching type.'))
         if not isinstance(i18n, bool):
             raise QgistTypeError(tr('"i18n" must be a bool.'))
         if not isinstance(comment, str):
@@ -132,11 +132,9 @@ class _dtype_metadata_field_class:
         self._name = name
         self._dtype = dtype
         self._is_required = is_required
-        self._default_value = default_value
+        self._value = value
         self._i18n = i18n # TODO unused
         self._comment = comment # TODO unused
-
-        self._value = self._default_value
 
     def __repr__(self):
 
