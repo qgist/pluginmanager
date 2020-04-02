@@ -110,7 +110,7 @@ class _dtype_metadata_field_class:
 
     def __init__(self,
         name, dtype,
-        is_required = False, value = None, i18n = False,
+        is_required = False, value = None, i18n = False, known = True,
         comment = '',
         ):
 
@@ -126,6 +126,8 @@ class _dtype_metadata_field_class:
             raise QgistTypeError(tr('"value" does not have matching type.'))
         if not isinstance(i18n, bool):
             raise QgistTypeError(tr('"i18n" must be a bool.'))
+        if not isinstance(known, bool):
+            raise QgistTypeError(tr('"known" must be a bool.'))
         if not isinstance(comment, str):
             raise QgistTypeError(tr('"comment" must be a str.'))
 
@@ -134,6 +136,7 @@ class _dtype_metadata_field_class:
         self._is_required = is_required
         self._value = value
         self._i18n = i18n # TODO unused
+        self._known = known # is meta field a known one?
         self._comment = comment # TODO unused
 
     def __repr__(self):
@@ -141,6 +144,7 @@ class _dtype_metadata_field_class:
         return (
             '<meta_field '
             f'name="{self._name:s}" dtype={self._dtype.__name__} '
+            f'known={"yes" if self._known else "no"} '
             f'i18n={"yes" if self._i18n else "no"} '
             f'required={"yes" if self._is_required else "no"}'
             '>'
