@@ -63,8 +63,9 @@ class dtype_metadata_class:
 
         for key in fields.keys():
             if key not in self._fields.keys():
-                raise QgistMetaKeyError(tr('"key" is not a valid meta data field'))
-            self._fields[key].value = fields[key]
+                self._fields[key] = _dtype_metadata_field_class.from_unknown(key, fields[key])
+            else:
+                self._fields[key].value = fields[key]
 
         for key in self._fields.keys():
             if self._fields[key].value is None and self._fields[key].is_required:
@@ -175,3 +176,13 @@ class _dtype_metadata_field_class:
     def is_required(self):
 
         return self._is_required
+
+    @classmethod
+    def from_unknown(cls, name, value):
+
+        return cls(
+            name = name,
+            value = value,
+            dtype = type(value),
+            known = False,
+            )
