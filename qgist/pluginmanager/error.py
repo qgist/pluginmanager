@@ -36,3 +36,6 @@ class QgistMetaKeyError(KeyError):
 
 class QgistMetaRequirementError(Exception):
     pass
+
+class QgistMetaTxtError(Exception):
+    pass

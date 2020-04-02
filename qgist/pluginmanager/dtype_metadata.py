@@ -25,6 +25,12 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from configparser import ConfigParser
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -36,6 +42,7 @@ from .dtype_settings import dtype_settings_class
 from .error import (
     QgistMetaKeyError,
     QgistMetaRequirementError,
+    QgistMetaTxtError,
     )
 
 from ..error import (
@@ -93,10 +100,27 @@ class dtype_metadata_class:
         return cls()
 
     @classmethod
-    def from_metadatatxt(cls, metadatatxt_string):
+    def from_metadatatxt(cls, plugin_id, metadatatxt_string):
         "Parses a metadata.txt string and returns a meta data object"
 
-        return cls()
+        cp = ConfigParser()
+
+        try:
+            cp.read_string(metadatatxt_string)
+        except Exception as e:
+            raise QgistMetaTxtError(tr('failed to parse metadata.txt') + ': ' + str(e))
+
+        try:
+            general = cp['general']
+        except Exception as e:
+            raise QgistMetaTxtError(tr('failed to fetch section "general" from metadata.txt') + ': ' + str(e))
+
+        try:
+            fields = dict(general)
+        except Exception as e:
+            raise QgistMetaTxtError(tr('failed to convert section "general" from metadata.txt to dict') + ': ' + str(e))
+
+        return cls(id = plugin_id, **fields)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS: META DATA FIELD
