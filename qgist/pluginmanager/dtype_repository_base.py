@@ -162,8 +162,20 @@ class dtype_repository_base_class:
         raise QgistNotImplementedError()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# HELPER STATIC & CLASS METHODS
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @classmethod
+    def get_repo_config_groups(cls, config):
+        raise QgistNotImplementedError()
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PRE-CONSTRUCTOR
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @classmethod
+    def from_default(cls, config):
+        raise QgistNotImplementedError()
 
     @classmethod
     def from_directory(cls, config, path, writeable = False):
@@ -174,5 +186,5 @@ class dtype_repository_base_class:
         raise QgistNotImplementedError()
 
     @classmethod
-    def from_config(cls, *args, **kwargs):
+    def from_config(cls, config):
         raise QgistNotImplementedError()
