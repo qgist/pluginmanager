@@ -35,5 +35,5 @@ __description__ = 'Backend for managing traditional QGIS plugins'
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .dtype_plugin import dtype_plugin_class
+from .dtype_pluginrelease import dtype_pluginrelease_class
 from .dtype_repository import dtype_repository_class

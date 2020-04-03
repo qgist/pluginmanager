@@ -42,7 +42,7 @@ from .const import (
 from .dtype_settings import dtype_settings_class
 from .error import (
     QgistMetaKeyError,
-    QgistMetaRequirementError,
+    # QgistMetaRequirementError, # TODO, see constructor below
     QgistMetaTxtError,
     )
 

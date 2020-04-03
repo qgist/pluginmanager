@@ -34,8 +34,8 @@ class QgistInstallFailed(Exception):
 class QgistMetaKeyError(KeyError):
     pass
 
-class QgistMetaRequirementError(Exception):
-    pass
+# class QgistMetaRequirementError(Exception): # TODO see dtype_metadata
+#     pass
 
 class QgistMetaTxtError(Exception):
     pass

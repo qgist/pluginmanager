@@ -93,7 +93,7 @@ class _backend:
 
         if self._module is None:
             raise QgistSyntaxError('backend module has not been loaded')
-        return self._module.dtype_plugin_class
+        return self._module.dtype_pluginrelease_class
 
     @property
     def dtype_repository_class(self):

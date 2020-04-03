@@ -34,8 +34,7 @@ from typing import Generator, Iterator
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .dtype_pluginrelease import dtype_plugin_release_class
-from .dtype_repository import dtype_repository_base_class
+from .dtype_pluginrelease_base import dtype_pluginrelease_base_class
 from .dtype_settings import dtype_settings_class
 
 from ..error import (
@@ -49,19 +48,18 @@ from ..util import tr
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_plugin_base_class:
+class dtype_plugin_class:
     """
-    # One single plugin
+    One single plugin
 
-    This is abstract class representing a plugin (all of its versions).
-    From this, classes for plugin types (i.e. plugin sources) are derived.
+    This class represents a single plugin, i.e. all of its releases from backends and versions.
 
     Mutable.
     """
 
     def __init__(self,
         plugin_id, installed, installed_release, available_releases, protected, active, deprecated,
-        repo, config,
+        config,
         ):
 
         if not isinstance(plugin_id, str):
@@ -70,14 +68,14 @@ class dtype_plugin_base_class:
             raise QgistValueError(tr('"plugin_id" must not be empty.'))
         if not isinstance(installed, bool):
             raise QgistTypeError(tr('"installed" must be a bool.'))
-        if installed and not isinstance(installed_release, dtype_plugin_release_class):
+        if installed and not isinstance(installed_release, dtype_pluginrelease_base_class):
             raise QgistTypeError(tr('plugin is installed, i.e. "installed_release" must be a plugin release.'))
         if not installed and installed_release is not None:
             raise QgistTypeError(tr('plugin is not installed, i.e. "installed_release" must be None.'))
         if not any((isinstance(available_releases, dtype) for dtype in (Generator, Iterator, list, tuple))):
             raise QgistTypeError(tr('"available_releases" must be any of the floowing: list, tuple, generator, iterator.'))
         available_releases = list(available_releases)
-        if not all((isinstance(release, dtype_plugin_release_class) for release in available_releases)):
+        if not all((isinstance(release, dtype_pluginrelease_base_class) for release in available_releases)):
             raise QgistTypeError(tr('All available releases must be plugin releases.'))
         if not isinstance(protected, bool):
             raise QgistTypeError(tr('"protected" must be a bool.'))
@@ -85,8 +83,6 @@ class dtype_plugin_base_class:
             raise QgistTypeError(tr('"active" must be a bool.'))
         if not isinstance(deprecated, bool):
             raise QgistTypeError(tr('"deprecated" must be a bool.'))
-        if not isinstance(repo, dtype_repository_base_class):
-            raise QgistTypeError(tr('"repo" must be a repository.'))
         if not isinstance(config, dtype_settings_class):
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
@@ -97,7 +93,6 @@ class dtype_plugin_base_class:
         self._protected = protected
         self._active = active
         self._deprecated = deprecated
-        self._repo = repo # parent repository
 
         self._config = config
 
@@ -173,14 +168,10 @@ class dtype_plugin_base_class:
         return self._available
 
     @property
-    def repo(self):
-        return self._repo
-
-    @property
     def installed_release(self):
         if not self._installed:
             raise QgistValueError(tr('plugin is not installed'))
-        if not isinstance(self._installed_release, dtype_plugin_release_class):
+        if not isinstance(self._installed_release, dtype_pluginrelease_base_class):
             raise QgistValueError(tr('internal error: plugin is installed but has no release'))
         return self._installed_release
 
@@ -194,7 +185,7 @@ class dtype_plugin_base_class:
             return False
         if len(self._available_releases) == 0:
             return False
-        if not isinstance(self._installed_release, dtype_plugin_release_class):
+        if not isinstance(self._installed_release, dtype_pluginrelease_base_class):
             raise QgistValueError(tr('internal error: plugin is installed but has no release'))
         return any((
             available_release.version > self._installed_release.version
@@ -207,7 +198,7 @@ class dtype_plugin_base_class:
             return False
         if len(self._available_releases) == 0:
             return False
-        if not isinstance(self._installed_release, dtype_plugin_release_class):
+        if not isinstance(self._installed_release, dtype_pluginrelease_base_class):
             raise QgistValueError(tr('internal error: plugin is installed but has no release'))
         return any((
             available_release.version < self._installed_release.version
@@ -218,7 +209,7 @@ class dtype_plugin_base_class:
     def orphan(self):
         if not self._installed:
             return False
-        if not isinstance(self._installed_release, dtype_plugin_release_class):
+        if not isinstance(self._installed_release, dtype_pluginrelease_base_class):
             raise QgistValueError(tr('internal error: plugin is installed but has no release'))
         return all((
             available_release.version != self._installed_release.version
@@ -236,10 +227,22 @@ class dtype_plugin_base_class:
         """
         raise QgistNotImplementedError()
 
+    def validate_install(self):
+        """
+        Post-install or post-update/-downgrade checks of files and folders
+        """
+        raise QgistNotImplementedError()
+
     def uninstall(self):
         """
         Allows dry runs
         Sets installed to False!
+        """
+        raise QgistNotImplementedError()
+
+    def validate_uninstall(self):
+        """
+        Post-uninstall checks of files and folders
         """
         raise QgistNotImplementedError()
 
@@ -291,27 +294,3 @@ class dtype_plugin_base_class:
         Only relevant if plugin comes from QGIS package repo.
         """
         raise QgistNotImplementedError()
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# ETC
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    def _fetch_available_versions(self):
-        """HTTP ..."""
-        pass
-    def _fetch_plugin(self):
-        """HTTP ..."""
-        pass
-    def _fetch_metadata(self):
-        """HTTP ..."""
-        pass
-    def _validate_install(self):
-        """
-        Post-install or post-update/-downgrade checks of files and folders
-        """
-        pass
-    def _validate_uninstall(self):
-        """
-        Post-uninstall checks of files and folders
-        """
-        pass

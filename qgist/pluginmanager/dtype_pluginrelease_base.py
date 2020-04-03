@@ -41,9 +41,9 @@ from ..util import tr
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_plugin_release_class:
+class dtype_pluginrelease_base_class:
     """
-    A release of a certain plugin
+    A release of a certain plugin, one version from one backend
 
     Mutable.
     """

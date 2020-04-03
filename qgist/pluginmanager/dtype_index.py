@@ -33,6 +33,8 @@ from .const import (
     CONFIG_KEY_ALLOW_EXPERIMENTAL,
     )
 from .backends import backends
+from .dtype_plugin import dtype_plugin_class
+from .dtype_repository_base import dtype_repository_base_class
 from .dtype_settings import dtype_settings_class
 
 from ..error import (
@@ -59,17 +61,14 @@ class dtype_index_class:
 
         self._config = config
         self._repos = [] # From high to low priority
+        self._plugins = {} # Individual plugins, not their releases
 
         self._allow_deprecated = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_DEPRECATED])
         self._allow_experimental = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL])
 
     def __repr__(self):
 
-        return f'<index ({id(self):x})>'
-
-    def __len__(self):
-
-        return len(self._repos)
+        return f'<index ({id(self):x}) repos={self.len_repos:d} plugins={self.len_plugins:d}>'
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES
@@ -78,6 +77,18 @@ class dtype_index_class:
     @property
     def repos(self):
         return (repo for repo in self._repos)
+
+    @property
+    def len_repos(self):
+        return len(self._repos)
+
+    @property
+    def plugins(self):
+        return (plugin for plugin in self._plugins.values())
+
+    @property
+    def len_plugins(self):
+        return len(self._plugins)
 
     @property
     def allow_deprecated(self):
@@ -103,8 +114,19 @@ class dtype_index_class:
 # MANAGEMENT: REPOSITORIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def add_repo(self, repo_type, method, *args, **kwargs):
-        "Initialize and add repository based on type, method and arbitrary parameters"
+    def add_repo(self, repo):
+        "Add a repository"
+
+        if not isinstance(repo, dtype_repository_base_class):
+            raise QgistTypeError(tr('"repo" is not a repo'))
+        if repo.id in (present_repo.id for present_repo in self._repos):
+            raise QgistValueError(tr('"repo" can not be added - its id is already in list'))
+
+        self._repos.append(repo) # Add to list at the end, i.e. with lowest priority
+
+    @staticmethod
+    def create_repo(repo_type, method, *args, **kwargs):
+        "Initialize repository based on type, method and arbitrary parameters"
 
         if not isinstance(repo_type, str):
             raise QgistTypeError(tr('"repo_type" must be a str.'))
@@ -118,8 +140,7 @@ class dtype_index_class:
         if method not in (item[5:] for item in dir(repository_class) if item.startswith('from_')):
             raise QgistValueError(tr('"method" is unknown.'))
 
-        repo = getattr(repository_class, f'from_{method:s}')(*args, **kwargs) # TODO: Catch user abort
-        self._repos.append(repo) # Add to list at the end, i.e. with lowers priority
+        return getattr(repository_class, f'from_{method:s}')(*args, **kwargs) # TODO: Catch user abort
 
     def change_repo_priority(self, repo_id, direction):
         "Repository can be moved up (lower priority) or down (higher priority) by one"
@@ -132,17 +153,17 @@ class dtype_index_class:
         repo = self.get_repo(repo_id)
         index = self._repos.index(repo)
 
-        if len(self) < 2:
+        if self.len_repos < 2:
             return
         if index == 0 and direction == -1:
             return
-        if index == (len(self) - 1) and direction == 1:
+        if index == (self.len_repos - 1) and direction == 1:
             return
 
         self._repos[index + direction], self._repos[index] = self._repos[index], self._repos[index + direction]
 
     def get_repo(self, repo_id):
-        "Get repository by id (if id is present)"
+        "Get repository from index by id (if it is present)"
 
         if not isinstance(repo_id, str):
             raise QgistTypeError(tr('"repo_id" must be a str.'))
@@ -154,65 +175,54 @@ class dtype_index_class:
         return {repo.id: repo for repo in self._repos}[repo_id]
 
     def remove_repo(self, repo_id):
-        "Remove repository by id (if id is present)"
+        "Remove repository from index by id (if it is present)"
 
         repo = self.get_repo(repo_id)
         repo.remove()
         self._repos.remove(repo)
 
-    def refresh_repos(self):
-        "Reload index of every repo"
-
-        for repo in self._repos:
-            repo.refresh()
+    # def refresh_repos(self):
+    #     "Reload index of every repo"
+    #
+    #     for repo in self._repos:
+    #         repo.refresh()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: PLUGINS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def get_all_installed_plugins(self):
-        "Currently installed plugins"
+    def add_plugin(self, plugin):
+        "Add a plugin to index"
 
-        return (plugin for repo in self._repos for plugin in repo.get_all_installed_plugins())
+        if not isinstance(plugin, dtype_plugin_class):
+            raise QgistTypeError(tr('"plugin" is not a plugin'))
+        if plugin.id in self._plugins.keys():
+            raise QgistValueError(tr('"plugin" can not be added - it is already in dict'))
 
-    def get_all_available_plugins(self):
-        "Available plugins, compatible to QGIS version"
+        self._plugins[plugin.id] = plugin
 
-        plugins = {}
-        for repo in self._repos:
-            for plugin in repo.get_all_available_plugins():
-                if plugin.id not in plugins.keys():
-                    plugins[plugin.id] = dtype_plugin_repos_class(plugin.id)
-                plugins[plugin.id].append(plugin)
-
-        return (plugin_index for plugin_index in plugins.values())
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# CLASS: PLUGIN INDEX
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-class dtype_plugin_repos_class(list):
-    """
-    List of plugin objects from multiple repositories for one single plugin id
-
-    Mutable.
-    """
-
-    def __init__(self, plugin_id, *args, **kwargs):
-
-        super().__init__(*args, **kwargs)
+    def get_plugin(self, plugin_id):
+        "Get a plugin from index by id"
 
         if not isinstance(plugin_id, str):
             raise QgistTypeError(tr('"plugin_id" must be a str.'))
         if len(plugin_id) == 0:
             raise QgistValueError(tr('"plugin_id" must not be empty.'))
+        if plugin_id not in self._plugins.keys():
+            raise QgistValueError(tr('"plugin_id" is unknown. There is no such plugin.'))
 
-        self._id = plugin_id
+        return self._plugins[plugin_id]
 
-    def __repr__(self):
+    # def remove_plugin(self, plugin_id):
+    #
+    #     pass
 
-        return f'<plugin_repos id="{self._id:s}" len={len(self):d}>'
+    def get_all_installed_plugins(self):
+        "Currently installed plugins"
 
-    @property
-    def id(self):
-        return self._id
+        return (plugin for plugin in self._plugins.values() if plugin.installed)
+
+    def get_all_available_plugins(self):
+        "Available plugins, compatible to QGIS version"
+
+        return (plugin for plugin in self._plugins.values() if plugin.available)

@@ -6,7 +6,7 @@ QGIST PLUGIN MANAGER
 QGIS Plugin for Managing QGIS Plugins
 https://github.com/qgist/pluginmanager
 
-    qgist/pluginmanager/backends/qgis/dtype_plugin.py: Plugin data type
+    qgist/pluginmanager/backends/conda/dtype_pluginrelease.py: Plugin release data type
 
     Copyright (C) 2017-2020 QGIST project <info@qgist.org>
 
@@ -28,17 +28,11 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from ...dtype_plugin import dtype_plugin_base_class
+from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_plugin_class(dtype_plugin_base_class):
-    """
-    - Properties
-        - Caches
-        - Dependencies
-            - inter-plugin
-            - plugin to python packages (through source / other package manager)
-    """
+class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
+    pass
