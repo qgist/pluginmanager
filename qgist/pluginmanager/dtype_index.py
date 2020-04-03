@@ -130,7 +130,7 @@ class dtype_index_class:
                 config_group,
                 repo_type = REPO_BACKEND_QGISLEGACY, method = 'config',
                 ))
-        if not any((repo.url == REPO_DEFAULT_URL for repo in self._repos)):
+        if not any((repo.url == REPO_DEFAULT_URL for repo in self._repos)): # ensure QGIS default repo
             self.add_repo(self.create_repo(
                 repo_type = REPO_BACKEND_QGISLEGACY, method = 'default',
                 ))
