@@ -141,6 +141,12 @@ class dtype_index_class:
                 ))
 
         # Get inventory of installed plugins and match with repos
+        # Every local plugin folder (i.e. Python module folder) contains a reference to its repo id!
+        # If NOT:
+        #   - legacy plugins are "detected" by default repo (plugins.qgis.org)
+        #   - Cpp plugins are dected by THE ONE AND ONLY cpp-repo (no ID required)
+        #   - Conda plugins require ID or they are NOT detected at all
+        #   - Pip plugins require ID or they are NOT detected at all (what about `-e`?)
 
         # Sync repos from remote
         #   - Fetch remote repo meta data ("fetch" is job of repo backend)
