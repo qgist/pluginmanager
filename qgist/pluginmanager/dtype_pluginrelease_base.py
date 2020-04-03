@@ -28,6 +28,7 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .dtype_settings import dtype_settings_class
 from .dtype_metadata import dtype_metadata_class
 from .dtype_version import dtype_version_class
 
@@ -111,3 +112,22 @@ class dtype_pluginrelease_base_class:
     @property
     def version(self):
         return self._version
+
+    @property
+    def meta(self):
+        return self._meta
+
+    @classmethod
+    def from_metadata(cls, meta):
+
+        if not isinstance(meta, dtype_metadata_class):
+            raise QgistTypeError(tr('"meta" must be meta data.'))
+
+        return cls(
+            plugin_id = meta['id'],
+            version = dtype_version_class.from_pluginversion(meta['version']),
+            has_processingprovider = meta['hasProcessingProvider'],
+            has_serverfuncs = meta['server'],
+            experimental = meta['experimental'],
+            meta = meta,
+            )
