@@ -99,6 +99,7 @@ class pluginmanager:
 
         self._mainwindow = self._iface.mainWindow()
         self._system = platform.system()
+        self._index = None
 
     def initGui(self):
         """
