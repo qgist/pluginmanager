@@ -60,6 +60,10 @@ class _inventory(dict):
             name: _backend(path, name, isfile) for name, isfile in backends
             })
 
+        # for key in self.keys(): # TODO test!
+        #     self[key].load_meta()
+        #     self[key].load_module()
+
 class _backend:
     """
     Backend descriptor with lazy loading of backend module, class and meta data
