@@ -125,24 +125,20 @@ class dtype_index_class:
         self._repos.clear()
         self._plugins.clear()
 
-        for config_group in self.get_repo_class(REPO_BACKEND_QGISLEGACY).get_repo_config_groups(self._config):
-            self.add_repo(self.create_repo(
-                config_group,
-                repo_type = REPO_BACKEND_QGISLEGACY, method = 'config',
-                ))
-        if not any((repo.url == REPO_DEFAULT_URL for repo in self._repos)): # ensure QGIS default repo
-            self.add_repo(self.create_repo(
-                repo_type = REPO_BACKEND_QGISLEGACY, method = 'default',
-                ))
-
         for repo_type in backends.keys():
-            if repo_type == REPO_BACKEND_QGISLEGACY:
-                continue
             for config_group in self.get_repo_class(repo_type).get_repo_config_groups(self._config):
                 self.add_repo(self.create_repo(
                     config_group,
                     repo_type = repo_type, method = 'config',
                     ))
+
+        if not any((
+            repo.url == REPO_DEFAULT_URL
+            for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACY
+            )): # ensure QGIS default repo
+            self.add_repo(self.create_repo(
+                repo_type = REPO_BACKEND_QGISLEGACY, method = 'default',
+                ))
 
         # Repos: read from config & init (from_config)
 
