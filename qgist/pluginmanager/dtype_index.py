@@ -68,10 +68,6 @@ class dtype_index_class:
 
         return f'<index ({id(self):x})>'
 
-    def __len__(self):
-
-        return len(self._repos)
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -81,8 +77,16 @@ class dtype_index_class:
         return (repo for repo in self._repos)
 
     @property
+    def len_repos(self):
+        return len(self._repos)
+
+    @property
     def plugins(self):
         return (plugin for plugin in self._plugins.values())
+
+    @property
+    def len_plugins(self):
+        return len(self._plugins)
 
     @property
     def allow_deprecated(self):
@@ -137,11 +141,11 @@ class dtype_index_class:
         repo = self.get_repo(repo_id)
         index = self._repos.index(repo)
 
-        if len(self) < 2:
+        if self.len_repos < 2:
             return
         if index == 0 and direction == -1:
             return
-        if index == (len(self) - 1) and direction == 1:
+        if index == (self.len_repos - 1) and direction == 1:
             return
 
         self._repos[index + direction], self._repos[index] = self._repos[index], self._repos[index + direction]
