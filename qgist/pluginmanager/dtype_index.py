@@ -140,8 +140,6 @@ class dtype_index_class:
                 repo_type = REPO_BACKEND_QGISLEGACY, method = 'default',
                 ))
 
-        # Repos: read from config & init (from_config)
-
         # Get inventory of installed plugins and match with repos
 
         # Sync repos from remote
