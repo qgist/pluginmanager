@@ -28,22 +28,18 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from ...dtype_plugin import dtype_plugin_base_class
-
-from ....error import (
-    QgistValueError,
-    )
-from ....util import tr
+from ...dtype_pluginrelease import dtype_pluginrelease_base_class
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_plugin_class(dtype_plugin_base_class):
+class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
+    pass
 
-    @property
-    def protected(self):
-        return self._protected
-    @protected.setter
-    def protected(self, value):
-        raise QgistValueError(tr('C++ plugins are always protected.'))
+    # @property
+    # def protected(self):
+    #     return self._protected
+    # @protected.setter
+    # def protected(self, value):
+    #     raise QgistValueError(tr('C++ plugins are always protected.'))
