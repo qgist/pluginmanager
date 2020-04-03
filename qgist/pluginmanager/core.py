@@ -141,6 +141,8 @@ class pluginmanager:
             msg_critical(e, self._mainwindow)
             return
 
+        self._iface.pindex = self._index # TODO HACK for debugging in console
+
         # self._ui_dict['action_manage'].triggered.connect(self._open_manager) # TODO
         self._ui_dict['action_manage'].setEnabled(True)
 
