@@ -127,17 +127,17 @@ class dtype_repository_base_class:
 # MANAGEMENT
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def get_all_installed_plugins(self):
-        "Currently installed plugins"
-
-        return (plugin for plugin in self._plugins if plugin.installed)
-
-    def get_all_available_plugins(self):
-        "Available plugins, compatible to QGIS version"
-
-        if not self._active:
-            return tuple()
-        return (plugin for plugin in self._plugins if plugin.available)
+    # def get_all_installed_plugins(self):
+    #     "Currently installed plugins"
+    #
+    #     return (plugin for plugin in self._plugins if plugin.installed)
+    #
+    # def get_all_available_plugins(self):
+    #     "Available plugins, compatible to QGIS version"
+    #
+    #     if not self._active:
+    #         return tuple()
+    #     return (plugin for plugin in self._plugins if plugin.available)
 
     def refresh_index(self):
         "Rebuild index and/or reload metadata"
