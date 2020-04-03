@@ -29,8 +29,11 @@ specific language governing rights and limitations under the License.
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from .const import (
+    CONFIG_GROUP_MANAGER_REPOS,
+    CONFIG_GROUP_QGISLEGACY_REPOS,
     CONFIG_KEY_ALLOW_DEPRECATED,
     CONFIG_KEY_ALLOW_EXPERIMENTAL,
+    REPO_BACKEND_QGISLEGACY,
     )
 from .backends import backends
 from .dtype_plugin import dtype_plugin_class
@@ -122,6 +125,13 @@ class dtype_index_class:
         self._repos.clear()
         self._plugins.clear()
 
+        qgislegacy_repo_config = self._config.get_group(CONFIG_GROUP_QGISLEGACY_REPOS)
+        for key in qgislegacy_repo_config.keys_root():
+            self.add_repo(self.create_repo(
+                qgislegacy_repo_config.get_group(key),
+                repo_type = REPO_BACKEND_QGISLEGACY, method = 'config',
+                ))
+
         # Repos: read from config & init (from_config)
 
         # Get inventory of installed plugins and match with repos
@@ -148,7 +158,7 @@ class dtype_index_class:
         self._repos.append(repo) # Add to list at the end, i.e. with lowest priority
 
     @staticmethod
-    def create_repo(repo_type, method, *args, **kwargs):
+    def create_repo(*args, repo_type = None, method = None, **kwargs):
         "Initialize repository based on type, method and arbitrary parameters"
 
         if not isinstance(repo_type, str):
@@ -158,12 +168,18 @@ class dtype_index_class:
         if not isinstance(method, str):
             raise QgistTypeError(tr('"method" must be a str.'))
 
+        if not backends[repo_type].module_loaded:
+            backends[repo_type].load_module()
+
         repository_class = backends[repo_type].dtype_repository_class
 
         if method not in (item[5:] for item in dir(repository_class) if item.startswith('from_')):
             raise QgistValueError(tr('"method" is unknown.'))
+        method = getattr(repository_class, f'from_{method:s}')
+        if not hasattr(method, '__call__'):
+            raise QgistTypeError(tr('"method" can not be called.'))
 
-        return getattr(repository_class, f'from_{method:s}')(*args, **kwargs) # TODO: Catch user abort
+        return method(*args, **kwargs) # TODO: Catch user abort
 
     def change_repo_priority(self, repo_id, direction):
         "Repository can be moved up (lower priority) or down (higher priority) by one"
