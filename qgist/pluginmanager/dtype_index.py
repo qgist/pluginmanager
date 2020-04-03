@@ -33,6 +33,7 @@ from .const import (
     CONFIG_KEY_ALLOW_EXPERIMENTAL,
     )
 from .backends import backends
+from .dtype_plugin import dtype_plugin_class
 from .dtype_settings import dtype_settings_class
 
 from ..error import (
@@ -181,11 +182,23 @@ class dtype_index_class:
 
     def add_plugin(self, plugin):
 
-        pass
+        if not isinstance(plugin, dtype_plugin_class):
+            raise QgistTypeError(tr('"plugin" is not a plugin'))
+        if plugin.id in self._plugins.keys():
+            raise QgistValueError(tr('"plugin" can not be added - it is already in dict'))
+
+        self._plugins[plugin.id] = plugin
 
     def get_plugin(self, plugin_id):
 
-        pass
+        if not isinstance(plugin_id, str):
+            raise QgistTypeError(tr('"plugin_id" must be a str.'))
+        if len(plugin_id) == 0:
+            raise QgistValueError(tr('"plugin_id" must not be empty.'))
+        if plugin_id not in self._plugins.keys():
+            raise QgistValueError(tr('"plugin_id" is unknown. There is no such plugin.'))
+
+        return self._plugins[plugin_id]
 
     # def remove_plugin(self, plugin_id):
     #
