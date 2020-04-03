@@ -28,17 +28,19 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from ...dtype_plugin import dtype_plugin_base_class
+from ...dtype_pluginrelease import dtype_pluginrelease_base_class
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_plugin_class(dtype_plugin_base_class):
-    """
-    - Properties
-        - Caches
-        - Dependencies
-            - inter-plugin
-            - plugin to python packages (through source / other package manager)
-    """
+class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
+    pass
+
+    # """
+    # - Properties
+    #     - Caches
+    #     - Dependencies
+    #         - inter-plugin
+    #         - plugin to python packages (through source / other package manager)
+    # """
