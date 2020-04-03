@@ -25,10 +25,17 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from typing import Generator, Iterator
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from .backends import backends
+from .dtype_pluginrelease_base import dtype_pluginrelease_base_class
 from .dtype_settings import dtype_settings_class
 
 from ..error import (
@@ -52,7 +59,10 @@ class dtype_repository_base_class:
     Mutable.
     """
 
-    def __init__(self, repo_id, name, active, protected, repository_type, config):
+    def __init__(self,
+        repo_id, name, active, protected, repository_type, plugin_releases,
+        config
+        ):
 
         if not isinstance(repo_id, str):
             raise QgistTypeError(tr('"repo_id" must be a str.'))
@@ -70,6 +80,11 @@ class dtype_repository_base_class:
             raise QgistTypeError(tr('"repository_type" must be a str.'))
         if repository_type not in backends.keys():
             raise QgistValueError(tr('"repository_type" is unknown.'))
+        if not any((isinstance(plugin_releases, dtype) for dtype in (Generator, Iterator, list, tuple))):
+            raise QgistTypeError(tr('"plugin_releases" must be any of the floowing: list, tuple, generator, iterator.'))
+        plugin_releases = list(plugin_releases)
+        if not all((isinstance(release, dtype_pluginrelease_base_class) for release in plugin_releases)):
+            raise QgistTypeError(tr('All releases must be plugin releases.'))
         if not isinstance(config, dtype_settings_class):
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
@@ -78,19 +93,24 @@ class dtype_repository_base_class:
         self._active = active
         self._protected = protected
         self._repository_type = repository_type
+        self._plugin_releases = plugin_releases
 
         self._config = config
-        self._plugins = [] # TODO list of all relevant plugins
 
     def __repr__(self):
 
         return (
             '<repository '
             f'id="{self._id:s}" name="{self._name:s}" type="{self._repository_type:s}" '
+            f'plugin_releases={len(self):d} '
             f'protected={"yes" if self._protected else "no":s} '
             f'active={"yes" if self._active else "no":s}'
             '>'
             )
+
+    def __len__(self):
+
+        return len(self._plugin_releases)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES
@@ -122,6 +142,10 @@ class dtype_repository_base_class:
     @property
     def repository_type(self):
         return self._repository_type
+
+    @property
+    def plugin_releases(self):
+        return (release for release in self._plugin_releases)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT
