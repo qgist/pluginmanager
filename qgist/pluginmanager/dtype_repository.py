@@ -80,7 +80,7 @@ class dtype_repository_base_class:
         self._repository_type = repository_type
 
         self._config = config
-        self._plugins = [] # list of all relevant plugins
+        self._plugins = [] # TODO list of all relevant plugins
 
     def __repr__(self):
 
