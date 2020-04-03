@@ -35,4 +35,5 @@ from ...dtype_repository_base import dtype_repository_base_class
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class dtype_repository_class(dtype_repository_base_class):
-    pass
+
+    REPO_TYPE = 'pip'

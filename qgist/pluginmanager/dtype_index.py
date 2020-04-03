@@ -135,6 +135,15 @@ class dtype_index_class:
                 repo_type = REPO_BACKEND_QGISLEGACY, method = 'default',
                 ))
 
+        for repo_type in backends.keys():
+            if repo_type == REPO_BACKEND_QGISLEGACY:
+                continue
+            for config_group in self.get_repo_class(repo_type).get_repo_config_groups(self._config):
+                self.add_repo(self.create_repo(
+                    config_group,
+                    repo_type = repo_type, method = 'config',
+                    ))
+
         # Repos: read from config & init (from_config)
 
         # Get inventory of installed plugins and match with repos

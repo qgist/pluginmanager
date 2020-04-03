@@ -34,9 +34,13 @@ from typing import Generator, Iterator
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .const import CONFIG_GROUP_MANAGER_REPOS
 from .backends import backends
 from .dtype_pluginrelease_base import dtype_pluginrelease_base_class
-from .dtype_settings import dtype_settings_group_class
+from .dtype_settings import (
+    dtype_settings_group_class,
+    dtype_settings_class,
+    )
 
 from ..error import (
     QgistNotImplementedError,
@@ -58,6 +62,8 @@ class dtype_repository_base_class:
 
     Mutable.
     """
+
+    REPO_TYPE = None
 
     def __init__(self,
         repo_id, name, active, protected, repository_type, plugin_releases,
@@ -175,7 +181,16 @@ class dtype_repository_base_class:
 
     @classmethod
     def get_repo_config_groups(cls, config):
-        raise QgistNotImplementedError()
+
+        if not isinstance(config, dtype_settings_class):
+            raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
+
+        repotype_group = config.get_group(CONFIG_GROUP_MANAGER_REPOS).get_group(cls.REPO_TYPE)
+
+        return (
+            repotype_group.get_group(repo_id)
+            for repo_id in repotype_group.keys_root()
+            )
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PRE-CONSTRUCTOR
