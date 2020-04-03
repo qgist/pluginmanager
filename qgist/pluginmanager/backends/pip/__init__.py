@@ -35,5 +35,5 @@ __description__ = 'Backend for managing wheel/source plugins installed with pip'
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .dtype_plugin import dtype_pluginrelease_class
+from .dtype_pluginrelease import dtype_pluginrelease_class
 from .dtype_repository import dtype_repository_class

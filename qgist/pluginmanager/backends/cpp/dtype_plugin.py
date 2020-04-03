@@ -6,7 +6,7 @@ QGIST PLUGIN MANAGER
 QGIS Plugin for Managing QGIS Plugins
 https://github.com/qgist/pluginmanager
 
-    qgist/pluginmanager/backends/cpp/dtype_plugin.py: Plugin data type
+    qgist/pluginmanager/backends/cpp/dtype_pluginrelease.py: Plugin release data type
 
     Copyright (C) 2017-2020 QGIST project <info@qgist.org>
 
