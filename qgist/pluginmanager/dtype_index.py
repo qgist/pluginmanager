@@ -181,11 +181,11 @@ class dtype_index_class:
         repo.remove()
         self._repos.remove(repo)
 
-    def refresh_repos(self):
-        "Reload index of every repo"
-
-        for repo in self._repos:
-            repo.refresh()
+    # def refresh_repos(self):
+    #     "Reload index of every repo"
+    #
+    #     for repo in self._repos:
+    #         repo.refresh()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: PLUGINS
