@@ -34,7 +34,7 @@ from typing import Generator, Iterator
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .dtype_pluginrelease import dtype_pluginrelease_base_class
+from .dtype_pluginrelease_base import dtype_pluginrelease_base_class
 from .dtype_settings import dtype_settings_class
 
 from ..error import (

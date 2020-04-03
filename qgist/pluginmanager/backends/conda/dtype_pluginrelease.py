@@ -28,7 +28,7 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from ...dtype_pluginrelease import dtype_pluginrelease_base_class
+from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
