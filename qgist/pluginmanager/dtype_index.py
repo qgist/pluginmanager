@@ -59,6 +59,7 @@ class dtype_index_class:
 
         self._config = config
         self._repos = [] # From high to low priority
+        self._plugins = {} # Individual plugins, not their releases
 
         self._allow_deprecated = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_DEPRECATED])
         self._allow_experimental = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL])
@@ -78,6 +79,10 @@ class dtype_index_class:
     @property
     def repos(self):
         return (repo for repo in self._repos)
+
+    @property
+    def plugins(self):
+        return (plugin for plugin in self._plugins.values())
 
     @property
     def allow_deprecated(self):
@@ -170,49 +175,24 @@ class dtype_index_class:
 # MANAGEMENT: PLUGINS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    def add_plugin(self, plugin):
+
+        pass
+
+    def get_plugin(self, plugin_id):
+
+        pass
+
+    def remove_plugin(self, plugin_id):
+
+        pass
+
     def get_all_installed_plugins(self):
         "Currently installed plugins"
 
-        return (plugin for repo in self._repos for plugin in repo.get_all_installed_plugins())
+        return (plugin for plugin in self._plugins.values() if plugin.installed)
 
     def get_all_available_plugins(self):
         "Available plugins, compatible to QGIS version"
 
-        plugins = {}
-        for repo in self._repos:
-            for plugin in repo.get_all_available_plugins():
-                if plugin.id not in plugins.keys():
-                    plugins[plugin.id] = dtype_plugin_repos_class(plugin.id)
-                plugins[plugin.id].append(plugin)
-
-        return (plugin_index for plugin_index in plugins.values())
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# CLASS: PLUGIN INDEX
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-class dtype_plugin_repos_class(list):
-    """
-    List of plugin objects from multiple repositories for one single plugin id
-
-    Mutable.
-    """
-
-    def __init__(self, plugin_id, *args, **kwargs):
-
-        super().__init__(*args, **kwargs)
-
-        if not isinstance(plugin_id, str):
-            raise QgistTypeError(tr('"plugin_id" must be a str.'))
-        if len(plugin_id) == 0:
-            raise QgistValueError(tr('"plugin_id" must not be empty.'))
-
-        self._id = plugin_id
-
-    def __repr__(self):
-
-        return f'<plugin_repos id="{self._id:s}" len={len(self):d}>'
-
-    @property
-    def id(self):
-        return self._id
+        return (plugin for plugin in self._plugins.values() if plugin.available)
