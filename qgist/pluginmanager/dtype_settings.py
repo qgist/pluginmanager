@@ -125,7 +125,7 @@ class dtype_settings_class:
         if len(root) == 0:
             raise QgistValueError(tr('root must not be empty'))
 
-        return _dtype_settings_group_class(self, root)
+        return dtype_settings_group_class(self, root)
 
     def keys(self):
         "dict keys generator"
@@ -180,7 +180,7 @@ class dtype_settings_class:
 # CLASS: SETTINGS GROUP
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class _dtype_settings_group_class:
+class dtype_settings_group_class:
     """
     Mimics QgsSettings.beginGroup & QgsSettings.endGroup
 
@@ -226,6 +226,14 @@ class _dtype_settings_group_class:
 
         self._settings[self._base + name] = value
 
+    @property
+    def root(self):
+        return self._root
+
+    @property
+    def settings(self):
+        return self._settings
+
     def get(self, name, default):
         "dict get"
 
@@ -251,7 +259,7 @@ class _dtype_settings_group_class:
 
         return (item for item in set((
             key[self._base_len:]
-            for key in self._settings.all_keys()
+            for key in self._settings.keys()
             if key.startswith(self._base) and len(key) > self._base_len
             )))
 
@@ -260,6 +268,6 @@ class _dtype_settings_group_class:
 
         return (item for item in set((
             key[self._base_len:].split(CONFIG_DELIMITER, 1)[0]
-            for key in self._settings.all_keys()
+            for key in self._settings.keys()
             if key.startswith(self._base) and len(key) > self._base_len
             )))
