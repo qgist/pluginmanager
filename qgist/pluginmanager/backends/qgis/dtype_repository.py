@@ -71,7 +71,7 @@ class dtype_repository_class(dtype_repository_base_class):
         if not url.lower().startswith('http://') and not url.lower().startswith('https://'):
             raise QgistValueError(tr(''))
 
-        self._valid = valid # TODO Appears to me meaningless!?
+        self._valid = valid # TODO Appears to be meaningless!?
         self._url = url
         self._authcfg = authcfg
 
