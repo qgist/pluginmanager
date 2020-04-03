@@ -25,15 +25,26 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+import random
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from ...const import (
     CONFIG_DELIMITER,
+    CONFIG_GROUP_QGISLEGACY_REPOS,
     REPO_DEFAULT_URL,
+    REPO_BACKEND_QGISLEGACY,
     )
 from ...dtype_repository_base import dtype_repository_base_class
-from ...dtype_settings import dtype_settings_group_class
+from ...dtype_settings import (
+    dtype_settings_group_class,
+    dtype_settings_class,
+    )
 
 from ....error import (
     QgistTypeError,
@@ -75,6 +86,43 @@ class dtype_repository_class(dtype_repository_base_class):
         self._url = url
         self._authcfg = authcfg
 
+    @property
+    def url(self):
+        return self._url
+
+    @classmethod
+    def get_repo_config_groups(cls, config):
+
+        if not isinstance(config, dtype_settings_class):
+            raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
+
+        qgislegacy_group = config.get_group(CONFIG_GROUP_QGISLEGACY_REPOS)
+
+        return (
+            qgislegacy_group.get_group(repo_id)
+            for repo_id in qgislegacy_group.keys_root()
+            )
+
+    @classmethod
+    def from_default(cls, config):
+
+        name = tr('QGIS Official Plugin Repository')
+        repo_id = f'{name:s} ({random.randint(2**31, 2**32 - 1):x})', # avoid collisions!
+
+        return cls(
+            repo_id = repo_id,
+            name = name,
+            active = True,
+            protected = True,
+            repository_type = REPO_BACKEND_QGISLEGACY,
+            plugin_releases = list(),
+            config_group = config.get_group(CONFIG_GROUP_QGISLEGACY_REPOS).get_group(repo_id),
+            # SPECIAL
+            valid = True,
+            authcfg = '', # TODO empty ok?
+            url = REPO_DEFAULT_URL,
+            )
+
     @classmethod
     def from_config(cls, config_group):
 
@@ -89,10 +137,10 @@ class dtype_repository_class(dtype_repository_base_class):
                 'protected',
                 config_group['url'].strip().lower() == REPO_DEFAULT_URL.strip().lower(),
                 ),
-            repository_type = 'qgis',
+            repository_type = REPO_BACKEND_QGISLEGACY,
             plugin_releases = list(),
             config_group = config_group,
-            # SPECIAL:
+            # SPECIAL
             valid = config_group.settings.str_to_bool(config_group.get('valid', 'true')),
             authcfg = config_group['authcfg'],
             url = config_group['url'],

@@ -29,11 +29,11 @@ specific language governing rights and limitations under the License.
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from .const import (
-    CONFIG_GROUP_MANAGER_REPOS,
-    CONFIG_GROUP_QGISLEGACY_REPOS,
+    # CONFIG_GROUP_MANAGER_REPOS,
     CONFIG_KEY_ALLOW_DEPRECATED,
     CONFIG_KEY_ALLOW_EXPERIMENTAL,
     REPO_BACKEND_QGISLEGACY,
+    REPO_DEFAULT_URL,
     )
 from .backends import backends
 from .dtype_plugin import dtype_plugin_class
@@ -125,11 +125,14 @@ class dtype_index_class:
         self._repos.clear()
         self._plugins.clear()
 
-        qgislegacy_repo_config = self._config.get_group(CONFIG_GROUP_QGISLEGACY_REPOS)
-        for key in qgislegacy_repo_config.keys_root():
+        for config_group in self.get_repo_class(REPO_BACKEND_QGISLEGACY).get_repo_config_groups(self._config):
             self.add_repo(self.create_repo(
-                qgislegacy_repo_config.get_group(key),
+                config_group,
                 repo_type = REPO_BACKEND_QGISLEGACY, method = 'config',
+                ))
+        if not any((repo.url == REPO_DEFAULT_URL for repo in self._repos)):
+            self.add_repo(self.create_repo(
+                repo_type = REPO_BACKEND_QGISLEGACY, method = 'default',
                 ))
 
         # Repos: read from config & init (from_config)
@@ -157,21 +160,14 @@ class dtype_index_class:
 
         self._repos.append(repo) # Add to list at the end, i.e. with lowest priority
 
-    @staticmethod
-    def create_repo(*args, repo_type = None, method = None, **kwargs):
+    @classmethod
+    def create_repo(cls, *args, repo_type = None, method = None, **kwargs):
         "Initialize repository based on type, method and arbitrary parameters"
 
-        if not isinstance(repo_type, str):
-            raise QgistTypeError(tr('"repo_type" must be a str.'))
-        if repo_type not in backends.keys():
-            raise QgistValueError(tr('"repo_type" is unknown.'))
+        repository_class = cls.get_repo_class(repo_type)
+
         if not isinstance(method, str):
             raise QgistTypeError(tr('"method" must be a str.'))
-
-        if not backends[repo_type].module_loaded:
-            backends[repo_type].load_module()
-
-        repository_class = backends[repo_type].dtype_repository_class
 
         if method not in (item[5:] for item in dir(repository_class) if item.startswith('from_')):
             raise QgistValueError(tr('"method" is unknown.'))
@@ -212,6 +208,19 @@ class dtype_index_class:
             raise QgistValueError(tr('"repo_id" is unknown. There is no such repository.'))
 
         return {repo.id: repo for repo in self._repos}[repo_id]
+
+    @staticmethod
+    def get_repo_class(repo_type):
+
+        if not isinstance(repo_type, str):
+            raise QgistTypeError(tr('"repo_type" must be a str.'))
+        if repo_type not in backends.keys():
+            raise QgistValueError(tr('"repo_type" is unknown.'))
+
+        if not backends[repo_type].module_loaded:
+            backends[repo_type].load_module()
+
+        return backends[repo_type].dtype_repository_class
 
     def remove_repo(self, repo_id):
         "Remove repository from index by id (if it is present)"
