@@ -36,7 +36,7 @@ from typing import Generator, Iterator
 
 from .backends import backends
 from .dtype_pluginrelease_base import dtype_pluginrelease_base_class
-from .dtype_settings import dtype_settings_class
+from .dtype_settings import dtype_settings_group_class
 
 from ..error import (
     QgistNotImplementedError,
@@ -61,7 +61,7 @@ class dtype_repository_base_class:
 
     def __init__(self,
         repo_id, name, active, protected, repository_type, plugin_releases,
-        config
+        config_group
         ):
 
         if not isinstance(repo_id, str):
@@ -85,8 +85,8 @@ class dtype_repository_base_class:
         plugin_releases = list(plugin_releases)
         if not all((isinstance(release, dtype_pluginrelease_base_class) for release in plugin_releases)):
             raise QgistTypeError(tr('All releases must be plugin releases.'))
-        if not isinstance(config, dtype_settings_class):
-            raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
+        if not isinstance(config_group, dtype_settings_group_class):
+            raise QgistTypeError(tr('"config_group" must be a "dtype_settings_group_class" object.'))
 
         self._id = repo_id # unique
         self._name = name # TODO: enable translations!
@@ -95,7 +95,7 @@ class dtype_repository_base_class:
         self._repository_type = repository_type
         self._plugin_releases = plugin_releases
 
-        self._config = config
+        self._config_group = config_group
 
     def __repr__(self):
 
@@ -174,5 +174,5 @@ class dtype_repository_base_class:
         raise QgistNotImplementedError()
 
     @classmethod
-    def from_config(cls, config):
+    def from_config(cls, *args, **kwargs):
         raise QgistNotImplementedError()
