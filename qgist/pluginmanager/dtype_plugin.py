@@ -227,10 +227,22 @@ class dtype_plugin_class:
         """
         raise QgistNotImplementedError()
 
+    def validate_install(self):
+        """
+        Post-install or post-update/-downgrade checks of files and folders
+        """
+        raise QgistNotImplementedError()
+
     def uninstall(self):
         """
         Allows dry runs
         Sets installed to False!
+        """
+        raise QgistNotImplementedError()
+
+    def validate_uninstall(self):
+        """
+        Post-uninstall checks of files and folders
         """
         raise QgistNotImplementedError()
 
@@ -282,27 +294,3 @@ class dtype_plugin_class:
         Only relevant if plugin comes from QGIS package repo.
         """
         raise QgistNotImplementedError()
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# ETC
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    def _fetch_available_versions(self):
-        """HTTP ..."""
-        pass
-    def _fetch_plugin(self):
-        """HTTP ..."""
-        pass
-    def _fetch_metadata(self):
-        """HTTP ..."""
-        pass
-    def _validate_install(self):
-        """
-        Post-install or post-update/-downgrade checks of files and folders
-        """
-        pass
-    def _validate_uninstall(self):
-        """
-        Post-uninstall checks of files and folders
-        """
-        pass
