@@ -150,7 +150,7 @@ class dtype_index_class:
         # Avoid double detections:
         #   - Detection based on type is handled by repo backend class (not by repo instances)
         #   - Detected plugins are then given to backend objects (until no plugin is left)
-        # A plugin folder always contains a `metadata.txt`!
+        # A plugin folder always contains a `metadata.txt` and `__init__.py`!
 
         # Sync repos from remote
         #   - Fetch remote repo meta data ("fetch" is job of repo backend)
