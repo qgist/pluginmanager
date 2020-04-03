@@ -76,35 +76,50 @@ class _backend:
         self._path = path
         self._name = name
         self._isfile = isfile
-        self._module = None
+
         self._src = None
+        self._module = None
         self._meta = None
 
     def __getitem__(self, key):
         "provides access to backend meta data dict"
 
-        if self._meta is None:
+        if not self.meta_loaded:
             raise QgistSyntaxError('backend metadata has not been loaded')
+
         return self._meta[key]
+
+    @property
+    def meta_loaded(self):
+        return self._meta is not None
+
+    @property
+    def module_loaded(self):
+        return self._module is not None
 
     @property
     def dtype_plugin_class(self):
         "returns backend plugin class"
 
-        if self._module is None:
+        if not self.module_loaded:
             raise QgistSyntaxError('backend module has not been loaded')
+
         return self._module.dtype_pluginrelease_class
 
     @property
     def dtype_repository_class(self):
         "returns backend repository class"
 
-        if self._module is None:
+        if not self.module_loaded:
             raise QgistSyntaxError('backend module has not been loaded')
+
         return self._module.dtype_repository_class
 
     def load_meta(self):
         "loads meta data from backend without importing it"
+
+        if self.meta_loaded:
+            return
 
         with open(
             os.path.join(self._path, self._name + '.py')
@@ -124,13 +139,17 @@ class _backend:
     def load_module(self):
         "actually imports backend module"
 
+        if self.module_loaded:
+            return
+
         self._module = importlib.import_module('pluginmanager.qgist.pluginmanager.backends.%s' % self._name)
 
     def keys(self):
         "provides access to backend meta data dict keys"
 
-        if self._meta is None:
+        if not self.meta_loaded:
             raise QgistSyntaxError('backend metadata has not been loaded')
+
         return self._meta.keys()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
