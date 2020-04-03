@@ -113,7 +113,7 @@ class dtype_index_class:
 # MANAGEMENT: REPOSITORIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def add_repo(self, repo_type, method, *args, **kwargs):
+    def create_repo(self, repo_type, method, *args, **kwargs):
         "Initialize and add repository based on type, method and arbitrary parameters"
 
         if not isinstance(repo_type, str):
