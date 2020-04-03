@@ -66,7 +66,7 @@ class dtype_index_class:
 
     def __repr__(self):
 
-        return f'<index ({id(self):x})>'
+        return f'<index ({id(self):x}) repos={self.len_repos:d} plugins={self.len_plugins:d}>'
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES
