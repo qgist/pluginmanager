@@ -66,6 +66,8 @@ class dtype_index_class:
         self._allow_deprecated = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_DEPRECATED])
         self._allow_experimental = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL])
 
+        self._rebuild()
+
     def __repr__(self):
 
         return f'<index ({id(self):x}) repos={self.len_repos:d} plugins={self.len_plugins:d}>'
@@ -109,6 +111,27 @@ class dtype_index_class:
             raise QgistTypeError(tr('value is not bool'))
         self._allow_experimental = value
         self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL] = self._config.bool_to_str(value)
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# MANAGEMENT: INDEX
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def _rebuild(self):
+        "Rebuild index of repos and plugins"
+
+        self._repos.clear()
+        self._plugins.clear()
+
+        # Repos: read from config & init (from_config)
+
+        # Get inventory of installed plugins and match with repos
+
+        # Sync repos from remote
+        #   - Fetch remote repo meta data ("fetch" is job of repo backend)
+        #   - Parse meta data into meta objects ("parse" is job of repo backends and release backends)
+        #   - Produce list of releases per repo, add releases to repos
+
+        # Go through repos and their releases - produce list of (avaialble) plugins
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: REPOSITORIES
