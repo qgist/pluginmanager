@@ -183,9 +183,9 @@ class dtype_index_class:
 
         pass
 
-    def remove_plugin(self, plugin_id):
-
-        pass
+    # def remove_plugin(self, plugin_id):
+    #
+    #     pass
 
     def get_all_installed_plugins(self):
         "Currently installed plugins"
