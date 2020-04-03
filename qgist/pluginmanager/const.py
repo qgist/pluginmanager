@@ -41,6 +41,9 @@ CONFIG_DELIMITER = '/'
 CONFIG_KEY_ALLOW_DEPRECATED = 'app/plugin_installer/allowDeprecated' # TODO
 CONFIG_KEY_ALLOW_EXPERIMENTAL = 'app/plugin_installer/allowExperimental' # TODO
 
+CONFIG_GROUP_MANAGER_REPOS = 'app/pluginmanager/repositories' # TODO
+CONFIG_GROUP_QGISLEGACY_REPOS = 'app/plugin_repositories' # TODO
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # TYPE SPECS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -275,6 +278,7 @@ METADATA_FIELDS_SPEC = (
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 REPO_DEFAULT_URL = 'https://plugins.qgis.org/plugins/plugins.xml'
+REPO_BACKEND_QGISLEGACY = 'qgis'
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # VERSIONS
