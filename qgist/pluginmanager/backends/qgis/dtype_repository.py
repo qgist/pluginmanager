@@ -118,14 +118,17 @@ class dtype_repository_class(dtype_repository_base_class):
             for repo_id in qgislegacy_group.keys_root()
             )
 
-    @staticmethod
-    def find_plugins():
+    @classmethod
+    def find_plugins(cls, config):
         """
         Based on:
             - `/src/python/qgspythonutilsimpl.cpp`, `QgsPythonUtilsImpl::checkSystemImports()`
             - `/python/utils.py`, `findPlugins` and `updateAvailablePlugins`
         Returns: All installed plugins, one (installed) release each
         """
+
+        if not isinstance(config, dtype_settings_class):
+            raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
         plugin_paths = (*_get_extra_plugins_paths(), _get_python_path(), _get_home_python_path())
         plugins = []
@@ -134,7 +137,7 @@ class dtype_repository_class(dtype_repository_base_class):
             for entry in glob.glob(plugin_path + '/*'):
                 if not dtype_plugin_class.is_python_plugin_dir(entry):
                     continue
-                plugins.append(dtype_plugin_class.from_directory(entry))
+                plugins.append(dtype_plugin_class.from_installed(entry, config, cls.REPO_TYPE))
 
         return (plugin for plugin in plugins)
 
