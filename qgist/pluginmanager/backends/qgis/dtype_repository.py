@@ -130,10 +130,11 @@ class dtype_repository_class(dtype_repository_base_class):
         plugin_paths = (*_get_extra_plugins_paths(), _get_python_path(), _get_home_python_path())
         plugins = []
 
-        for plugin_path in glob.glob(plugin_paths + '/*'):
-            if not dtype_plugin_class.is_python_plugin_dir(plugin_path):
-                continue
-            plugins.append(dtype_plugin_class.from_directory(plugin_path))
+        for plugin_path in plugin_paths:
+            for entry in glob.glob(plugin_path + '/*'):
+                if not dtype_plugin_class.is_python_plugin_dir(entry):
+                    continue
+                plugins.append(dtype_plugin_class.from_directory(entry))
 
         return (plugin for plugin in plugins)
 
@@ -195,16 +196,16 @@ def _get_python_path():
         QgsApplication.pkgDataPath()
         )
 
-    return os.path.abspath(os.path.join(root_fld, 'python'))
+    return os.path.abspath(os.path.join(root_fld, 'python', 'plugins'))
 
 def _get_home_python_path():
 
     root_fld = QgsApplication.qgisSettingsDirPath()
 
     if os.path.abspath(root_fld) == os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3')):
-        return os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3', 'python'))
+        return os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3', 'python', 'plugins'))
 
-    return os.path.join(root_fld, 'python')
+    return os.path.join(root_fld, 'python', 'plugins')
 
 def _get_extra_plugins_paths():
 
