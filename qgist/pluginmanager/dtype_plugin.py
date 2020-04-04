@@ -28,6 +28,12 @@ specific language governing rights and limitations under the License.
 # IMPORT (Python Standard Library)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+import os
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 from typing import Generator, Iterator
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -294,3 +300,19 @@ class dtype_plugin_class:
         Only relevant if plugin comes from QGIS package repo.
         """
         raise QgistNotImplementedError()
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# HELPER
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @staticmethod
+    def is_python_plugin_dir(in_path):
+
+        if not os.path.isdir(in_path):
+            return False
+        if not os.path.isfile(os.path.join(in_path, '__init__.py')):
+            return False
+        if not os.path.isfile(os.path.join(in_path, 'metadata.txt')):
+            return False
+
+        return True

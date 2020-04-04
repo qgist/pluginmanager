@@ -52,6 +52,7 @@ from ...const import (
 from ...error import (
     QgistNotADirectoryError,
     )
+from ...dtype_plugin import dtype_plugin_class
 from ...dtype_repository_base import dtype_repository_base_class
 from ...dtype_settings import (
     dtype_settings_group_class,
@@ -130,7 +131,7 @@ class dtype_repository_class(dtype_repository_base_class):
         plugins = []
 
         for plugin_path in glob.glob(plugin_paths + '/*'):
-            if not _is_python_plugin_dir(plugin_path):
+            if not dtype_plugin_class.is_python_plugin_dir(plugin_path):
                 continue
             plugins.append(_create_plugin_from_dir(plugin_path))
 
@@ -224,14 +225,3 @@ def _get_extra_plugins_paths():
         checked_paths.append(path)
 
     return (path for path in checked_paths)
-
-def _is_python_plugin_dir(in_path):
-
-    if not os.path.isdir(in_path):
-        return False
-    if not os.path.isfile(os.path.join(in_path, '__init__.py')):
-        return False
-    if not os.path.isfile(os.path.join(in_path, 'metadata.txt')):
-        return False
-
-    return True
