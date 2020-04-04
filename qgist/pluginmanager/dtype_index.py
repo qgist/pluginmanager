@@ -138,6 +138,7 @@ class dtype_index_class:
             for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYPYTHON
             )): # ensure QGIS default Python repo
             self.add_repo(self.create_repo(
+                self._config,
                 repo_type = REPO_BACKEND_QGISLEGACYPYTHON, method = 'default',
                 ))
 
@@ -146,6 +147,7 @@ class dtype_index_class:
             for repo in self._repos
             )): # ensure QGIS default C++ repo
             self.add_repo(self.create_repo(
+                self._config,
                 repo_type = REPO_BACKEND_QGISLEGACYCPP, method = 'default',
                 ))
 
