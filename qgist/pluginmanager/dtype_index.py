@@ -133,7 +133,7 @@ class dtype_index_class:
         for repo_type in backends.keys():
             found_plugins = {
                 plugin.id: plugin
-                for plugin in self.get_repo_class(repo_type).find_plugins()
+                for plugin in self.get_repo_class(repo_type).find_plugins(self._config)
                 }
             if len(found_plugins.keys() & self._plugins.keys()) != 0:
                 raise QgistPluginIdCollisionError(tr('Two or more plugins with identical ID'))
