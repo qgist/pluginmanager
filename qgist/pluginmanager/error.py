@@ -45,3 +45,6 @@ class QgistMetaKeyError(KeyError):
 
 class QgistMetaTxtError(Exception):
     pass
+
+class QgistPluginIdCollisionError(Exception):
+    pass

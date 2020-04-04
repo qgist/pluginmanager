@@ -37,7 +37,10 @@ from .const import (
     REPO_DEFAULT_URL,
     )
 from .backends import backends
-from .error import QgistRepoError
+from .error import (
+    QgistPluginIdCollisionError,
+    QgistRepoError,
+    )
 from .dtype_plugin import dtype_plugin_class
 from .dtype_repository_base import dtype_repository_base_class
 from .dtype_settings import dtype_settings_class
@@ -126,6 +129,15 @@ class dtype_index_class:
 
         self._repos.clear()
         self._plugins.clear()
+
+        for repo_type in backends.keys():
+            found_plugins = {
+                plugin.id: plugin
+                for plugin in self.get_repo_class(repo_type).find_plugins()
+                }
+            if len(found_plugins.keys() & self._plugins.keys()) != 0:
+                raise QgistPluginIdCollisionError(tr('Two or more plugins with identical ID'))
+            self._plugins.update(found_plugins)
 
         for repo_type in backends.keys():
             for config_group in self.get_repo_class(repo_type).get_repo_config_groups(self._config):
