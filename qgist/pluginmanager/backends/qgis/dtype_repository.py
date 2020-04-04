@@ -38,7 +38,7 @@ from ...const import (
     CONFIG_DELIMITER,
     CONFIG_GROUP_QGISLEGACY_REPOS,
     REPO_DEFAULT_URL,
-    REPO_BACKEND_QGISLEGACY,
+    REPO_BACKEND_QGISLEGACYPYTHON,
     )
 from ...dtype_repository_base import dtype_repository_base_class
 from ...dtype_settings import (
@@ -66,7 +66,7 @@ class dtype_repository_class(dtype_repository_base_class):
         - AUTH?
     """
 
-    REPO_TYPE = REPO_BACKEND_QGISLEGACY
+    REPO_TYPE = REPO_BACKEND_QGISLEGACYPYTHON
 
     def __init__(self, *args,
         valid = None, authcfg = None, url = None,

@@ -290,7 +290,8 @@ METADATA_FIELDS_SPEC = (
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 REPO_DEFAULT_URL = 'https://plugins.qgis.org/plugins/plugins.xml'
-REPO_BACKEND_QGISLEGACY = 'qgis'
+REPO_BACKEND_QGISLEGACYPYTHON = 'qgis'
+REPO_BACKEND_QGISLEGACYCPP = 'cpp'
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # VERSIONS

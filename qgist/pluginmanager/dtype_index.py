@@ -32,7 +32,7 @@ from .const import (
     # CONFIG_GROUP_MANAGER_REPOS,
     CONFIG_KEY_ALLOW_DEPRECATED,
     CONFIG_KEY_ALLOW_EXPERIMENTAL,
-    REPO_BACKEND_QGISLEGACY,
+    REPO_BACKEND_QGISLEGACYPYTHON,
     REPO_DEFAULT_URL,
     )
 from .backends import backends
@@ -134,10 +134,10 @@ class dtype_index_class:
 
         if not any((
             repo.url == REPO_DEFAULT_URL
-            for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACY
+            for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYPYTHON
             )): # ensure QGIS default repo
             self.add_repo(self.create_repo(
-                repo_type = REPO_BACKEND_QGISLEGACY, method = 'default',
+                repo_type = REPO_BACKEND_QGISLEGACYPYTHON, method = 'default',
                 ))
 
         # Get inventory of installed plugins and match with repos
