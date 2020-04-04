@@ -214,29 +214,22 @@ METADATA_FIELDS_SPEC = (
     },
     {
         'comment': 'dotted notation of minimum QGIS version',
-        'dtype': {
-            'name': 'dtype_version_class',
-            'method': 'qgisversion',
-            'kwargs': {'fix_plugin_compatibility': True}, # TODO is it actually True?
-        },
+        'dtype': dtype_version_class,
+        'dtype_constructor': 'qgisversion',
+        'dtype_constructor_kwargs': {'fix_plugin_compatibility': True}, # TODO is it actually True?
         'name': 'qgisMinimumVersion',
         'is_required': True,
     },
     {
         'comment': 'dotted notation of maximum QGIS version',
-        'dtype': {
-            'name': 'dtype_version_class',
-            'method': 'qgisversion',
-            'kwargs': {'fix_plugin_compatibility': False}, # TODO is it actually False?
-        },
+        'dtype': dtype_version_class,
+        'dtype_constructor': 'from_qgisversion',
+        'dtype_constructor_kwargs': {'fix_plugin_compatibility': False}, # TODO is it actually False?
         'name': 'qgisMaximumVersion',
     },
     {
-        'dtype': {
-            'name': 'dtype_version_class',
-            'method': 'pluginversion',
-            'kwargs': dict(),
-        },
+        'dtype': dtype_version_class,
+        'dtype_constructor': 'from_pluginversion',
         'name': 'version',
         'is_required': True,
     },
