@@ -39,7 +39,9 @@ from ...const import (
     CONFIG_GROUP_MANAGER_REPOS,
     )
 from ...dtype_repository_base import dtype_repository_base_class
+from ...dtype_settings import dtype_settings_class
 
+from ....error import QgistTypeError
 from ....util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -52,6 +54,9 @@ class dtype_repository_class(dtype_repository_base_class):
 
     @classmethod
     def from_default(cls, config):
+
+        if not isinstance(config, dtype_settings_class):
+            raise QgistTypeError(tr('"config_group" is not a group of settings'))
 
         name = tr('Local QGIS C++ Plugin Repository')
         repo_id = f'{name:s} ({random.randint(2**31, 2**32 - 1):x})' # avoid collisions!

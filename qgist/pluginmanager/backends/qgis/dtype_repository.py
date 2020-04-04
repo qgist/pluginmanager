@@ -112,6 +112,9 @@ class dtype_repository_class(dtype_repository_base_class):
     @classmethod
     def from_default(cls, config):
 
+        if not isinstance(config, dtype_settings_class):
+            raise QgistTypeError(tr('"config_group" is not a group of settings'))
+
         name = tr('QGIS Official Python Plugin Repository')
         repo_id = f'{name:s} ({random.randint(2**31, 2**32 - 1):x})' # avoid collisions!
 
