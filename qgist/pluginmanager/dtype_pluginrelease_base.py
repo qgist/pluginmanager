@@ -125,7 +125,7 @@ class dtype_pluginrelease_base_class:
 
         return cls(
             plugin_id = meta['id'],
-            version = dtype_version_class.from_pluginversion(meta['version']),
+            version = meta['version'],
             has_processingprovider = meta['hasProcessingProvider'],
             has_serverfuncs = meta['server'],
             experimental = meta['experimental'],

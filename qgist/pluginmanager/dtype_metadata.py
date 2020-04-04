@@ -40,6 +40,7 @@ from .const import (
     METADATA_FIELDS_SPEC,
     )
 from .dtype_settings import dtype_settings_class
+from .dtype_version import dtype_version_class
 from .error import (
     QgistMetaKeyError,
     # QgistMetaRequirementError, # TODO, see constructor below
@@ -171,8 +172,8 @@ class _dtype_metadata_field_class:
             raise QgistTypeError(tr('"name" must be a str.'))
         if len(name) == 0:
             raise QgistValueError(tr('"name" must not be empty.'))
-        if dtype not in METADATA_FIELD_DTYPES:
-            raise QgistTypeError(tr('"dtype" unknown.'))
+        if not self._check_dtype(dtype):
+            raise QgistTypeError(tr('"dtype" unknown or broken.'))
         if not isinstance(is_required, bool):
             raise QgistTypeError(tr('"is_required" must be a bool.'))
         if not isinstance(value, dtype) and value is not None:
@@ -196,7 +197,8 @@ class _dtype_metadata_field_class:
 
         return (
             '<meta_field '
-            f'name="{self._name:s}" dtype={self._dtype.__name__} '
+            f'name="{self._name:s}" '
+            f'dtype={self._dtype.__name__ if not isinstance(dtype, dict) else str(self._dtype):s} '
             f'known={"yes" if self._known else "no"} '
             f'i18n={"yes" if self._i18n else "no"} '
             f'required={"yes" if self._is_required else "no"}'
@@ -211,15 +213,22 @@ class _dtype_metadata_field_class:
     @value.setter
     def value(self, new_value):
 
-        if not any((isinstance(new_value, dtype) for dtype in METADATA_FIELD_DTYPES)):
+        if (
+            not any((isinstance(new_value, dtype) for dtype in METADATA_FIELD_DTYPES))
+            or
+            (isinstance(new_value, str) and isinstance(self._dtype, dict))
+            ):
             raise QgistTypeError(tr('"new_value" does not have valid type'))
 
         if self._dtype == str:
             new_value = str(new_value)
         if self._dtype == bool:
             new_value = dtype_settings_class.str_to_bool(new_value)
+        if isinstance(self._dtype, dict):
+            if self._dtype['name'] == 'dtype_version_class':
+                new_value = getattr(dtype_version_class, f'from_{self._dtype["method"]:s}')
 
-        if not isinstance(new_value, self._dtype):
+        if not isinstance(new_value, self._dtype) and not isinstance(new_value, dtype_version_class):
             raise QgistTypeError(tr('"new_value" was not converted to correct type'))
 
         self._value = new_value
@@ -228,6 +237,27 @@ class _dtype_metadata_field_class:
     def is_required(self):
 
         return self._is_required
+
+    @staticmethod
+    def _check_dtype(dtype):
+
+        if dtype in METADATA_FIELD_DTYPES:
+            return True
+
+        if not isinstance(dtype, dict):
+            return False
+        if dtype.keys() != {'name', 'method', 'kwargs'}
+            return False
+        if dtype['name'] != 'dtype_version_class':
+            return False
+        if not isinstance(dtype['method'], str) and isinstance(dtype['kwargs'], dict):
+            return False
+        if not hasattr(dtype_version_class, f'from_{dtype["method"]:s}')
+            return False
+        if not all((isinstance(key, str) for key in dtype['kwargs'].keys())):
+            return False
+
+        return True
 
     @classmethod
     def from_unknown(cls, name, value):
