@@ -240,6 +240,41 @@ Plugins are found in `pluginDirString` and matched as follows:
 ```
 -->
 
+
+
+# Config
+
+```
+PythonPlugins/Anaximandre
+PythonPlugins/GdalTools
+PythonPlugins/MetaSearch
+PythonPlugins/QuickOSM
+PythonPlugins/crap
+PythonPlugins/db_manager
+PythonPlugins/openlayers_plugin
+PythonPlugins/plugin_reloader
+PythonPlugins/pluginmanager
+PythonPlugins/processing
+
+Windows/PluginManager/geometry
+Windows/PluginManager/option
+Windows/PluginManager/secondSplitterState
+Windows/PluginManager/splitState
+Windows/PluginManager/tab
+
+app/plugin_installer/allowDeprecated
+app/plugin_installer/allowExperimental
+app/plugin_installer/checkOnStart
+app/plugin_installer/checkOnStartInterval
+app/plugin_installer/checkOnStartLastDate
+app/plugin_installer/foobar
+app/plugin_installer/seen_plugins
+
+app/plugin_repositories/Offizielles QGIS-Erweiterungsrepositorium/authcfg
+app/plugin_repositories/Offizielles QGIS-Erweiterungsrepositorium/enabled
+app/plugin_repositories/Offizielles QGIS-Erweiterungsrepositorium/url
+```
+
 # UI / Qt
 
 Plugin manager GUI uses `QgsScrollArea` and `QgsWebView`. The former, `QgsScrollArea`, is exposed as part of `qgis.gui`. The latter, `QgsWebView`, is not exposed. It is a wrapper around `QWebView`, see `/src/core/qgswebview.h`. If webkit is switched off at compile time, `QTextBrowser` is used instead.
