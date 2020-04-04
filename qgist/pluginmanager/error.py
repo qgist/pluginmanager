@@ -37,6 +37,9 @@ class QgistInstallFailed(Exception):
 class QgistNotADirectoryError(NotADirectoryError):
     pass
 
+class QgistNotAPluginDirectoryError(Exception):
+    pass
+
 class QgistMetaKeyError(KeyError):
     pass
 
