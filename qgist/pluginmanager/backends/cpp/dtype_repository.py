@@ -25,11 +25,22 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+import random
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from ...const import REPO_BACKEND_QGISLEGACYCPP
+from ...const import (
+    REPO_BACKEND_QGISLEGACYCPP,
+    CONFIG_GROUP_MANAGER_REPOS,
+    )
 from ...dtype_repository_base import dtype_repository_base_class
+
+from ....util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
@@ -38,3 +49,19 @@ from ...dtype_repository_base import dtype_repository_base_class
 class dtype_repository_class(dtype_repository_base_class):
 
     REPO_TYPE = REPO_BACKEND_QGISLEGACYCPP
+
+    @classmethod
+    def from_default(cls, config):
+
+        name = tr('Local QGIS C++ Plugin Repository')
+        repo_id = f'{name:s} ({random.randint(2**31, 2**32 - 1):x})' # avoid collisions!
+
+        return cls(
+            repo_id = repo_id,
+            name = name,
+            active = True,
+            protected = True,
+            repository_type = cls.REPO_TYPE,
+            plugin_releases = list(),
+            config_group = config.get_group(CONFIG_GROUP_MANAGER_REPOS).get_group(repo_id),
+            )

@@ -151,7 +151,7 @@ class dtype_index_class:
                 self._config,
                 repo_type = REPO_BACKEND_QGISLEGACYCPP, method = 'default',
                 ))
-        if len((repo for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYCPP)) != 1:
+        if len([repo for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYCPP]) != 1:
             raise QgistRepoError(tr('There must be exactly one C++ repository.'))
 
         # Get inventory of installed plugins and match with repos

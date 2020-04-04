@@ -108,8 +108,8 @@ class dtype_repository_class(dtype_repository_base_class):
     @classmethod
     def from_default(cls, config):
 
-        name = tr('QGIS Official Plugin Repository')
-        repo_id = f'{name:s} ({random.randint(2**31, 2**32 - 1):x})', # avoid collisions!
+        name = tr('QGIS Official Python Plugin Repository')
+        repo_id = f'{name:s} ({random.randint(2**31, 2**32 - 1):x})' # avoid collisions!
 
         return cls(
             repo_id = repo_id,
