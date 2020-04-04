@@ -52,6 +52,11 @@ class dtype_repository_class(dtype_repository_base_class):
 
     REPO_TYPE = REPO_BACKEND_QGISLEGACYCPP
 
+    @staticmethod
+    def find_plugins():
+
+        return tuple() # TODO
+
     @classmethod
     def from_default(cls, config):
 
