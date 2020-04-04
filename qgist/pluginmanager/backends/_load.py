@@ -98,8 +98,8 @@ class _backend:
         return self._module is not None
 
     @property
-    def dtype_plugin_class(self):
-        "returns backend plugin class"
+    def dtype_pluginrelease_class(self):
+        "returns backend plugin release lass"
 
         if not self.module_loaded:
             raise QgistSyntaxError('backend module has not been loaded')
