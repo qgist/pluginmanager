@@ -106,6 +106,10 @@ class dtype_repository_class(dtype_repository_base_class):
             )
 
     @classmethod
+    def find_plugins(cls):
+        pass
+
+    @classmethod
     def from_default(cls, config):
 
         name = tr('QGIS Official Python Plugin Repository')

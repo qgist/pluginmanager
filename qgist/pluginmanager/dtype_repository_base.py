@@ -192,6 +192,10 @@ class dtype_repository_base_class:
             for repo_id in repotype_group.keys_root()
             )
 
+    @classmethod
+    def find_plugins(cls):
+        raise QgistNotImplementedError()
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PRE-CONSTRUCTOR
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
