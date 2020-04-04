@@ -118,8 +118,8 @@ class dtype_repository_class(dtype_repository_base_class):
             for repo_id in qgislegacy_group.keys_root()
             )
 
-    @classmethod
-    def find_plugins(cls):
+    @staticmethod
+    def find_plugins():
         """
         Based on:
             - `/src/python/qgspythonutilsimpl.cpp`, `QgsPythonUtilsImpl::checkSystemImports()`
