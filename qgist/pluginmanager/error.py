@@ -28,6 +28,9 @@ specific language governing rights and limitations under the License.
 # EXCEPTIONS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class QgistRepoError(Exception):
+    pass
+
 class QgistInstallFailed(Exception):
     pass
 
