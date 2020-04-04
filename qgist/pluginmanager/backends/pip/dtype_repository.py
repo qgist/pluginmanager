@@ -38,7 +38,7 @@ class dtype_repository_class(dtype_repository_base_class):
 
     REPO_TYPE = 'pip'
 
-    @staticmethod
-    def find_plugins():
+    @classmethod
+    def find_plugins(cls, config):
 
         return tuple() # TODO
