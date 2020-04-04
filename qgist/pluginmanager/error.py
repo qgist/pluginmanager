@@ -34,6 +34,9 @@ class QgistRepoError(Exception):
 class QgistInstallFailed(Exception):
     pass
 
+class QgistNotADirectoryError(NotADirectoryError):
+    pass
+
 class QgistMetaKeyError(KeyError):
     pass
 

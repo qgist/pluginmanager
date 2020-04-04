@@ -28,7 +28,16 @@ specific language governing rights and limitations under the License.
 # IMPORT (Python Standard Library)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+import glob
+import os
 import random
+import sys
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (QGIS)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from qgis.core import QgsApplication
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
@@ -39,6 +48,9 @@ from ...const import (
     CONFIG_GROUP_QGISLEGACY_REPOS,
     REPO_DEFAULT_URL,
     REPO_BACKEND_QGISLEGACYPYTHON,
+    )
+from ...error import (
+    QgistNotADirectoryError,
     )
 from ...dtype_repository_base import dtype_repository_base_class
 from ...dtype_settings import (
@@ -107,7 +119,22 @@ class dtype_repository_class(dtype_repository_base_class):
 
     @classmethod
     def find_plugins(cls):
-        pass
+        """
+        Based on:
+            - `/src/python/qgspythonutilsimpl.cpp`, `QgsPythonUtilsImpl::checkSystemImports()`
+            - `/python/utils.py`, `findPlugins` and `updateAvailablePlugins`
+        Returns: All plugins, one installed release each
+        """
+
+        plugin_paths = (*_get_extra_plugins_paths(), _get_python_path(), _get_home_python_path())
+        plugins = []
+
+        for plugin_path in glob.glob(plugin_paths + '/*'):
+            if not _is_python_plugin_dir(plugin_path):
+                continue
+            plugins.append(_create_plugin_from_dir(plugin_path))
+
+        return (plugin for plugin in plugins)
 
     @classmethod
     def from_default(cls, config):
@@ -154,3 +181,57 @@ class dtype_repository_class(dtype_repository_base_class):
             authcfg = config_group['authcfg'],
             url = config_group['url'],
         )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ROUTINES
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+def _create_plugin_from_dir(in_path):
+
+    return None # TODO plugin
+
+def _get_python_path():
+
+    root_fld = (
+        QgsApplication.buildOutputPath()
+        if QgsApplication.isRunningFromBuildDir() else
+        QgsApplication.pkgDataPath()
+        )
+
+    return os.path.abspath(os.path.join(root_fld, 'python'))
+
+def _get_home_python_path():
+
+    root_fld = QgsApplication.qgisSettingsDirPath()
+
+    if os.path.abspath(root_fld) == os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3')):
+        return os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3', 'python'))
+
+    return os.path.join(root_fld, 'python')
+
+def _get_extra_plugins_paths():
+
+    if 'QGIS_PLUGINPATH' not in os.environ.keys():
+        return tuple()
+
+    paths = os.environ['QGIS_PLUGINPATH']
+    delimiter = ';' if sys.platform.startswith('win') else ':'
+    checked_paths = []
+
+    for path in paths.split(delimiter):
+        if not os.path.isdir(path):
+            raise QgistNotADirectoryError(tr('The extra plugin path does not exist') + f': {path:s}')
+        checked_paths.append(path)
+
+    return (path for path in checked_paths)
+
+def _is_python_plugin_dir(in_path):
+
+    if not os.path.isdir(in_path):
+        return False
+    if not os.path.isfile(os.path.join(in_path, '__init__.py')):
+        return False
+    if not os.path.isfile(os.path.join(in_path, 'metadata.txt')):
+        return False
+
+    return True
