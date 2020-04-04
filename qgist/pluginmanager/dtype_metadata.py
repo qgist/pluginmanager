@@ -198,7 +198,7 @@ class _dtype_metadata_field_class:
         return (
             '<meta_field '
             f'name="{self._name:s}" '
-            f'dtype={self._dtype.__name__ if not isinstance(dtype, dict) else str(self._dtype):s} '
+            f'dtype={self._dtype.__name__ if not isinstance(self._dtype, dict) else str(self._dtype):s} '
             f'known={"yes" if self._known else "no"} '
             f'i18n={"yes" if self._i18n else "no"} '
             f'required={"yes" if self._is_required else "no"}'
@@ -246,13 +246,13 @@ class _dtype_metadata_field_class:
 
         if not isinstance(dtype, dict):
             return False
-        if dtype.keys() != {'name', 'method', 'kwargs'}
+        if dtype.keys() != {'name', 'method', 'kwargs'}:
             return False
         if dtype['name'] != 'dtype_version_class':
             return False
         if not isinstance(dtype['method'], str) and isinstance(dtype['kwargs'], dict):
             return False
-        if not hasattr(dtype_version_class, f'from_{dtype["method"]:s}')
+        if not hasattr(dtype_version_class, f'from_{dtype["method"]:s}'):
             return False
         if not all((isinstance(key, str) for key in dtype['kwargs'].keys())):
             return False
