@@ -71,7 +71,8 @@ METADATA_FIELDS_SPEC = (
     }, # TODO
     {
         'comment': 'comma separated, spaces allowed',
-        'dtype': str,
+        'dtype': tuple,
+        'importer': lambda x: tuple(x.split(',')),
         'i18n': True,
         'name': 'tags',
     },
@@ -209,27 +210,26 @@ METADATA_FIELDS_SPEC = (
     # },
     {
         'comment': 'PIP-style comma separated list of plugin dependencies',
-        'dtype': str,
+        'dtype': tuple,
+        'importer': lambda x: tuple(x.split(',')),
         'name': 'plugin_dependencies',
     },
     {
         'comment': 'dotted notation of minimum QGIS version',
         'dtype': dtype_version_class,
-        'dtype_constructor': 'qgisversion',
-        'dtype_constructor_kwargs': {'fix_plugin_compatibility': True}, # TODO is it actually True?
+        'importer': lambda x: dtype_version_class.from_qgisversion(x, fix_plugin_compatibility = True), # TODO is it actually True?
         'name': 'qgisMinimumVersion',
         'is_required': True,
     },
     {
         'comment': 'dotted notation of maximum QGIS version',
         'dtype': dtype_version_class,
-        'dtype_constructor': 'from_qgisversion',
-        'dtype_constructor_kwargs': {'fix_plugin_compatibility': False}, # TODO is it actually False?
+        'importer': lambda x: dtype_version_class.from_qgisversion(x, fix_plugin_compatibility = False), # TODO is it actually False?
         'name': 'qgisMaximumVersion',
     },
     {
         'dtype': dtype_version_class,
-        'dtype_constructor': 'from_pluginversion',
+        'importer': dtype_version_class.from_pluginversion,
         'name': 'version',
         'is_required': True,
     },
