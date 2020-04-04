@@ -316,3 +316,8 @@ class dtype_plugin_class:
             return False
 
         return True
+
+    @classmethod
+    def from_directory(cls, path):
+
+        return cls()

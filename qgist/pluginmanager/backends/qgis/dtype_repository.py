@@ -124,7 +124,7 @@ class dtype_repository_class(dtype_repository_base_class):
         Based on:
             - `/src/python/qgspythonutilsimpl.cpp`, `QgsPythonUtilsImpl::checkSystemImports()`
             - `/python/utils.py`, `findPlugins` and `updateAvailablePlugins`
-        Returns: All plugins, one installed release each
+        Returns: All installed plugins, one (installed) release each
         """
 
         plugin_paths = (*_get_extra_plugins_paths(), _get_python_path(), _get_home_python_path())
@@ -133,7 +133,7 @@ class dtype_repository_class(dtype_repository_base_class):
         for plugin_path in glob.glob(plugin_paths + '/*'):
             if not dtype_plugin_class.is_python_plugin_dir(plugin_path):
                 continue
-            plugins.append(_create_plugin_from_dir(plugin_path))
+            plugins.append(dtype_plugin_class.from_directory(plugin_path))
 
         return (plugin for plugin in plugins)
 
@@ -186,10 +186,6 @@ class dtype_repository_class(dtype_repository_base_class):
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ROUTINES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-def _create_plugin_from_dir(in_path):
-
-    return None # TODO plugin
 
 def _get_python_path():
 
