@@ -71,6 +71,13 @@ class dtype_index_class:
         self._repos = [] # From high to low priority
         self._plugins = {} # Individual plugins, not their releases
 
+        # TODO <HACK>
+        # remove this eventually - Plugin Manager should manage this on its own
+        from qgis.utils import plugins as _plugins
+        self._plugin_modules = _plugins # dict by plugin_id: reference on imported Python plugin modules
+        del _plugins
+        # TODO </HACK>
+
         self._allow_deprecated = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_DEPRECATED])
         self._allow_experimental = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL])
 
@@ -129,12 +136,20 @@ class dtype_index_class:
 
         self._repos.clear()
         self._plugins.clear()
+        # TODO what about self._plugin_modules?
 
         for repo_type in backends.keys():
             for protected in (True, False):
                 found_plugins = {
                     plugin.id: plugin
-                    for plugin in self.get_repo_class(repo_type).find_plugins(self._config, protected = protected)
+                    for plugin in self.get_repo_class(repo_type).find_plugins(
+                        self._config, protected = protected,
+                        # TODO <HACK>
+                        # remove this eventually - Plugin Manager should load plugins
+                        # on its own when index is initialized (at QGIS startup)
+                        plugin_modules = self._plugin_modules.copy(),
+                        # TODO </HACK>
+                        )
                     }
                 if len(found_plugins.keys() & self._plugins.keys()) != 0:
                     raise QgistPluginIdCollisionError(tr('Two or more plugins with identical ID'))

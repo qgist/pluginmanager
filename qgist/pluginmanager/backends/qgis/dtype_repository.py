@@ -121,7 +121,7 @@ class dtype_repository_class(dtype_repository_base_class):
             )
 
     @classmethod
-    def find_plugins(cls, config, protected = False):
+    def find_plugins(cls, config, protected, plugin_modules):
         """
         Based on:
             - `/src/python/qgspythonutilsimpl.cpp`, `QgsPythonUtilsImpl::checkSystemImports()`
@@ -133,6 +133,10 @@ class dtype_repository_class(dtype_repository_base_class):
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
         if not isinstance(protected, bool):
             raise QgistTypeError(tr('"protected" must be a bool'))
+        if not isinstance(plugin_modules, dict):
+            raise QgistTypeError(tr('"plugin_modules" must be a dict'))
+        if not all((isinstance(plugin_id, str) for plugin_id in plugin_modules.keys())):
+            raise QgistTypeError(tr('Every plugin_id in "plugin_modules" must be str'))
 
         if protected:
             plugin_paths = (_get_python_path(),)
@@ -145,7 +149,9 @@ class dtype_repository_class(dtype_repository_base_class):
             for entry in glob.glob(plugin_path + '/*'):
                 if not dtype_pluginrelease_class.is_python_plugin_dir(entry):
                     continue
-                plugins.append(dtype_plugin_class.from_installed(entry, config, cls.REPO_TYPE, protected))
+                plugins.append(dtype_plugin_class.from_installed(
+                    entry, config, cls.REPO_TYPE, protected, plugin_modules,
+                    ))
 
         return (plugin for plugin in plugins)
 

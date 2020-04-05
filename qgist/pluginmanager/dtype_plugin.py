@@ -67,6 +67,7 @@ class dtype_plugin_class:
 
     def __init__(self,
         plugin_id, installed, installed_release, available_releases, protected, active, deprecated,
+        module = None,
         ):
 
         if not isinstance(plugin_id, str):
@@ -91,6 +92,8 @@ class dtype_plugin_class:
         if not isinstance(deprecated, bool):
             raise QgistTypeError(tr('"deprecated" must be a bool.'))
 
+        # TODO check/inspect "module"?
+
         self._id = plugin_id # unique
         self._installed = installed
         self._installed_release = installed_release
@@ -98,8 +101,9 @@ class dtype_plugin_class:
         self._protected = protected
         self._active = active
         self._deprecated = deprecated
+        self._module = module
 
-        # Implement in derived class!
+        # TODO Implement in derived class!
         self._available = None # bool. Always static? Source available (online), matching QGIS version requirement
         self._watchdog = None # bool
 
@@ -165,6 +169,10 @@ class dtype_plugin_class:
     @property
     def deprecated(self):
         return self._deprecated
+
+    @property
+    def module(self):
+        return self._module
 
     @property
     def available(self):
@@ -299,15 +307,11 @@ class dtype_plugin_class:
         raise QgistNotImplementedError()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# HELPER
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PRE-CONSTRUCTOR
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
-    def from_installed(cls, path, config, repo_type, protected):
+    def from_installed(cls, path, config, repo_type, protected, plugin_modules):
 
         if not isinstance(repo_type, str):
             raise QgistTypeError(tr('"repo_type" must be str'))
@@ -325,6 +329,10 @@ class dtype_plugin_class:
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
         if not isinstance(protected, bool):
             raise QgistTypeError(tr('"protected" must be a bool'))
+        if not isinstance(plugin_modules, dict):
+            raise QgistTypeError(tr('"plugin_modules" must be a dict'))
+        if not all((isinstance(plugin_id, str) for plugin_id in plugin_modules.keys())):
+            raise QgistTypeError(tr('Every plugin_id in "plugin_modules" must be str'))
 
         installed_release = backends[repo_type].dtype_pluginrelease_class.from_installed(path, config)
 
@@ -334,6 +342,7 @@ class dtype_plugin_class:
             installed_release = installed_release,
             available_releases = (installed_release,),
             protected = protected,
-            active = True, # TODO config
+            active = installed_release.id in plugin_modules.keys(),
             deprecated = False, # TODO config
+            module = plugin_modules.get(installed_release.id, None),
             )

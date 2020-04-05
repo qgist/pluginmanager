@@ -193,7 +193,7 @@ class dtype_repository_base_class:
             )
 
     @classmethod
-    def find_plugins(cls, config, protected = False):
+    def find_plugins(cls, config, protected, plugin_modules):
         raise QgistNotImplementedError()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
