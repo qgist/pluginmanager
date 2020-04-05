@@ -315,6 +315,16 @@ class dtype_plugin_class:
 
         return True
 
+    @classmethod
+    def fix_meta_by_inspecting_plugindir(cls, meta, path):
+
+        if not isinstance(meta, dtype_metadata_class):
+            raise QgistTypeError(tr('"meta" bust be meta data'))
+        if not isinstance(path, str):
+            raise QgistTypeError(tr('"path" must be str'))
+        if not cls.is_python_plugin_dir(path):
+            raise QgistNotAPluginDirectoryError(tr('"path" does not point to a plugin'))
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PRE-CONSTRUCTOR
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -338,6 +348,7 @@ class dtype_plugin_class:
 
         plugin_id = os.path.basename(path)
         meta = dtype_metadata_class.from_metadatatxt(plugin_id, meta_raw)
+        cls.fix_meta_by_inspecting_plugindir(meta, path)
 
         if not backends[repo_type].module_loaded:
             backends[repo_type].load_module()
