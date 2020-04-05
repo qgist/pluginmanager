@@ -374,7 +374,7 @@ class dtype_plugin_class:
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
-    def from_installed(cls, path, config, repo_type):
+    def from_installed(cls, path, config, repo_type, protected):
 
         if not isinstance(path, str):
             raise QgistTypeError(tr('"path" must be str'))
@@ -386,6 +386,8 @@ class dtype_plugin_class:
             raise QgistTypeError(tr('"repo_type" must be str'))
         if repo_type not in backends.keys():
             raise QgistValueError(tr('Unknown repo type'))
+        if not isinstance(protected, bool):
+            raise QgistTypeError(tr('"protected" must be a bool'))
 
         with open(os.path.join(path, 'metadata.txt'), 'r', encoding = 'utf-8') as f: # TODO is this always UTF-8?
             meta_raw = f.read()
@@ -405,7 +407,7 @@ class dtype_plugin_class:
             installed = True,
             installed_release = installed_release,
             available_releases = (installed_release,),
-            protected = False, # TODO config
+            protected = protected,
             active = True, # TODO config
             deprecated = False, # TODO config
             )

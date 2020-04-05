@@ -131,13 +131,14 @@ class dtype_index_class:
         self._plugins.clear()
 
         for repo_type in backends.keys():
-            found_plugins = {
-                plugin.id: plugin
-                for plugin in self.get_repo_class(repo_type).find_plugins(self._config)
-                }
-            if len(found_plugins.keys() & self._plugins.keys()) != 0:
-                raise QgistPluginIdCollisionError(tr('Two or more plugins with identical ID'))
-            self._plugins.update(found_plugins)
+            for protected in (True, False):
+                found_plugins = {
+                    plugin.id: plugin
+                    for plugin in self.get_repo_class(repo_type).find_plugins(self._config, protected = protected)
+                    }
+                if len(found_plugins.keys() & self._plugins.keys()) != 0:
+                    raise QgistPluginIdCollisionError(tr('Two or more plugins with identical ID'))
+                self._plugins.update(found_plugins)
 
         for repo_type in backends.keys():
             for config_group in self.get_repo_class(repo_type).get_repo_config_groups(self._config):
@@ -145,7 +146,6 @@ class dtype_index_class:
                     config_group,
                     repo_type = repo_type, method = 'config',
                     ))
-
         self._ensure_qgislegacypython_default_repo()
         self._ensure_qgislegacycpp_repo()
 

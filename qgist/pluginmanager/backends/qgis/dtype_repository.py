@@ -129,15 +129,21 @@ class dtype_repository_class(dtype_repository_base_class):
 
         if not isinstance(config, dtype_settings_class):
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
+        if not isinstance(protected, bool):
+            raise QgistTypeError(tr('"protected" must be a bool'))
 
-        plugin_paths = (*_get_extra_plugins_paths(), _get_python_path(), _get_home_python_path())
+        if protected:
+            plugin_paths = (_get_python_path(),)
+        else:
+            plugin_paths = (*_get_extra_plugins_paths(), _get_home_python_path())
+
         plugins = []
 
         for plugin_path in plugin_paths:
             for entry in glob.glob(plugin_path + '/*'):
                 if not dtype_plugin_class.is_python_plugin_dir(entry):
                     continue
-                plugins.append(dtype_plugin_class.from_installed(entry, config, cls.REPO_TYPE))
+                plugins.append(dtype_plugin_class.from_installed(entry, config, cls.REPO_TYPE, protected))
 
         return (plugin for plugin in plugins)
 
@@ -208,7 +214,7 @@ def _get_home_python_path():
     if os.path.abspath(root_fld) == os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3')):
         return os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3', 'python', 'plugins'))
 
-    return os.path.join(root_fld, 'python', 'plugins')
+    return os.path.abspath(os.path.join(root_fld, 'python', 'plugins'))
 
 def _get_extra_plugins_paths():
 
@@ -219,9 +225,14 @@ def _get_extra_plugins_paths():
     delimiter = ';' if sys.platform.startswith('win') else ':'
     checked_paths = []
 
+    python_path = _get_python_path()
+
     for path in paths.split(delimiter):
+        path = os.path.abspath(path)
         if not os.path.isdir(path):
             raise QgistNotADirectoryError(tr('The extra plugin path does not exist') + f': {path:s}')
+        if path == python_path:
+            raise QgistValueError(tr('"QGIS_PLUGINPATH" contains a protected path'))
         checked_paths.append(path)
 
     return (path for path in checked_paths)
