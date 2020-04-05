@@ -70,7 +70,7 @@ class dtype_metadata_class:
             if key not in self._fields.keys():
                 self._fields[key] = dtype_metadata_field_class.from_unknown(key, fields[key])
             else:
-                self._fields[key].value = fields[key]
+                self._fields[key].value_string = fields[key]
 
         # TODO "email" is required but e.g. not exposed in plugins.xml from plugins.qgis.org
         # for key in self._fields.keys():
@@ -90,7 +90,11 @@ class dtype_metadata_class:
         if name not in self._fields.keys():
             raise QgistMetaKeyError(tr('"name" is not a valid meta data field'))
 
-        return self._fields[name].value
+        return self._fields[name]
+
+    def keys(self):
+
+        return (key for key in self._fields.keys())
 
     @classmethod
     def from_xmldict(cls, xml_dict):
