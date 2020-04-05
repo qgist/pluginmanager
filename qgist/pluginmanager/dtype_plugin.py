@@ -28,6 +28,7 @@ specific language governing rights and limitations under the License.
 # IMPORT (Python Standard Library)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+import ast
 import os
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -324,6 +325,35 @@ class dtype_plugin_class:
             raise QgistTypeError(tr('"path" must be str'))
         if not cls.is_python_plugin_dir(path):
             raise QgistNotAPluginDirectoryError(tr('"path" does not point to a plugin'))
+
+        with open(os.path.join(path, '__init__.py'), 'r', encoding = 'utf-8') as f:
+            init_raw = f.read()
+
+        init_tree = ast.parse(init_raw)
+
+        if not meta['server'].value_set:
+            meta['server'].value = cls._is_func_present(init_tree, 'serverClassFactory')
+
+    @staticmethod
+    def _is_func_present(tree, func_name):
+        # TODO catch more edge cases?
+
+        for branch in tree:
+            if isinstance(branch, ast.FunctionDef):
+                if getattr(branch, 'name', None) == func_name:
+                    return True
+            if isinstance(branch, ast.ImportFrom):
+                for item in getattr(branch, 'names', tuple()):
+                    if getattr(item, 'asname', None) is None and getattr(item, 'name', None) == func_name:
+                        return True
+                    if getattr(item, 'asname', None) == func_name:
+                        return True
+            if isinstance(branch, ast.Assign):
+                for target in getattr(branch, 'targets', tuple()):
+                    if getattr(target, 'id', None) == func_name:
+                        return True
+
+        return False
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PRE-CONSTRUCTOR
