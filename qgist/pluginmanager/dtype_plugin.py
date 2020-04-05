@@ -40,6 +40,9 @@ from typing import Generator, Iterator
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .backends import backends
+from .error import QgistNotAPluginDirectoryError
+from .dtype_metadata import dtype_metadata_class
 from .dtype_pluginrelease_base import dtype_pluginrelease_base_class
 from .dtype_settings import dtype_settings_class
 
@@ -65,7 +68,6 @@ class dtype_plugin_class:
 
     def __init__(self,
         plugin_id, installed, installed_release, available_releases, protected, active, deprecated,
-        config,
         ):
 
         if not isinstance(plugin_id, str):
@@ -89,8 +91,6 @@ class dtype_plugin_class:
             raise QgistTypeError(tr('"active" must be a bool.'))
         if not isinstance(deprecated, bool):
             raise QgistTypeError(tr('"deprecated" must be a bool.'))
-        if not isinstance(config, dtype_settings_class):
-            raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
         self._id = plugin_id # unique
         self._installed = installed
@@ -99,8 +99,6 @@ class dtype_plugin_class:
         self._protected = protected
         self._active = active
         self._deprecated = deprecated
-
-        self._config = config
 
         # Implement in derived class!
         self._available = None # bool. Always static? Source available (online), matching QGIS version requirement
@@ -318,6 +316,36 @@ class dtype_plugin_class:
         return True
 
     @classmethod
-    def from_directory(cls, path):
+    def from_installed(cls, path, config, repo_type):
 
-        return cls()
+        if not isinstance(path, str):
+            raise QgistTypeError(tr('"path" must be str'))
+        if not cls.is_python_plugin_dir(path):
+            raise QgistNotAPluginDirectoryError(tr('"path" does not point to a plugin'))
+        if not isinstance(config, dtype_settings_class):
+            raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
+        if not isinstance(repo_type, str):
+            raise QgistTypeError(tr('"repo_type" must be str'))
+        if repo_type not in backends.keys():
+            raise QgistValueError(tr('Unknown repo type'))
+
+        with open(os.path.join(path, 'metadata.txt'), 'r', encoding = 'utf-8') as f:
+            meta_raw = f.read()
+
+        plugin_id = os.path.basename(path)
+        meta = dtype_metadata_class.from_metadatatxt(plugin_id, meta_raw)
+
+        if not backends[repo_type].module_loaded:
+            backends[repo_type].load_module()
+
+        installed_release = backends[repo_type].dtype_pluginrelease_class.from_metadata(meta)
+
+        return cls(
+            plugin_id = plugin_id,
+            installed = True,
+            installed_release = installed_release,
+            available_releases = (installed_release,),
+            protected = False, # TODO config
+            active = True, # TODO config
+            deprecated = False, # TODO config
+            )
