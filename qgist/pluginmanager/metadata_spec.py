@@ -249,6 +249,7 @@ METADATA_FIELDS_SPEC = (
         'importer': dtype_settings_class.str_to_bool,
         'exporter': dtype_settings_class.bool_to_str,
         'name': 'hasProcessingProvider',
+        'default_value': False, # TODO remove?
     },
     {
         'comment': 'determines if the plugin provides functionallity for server',

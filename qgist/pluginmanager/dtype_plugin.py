@@ -306,6 +306,7 @@ class dtype_plugin_class:
 
     @staticmethod
     def is_python_plugin_dir(in_path):
+        "Does a given folder contain a QGIS plugin?"
 
         if not os.path.isdir(in_path):
             return False
@@ -318,6 +319,7 @@ class dtype_plugin_class:
 
     @classmethod
     def fix_meta_by_inspecting_plugindir(cls, meta, path):
+        "Attempts to guess missing meta data fields by looking at plugin source code"
 
         if not isinstance(meta, dtype_metadata_class):
             raise QgistTypeError(tr('"meta" bust be meta data'))
@@ -327,16 +329,22 @@ class dtype_plugin_class:
             raise QgistNotAPluginDirectoryError(tr('"path" does not point to a plugin'))
 
         if not meta['server'].value_set:
-            with open(os.path.join(path, '__init__.py'), 'r', encoding = 'utf-8') as f:
+            with open(os.path.join(path, '__init__.py'), 'r', encoding = 'utf-8') as f: # TODO encoding from file?
                 init_raw = f.read()
             meta['server'].value = cls._is_func_present(init_raw, 'serverClassFactory')
 
+        if not meta['hasProcessingProvider'].value_set:
+            # TODO trace "QgsProcessingProvider" and "initProcessing" method in plugin folder
+            # https://docs.qgis.org/testing/en/docs/pyqgis_developer_cookbook/processing.html
+            meta['hasProcessingProvider'].value = meta['hasProcessingProvider'].default_value
+
     @staticmethod
     def _is_func_present(raw_src, func_name):
-        # TODO catch more edge cases?
+        "Is a given function present in raw Python source code?"
 
         tree = ast.parse(raw_src)
 
+        # TODO catch more edge cases
         for branch in tree:
             if isinstance(branch, ast.FunctionDef):
                 if getattr(branch, 'name', None) == func_name:
@@ -372,7 +380,7 @@ class dtype_plugin_class:
         if repo_type not in backends.keys():
             raise QgistValueError(tr('Unknown repo type'))
 
-        with open(os.path.join(path, 'metadata.txt'), 'r', encoding = 'utf-8') as f:
+        with open(os.path.join(path, 'metadata.txt'), 'r', encoding = 'utf-8') as f: # TODO is this always UTF-8?
             meta_raw = f.read()
 
         plugin_id = os.path.basename(path)
