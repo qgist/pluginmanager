@@ -345,7 +345,7 @@ class dtype_plugin_class:
         tree = ast.parse(raw_src)
 
         # TODO catch more edge cases
-        for branch in tree:
+        for branch in tree.body:
             if isinstance(branch, ast.FunctionDef):
                 if getattr(branch, 'name', None) == func_name:
                     return True
