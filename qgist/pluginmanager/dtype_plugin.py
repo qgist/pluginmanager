@@ -318,6 +318,13 @@ class dtype_plugin_class:
         return True
 
     @classmethod
+    def fix_meta_by_setting_defaults(cls, meta):
+        "Attempts to fix missing meta data fields by setting them to their defaults"
+
+        if not meta['experimental'].value_set:
+            meta['experimental'].value = meta['experimental'].default_value
+
+    @classmethod
     def fix_meta_by_inspecting_plugindir(cls, meta, path):
         "Attempts to guess missing meta data fields by looking at plugin source code"
 
@@ -386,6 +393,7 @@ class dtype_plugin_class:
         plugin_id = os.path.basename(path)
         meta = dtype_metadata_class.from_metadatatxt(plugin_id, meta_raw)
         cls.fix_meta_by_inspecting_plugindir(meta, path)
+        cls.fix_meta_by_setting_defaults(meta)
 
         if not backends[repo_type].module_loaded:
             backends[repo_type].load_module()

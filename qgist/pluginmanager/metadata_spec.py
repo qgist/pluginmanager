@@ -166,6 +166,7 @@ METADATA_FIELDS_SPEC = (
         'importer': dtype_settings_class.str_to_bool,
         'exporter': dtype_settings_class.bool_to_str,
         'name': 'experimental',
+        'default_value': False,
     },
     {
         'comment': 'true if deprecated, false if actual',
