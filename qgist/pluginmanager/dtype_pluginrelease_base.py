@@ -57,6 +57,8 @@ class dtype_pluginrelease_base_class:
     Mutable.
     """
 
+    REPO_TYPE = None
+
     def __init__(self,
         plugin_id, version,
         has_processingprovider, has_serverfuncs, experimental, path,
@@ -98,7 +100,8 @@ class dtype_pluginrelease_base_class:
             f'id="{self._id:s}" '
             f'experimental={"yes" if self._experimental else "no":s} '
             f'processingprovider={"yes" if self.has_processingprovider else "no":s} '
-            f'serverfuncs={"yes" if self.has_serverfuncs else "no":s}'
+            f'serverfuncs={"yes" if self.has_serverfuncs else "no":s} '
+            f'repo_type={self.REPO_TYPE:s}'
             '>'
             )
 
