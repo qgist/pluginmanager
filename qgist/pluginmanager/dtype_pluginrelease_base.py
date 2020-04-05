@@ -124,10 +124,10 @@ class dtype_pluginrelease_base_class:
             raise QgistTypeError(tr('"meta" must be meta data.'))
 
         return cls(
-            plugin_id = meta['id'],
-            version = meta['version'],
-            has_processingprovider = meta['hasProcessingProvider'],
-            has_serverfuncs = meta['server'],
-            experimental = meta['experimental'],
+            plugin_id = meta['id'].value,
+            version = meta['version'].value,
+            has_processingprovider = meta['hasProcessingProvider'].value,
+            has_serverfuncs = meta['server'].value,
+            experimental = meta['experimental'].value,
             meta = meta,
             )
