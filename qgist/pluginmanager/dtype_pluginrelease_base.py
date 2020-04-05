@@ -166,6 +166,9 @@ class dtype_pluginrelease_base_class:
         if not meta['experimental'].value_set:
             meta['experimental'].value = meta['experimental'].default_value
 
+        if not meta['deprecated'].value_set:
+            meta['deprecated'].value = meta['deprecated'].default_value
+
     @classmethod
     def fix_meta_by_inspecting_plugindir(cls, meta, path):
         "Attempts to guess missing meta data fields by looking at plugin source code"

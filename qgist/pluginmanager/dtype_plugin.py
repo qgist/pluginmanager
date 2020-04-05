@@ -343,6 +343,6 @@ class dtype_plugin_class:
             available_releases = (installed_release,),
             protected = protected,
             active = installed_release.id in plugin_modules.keys(),
-            deprecated = False, # TODO config
+            deprecated = installed_release.meta['deprecated'].value,
             module = plugin_modules.get(installed_release.id, None),
             )

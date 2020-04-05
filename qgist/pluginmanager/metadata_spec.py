@@ -174,6 +174,7 @@ METADATA_FIELDS_SPEC = (
         'importer': dtype_settings_class.str_to_bool,
         'exporter': dtype_settings_class.bool_to_str,
         'name': 'deprecated',
+        'default_value': False,
     },
     # {
     #     'comment': 'true if trusted, false if not trusted',
