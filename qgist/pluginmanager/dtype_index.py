@@ -81,7 +81,7 @@ class dtype_index_class:
         self._allow_deprecated = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_DEPRECATED])
         self._allow_experimental = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL])
 
-        self._rebuild()
+        self.rebuild()
 
     def __repr__(self):
 
@@ -131,36 +131,16 @@ class dtype_index_class:
 # MANAGEMENT: INDEX
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def _rebuild(self):
+    def rebuild(self):
         "Rebuild index of repos and plugins"
 
         self._repos.clear()
         self._plugins.clear()
         # TODO what about self._plugin_modules?
 
-        for repo_type in backends.keys():
-            for protected in (True, False):
-                found_plugins = {
-                    plugin.id: plugin
-                    for plugin in self.get_repo_class(repo_type).find_plugins(
-                        self._config, protected = protected,
-                        # TODO <HACK>
-                        # remove this eventually - Plugin Manager should load plugins
-                        # on its own when index is initialized (at QGIS startup)
-                        plugin_modules = self._plugin_modules.copy(),
-                        # TODO </HACK>
-                        )
-                    }
-                if len(found_plugins.keys() & self._plugins.keys()) != 0:
-                    raise QgistPluginIdCollisionError(tr('Two or more plugins with identical ID'))
-                self._plugins.update(found_plugins)
+        self._rebuild_plugins()
+        self._rebuild_repos()
 
-        for repo_type in backends.keys():
-            for config_group in self.get_repo_class(repo_type).get_repo_config_groups(self._config):
-                self.add_repo(self.create_repo(
-                    config_group,
-                    repo_type = repo_type, method = 'config',
-                    ))
         self._ensure_qgislegacypython_default_repo()
         self._ensure_qgislegacycpp_repo()
 
@@ -182,6 +162,34 @@ class dtype_index_class:
         #   - Produce list of releases per repo, add releases to repos
 
         # Go through repos and their releases - produce list of (avaialble) plugins
+
+    def _rebuild_plugins(self):
+
+        for repo_type in backends.keys():
+            for protected in (True, False):
+                found_plugins = {
+                    plugin.id: plugin
+                    for plugin in self.get_repo_class(repo_type).find_plugins(
+                        self._config, protected = protected,
+                        # TODO <HACK>
+                        # remove this eventually - Plugin Manager should load plugins
+                        # on its own when index is initialized (at QGIS startup)
+                        plugin_modules = self._plugin_modules.copy(),
+                        # TODO </HACK>
+                        )
+                    }
+                if len(found_plugins.keys() & self._plugins.keys()) != 0:
+                    raise QgistPluginIdCollisionError(tr('Two or more plugins with identical ID'))
+                self._plugins.update(found_plugins)
+
+    def _rebuild_repos(self):
+
+        for repo_type in backends.keys():
+            for config_group in self.get_repo_class(repo_type).get_repo_config_groups(self._config):
+                self.add_repo(self.create_repo(
+                    config_group,
+                    repo_type = repo_type, method = 'config',
+                    ))
 
     def _ensure_qgislegacypython_default_repo(self):
 
