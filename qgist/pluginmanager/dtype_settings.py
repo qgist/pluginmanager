@@ -166,7 +166,13 @@ class dtype_settings_class:
         if value.lower() in ('no', 'false', '0'):
             return False
 
-        raise QgistValueError(tr('value can not be converted to bool'))
+        # TODO inspired by https://github.com/3liz/QuickOSM/commit/ef5df529b841362d796574b62d78e12a5d929290
+        if any((value.lower().startswith(item) for item in ('yes', 'true'))):
+            return True
+        if any((value.lower().startswith(item) for item in ('no', 'false'))):
+            return False
+
+        raise QgistValueError(tr('value can not be converted to bool'), value)
 
     @staticmethod
     def bool_to_str(value):
