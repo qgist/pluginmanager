@@ -119,7 +119,7 @@ class dtype_repository_class(dtype_repository_base_class):
             )
 
     @classmethod
-    def find_plugins(cls, config):
+    def find_plugins(cls, config, protected = False):
         """
         Based on:
             - `/src/python/qgspythonutilsimpl.cpp`, `QgsPythonUtilsImpl::checkSystemImports()`

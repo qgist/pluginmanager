@@ -39,6 +39,6 @@ class dtype_repository_class(dtype_repository_base_class):
     REPO_TYPE = 'conda'
 
     @classmethod
-    def find_plugins(cls, config):
+    def find_plugins(cls, config, protected = False):
 
         return tuple() # TODO
