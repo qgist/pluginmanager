@@ -35,4 +35,5 @@ from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
-    pass
+
+    REPO_TYPE = 'pip'

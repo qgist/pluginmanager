@@ -28,6 +28,7 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from ...const import REPO_BACKEND_QGISLEGACYCPP
 from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -35,7 +36,8 @@ from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
-    pass
+
+    REPO_TYPE = REPO_BACKEND_QGISLEGACYCPP
 
     # @property
     # def protected(self):
