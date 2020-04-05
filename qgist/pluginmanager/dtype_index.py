@@ -146,25 +146,8 @@ class dtype_index_class:
                     repo_type = repo_type, method = 'config',
                     ))
 
-        if not any((
-            repo.url == REPO_DEFAULT_URL
-            for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYPYTHON
-            )): # ensure QGIS default Python repo
-            self.add_repo(self.create_repo(
-                self._config,
-                repo_type = REPO_BACKEND_QGISLEGACYPYTHON, method = 'default',
-                ))
-
-        if not any((
-            repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYCPP
-            for repo in self._repos
-            )): # ensure QGIS default C++ repo
-            self.add_repo(self.create_repo(
-                self._config,
-                repo_type = REPO_BACKEND_QGISLEGACYCPP, method = 'default',
-                ))
-        if len([repo for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYCPP]) != 1:
-            raise QgistRepoError(tr('There must be exactly one C++ repository.'))
+        self._ensure_qgislegacypython_default_repo()
+        self._ensure_qgislegacycpp_repo()
 
         # Get inventory of installed plugins and match with repos
         # Every local plugin folder (i.e. Python module folder) contains a reference to its repo id!
@@ -184,6 +167,31 @@ class dtype_index_class:
         #   - Produce list of releases per repo, add releases to repos
 
         # Go through repos and their releases - produce list of (avaialble) plugins
+
+    def _ensure_qgislegacypython_default_repo(self):
+
+        if not any((
+            repo.url == REPO_DEFAULT_URL
+            for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYPYTHON
+            )):
+            self.add_repo(self.create_repo(
+                self._config,
+                repo_type = REPO_BACKEND_QGISLEGACYPYTHON, method = 'default',
+                ))
+
+    def _ensure_qgislegacycpp_repo(self):
+
+        if not any((
+            repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYCPP
+            for repo in self._repos
+            )):
+            self.add_repo(self.create_repo(
+                self._config,
+                repo_type = REPO_BACKEND_QGISLEGACYCPP, method = 'default',
+                ))
+
+        if len([repo for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYCPP]) != 1:
+            raise QgistRepoError(tr('There must be exactly one C++ repository.'))
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: REPOSITORIES
