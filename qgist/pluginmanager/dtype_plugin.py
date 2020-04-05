@@ -326,17 +326,16 @@ class dtype_plugin_class:
         if not cls.is_python_plugin_dir(path):
             raise QgistNotAPluginDirectoryError(tr('"path" does not point to a plugin'))
 
-        with open(os.path.join(path, '__init__.py'), 'r', encoding = 'utf-8') as f:
-            init_raw = f.read()
-
-        init_tree = ast.parse(init_raw)
-
         if not meta['server'].value_set:
-            meta['server'].value = cls._is_func_present(init_tree, 'serverClassFactory')
+            with open(os.path.join(path, '__init__.py'), 'r', encoding = 'utf-8') as f:
+                init_raw = f.read()
+            meta['server'].value = cls._is_func_present(init_raw, 'serverClassFactory')
 
     @staticmethod
-    def _is_func_present(tree, func_name):
+    def _is_func_present(raw_src, func_name):
         # TODO catch more edge cases?
+
+        tree = ast.parse(raw_src)
 
         for branch in tree:
             if isinstance(branch, ast.FunctionDef):
