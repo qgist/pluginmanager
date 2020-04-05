@@ -28,13 +28,14 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .dtype_settings import dtype_settings_class
 from .dtype_version import dtype_version_class
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PLUGIN META
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-METADATA_FIELD_DTYPES = (str, bool, dtype_version_class)
+METADATA_FIELD_DTYPES = (str, bool, tuple, dtype_version_class)
 
 METADATA_FIELDS_SPEC = (
     {
@@ -73,6 +74,7 @@ METADATA_FIELDS_SPEC = (
         'comment': 'comma separated, spaces allowed',
         'dtype': tuple,
         'importer': lambda x: tuple(x.split(',')),
+        'exporter': lambda x: ','.join(x),
         'i18n': True,
         'name': 'tags',
     },
@@ -161,11 +163,15 @@ METADATA_FIELDS_SPEC = (
     {
         'comment': 'true if experimental, false if stable',
         'dtype': bool,
+        'importer': dtype_settings_class.str_to_bool,
+        'exporter': dtype_settings_class.bool_to_str,
         'name': 'experimental',
     },
     {
         'comment': 'true if deprecated, false if actual',
         'dtype': bool,
+        'importer': dtype_settings_class.str_to_bool,
+        'exporter': dtype_settings_class.bool_to_str,
         'name': 'deprecated',
     },
     # {
@@ -212,12 +218,14 @@ METADATA_FIELDS_SPEC = (
         'comment': 'PIP-style comma separated list of plugin dependencies',
         'dtype': tuple,
         'importer': lambda x: tuple(x.split(',')),
+        'exporter': lambda x: ','.join(x),
         'name': 'plugin_dependencies',
     },
     {
         'comment': 'dotted notation of minimum QGIS version',
         'dtype': dtype_version_class,
         'importer': lambda x: dtype_version_class.from_qgisversion(x, fix_plugin_compatibility = True), # TODO is it actually True?
+        'exporter': lambda x: x.original,
         'name': 'qgisMinimumVersion',
         'is_required': True,
     },
@@ -225,22 +233,28 @@ METADATA_FIELDS_SPEC = (
         'comment': 'dotted notation of maximum QGIS version',
         'dtype': dtype_version_class,
         'importer': lambda x: dtype_version_class.from_qgisversion(x, fix_plugin_compatibility = False), # TODO is it actually False?
+        'exporter': lambda x: x.original,
         'name': 'qgisMaximumVersion',
     },
     {
         'dtype': dtype_version_class,
         'importer': dtype_version_class.from_pluginversion,
+        'exporter': lambda x: x.original,
         'name': 'version',
         'is_required': True,
     },
     {
         'comment': 'determines if the plugin provides processing algorithms',
         'dtype': bool,
+        'importer': dtype_settings_class.str_to_bool,
+        'exporter': dtype_settings_class.bool_to_str,
         'name': 'hasProcessingProvider',
     },
     {
         'comment': 'determines if the plugin provides functionallity for server',
         'dtype': bool,
+        'importer': dtype_settings_class.str_to_bool,
+        'exporter': dtype_settings_class.bool_to_str,
         'name': 'server',
     },
 )
