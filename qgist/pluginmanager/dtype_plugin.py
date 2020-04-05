@@ -28,7 +28,6 @@ specific language governing rights and limitations under the License.
 # IMPORT (Python Standard Library)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-import ast
 import os
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -43,7 +42,6 @@ from typing import Generator, Iterator
 
 from .backends import backends
 from .error import QgistNotAPluginDirectoryError
-from .dtype_metadata import dtype_metadata_class
 from .dtype_pluginrelease_base import dtype_pluginrelease_base_class
 from .dtype_settings import dtype_settings_class
 
@@ -304,71 +302,6 @@ class dtype_plugin_class:
 # HELPER
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    @staticmethod
-    def is_python_plugin_dir(in_path):
-        "Does a given folder contain a QGIS plugin?"
-
-        if not os.path.isdir(in_path):
-            return False
-        if not os.path.isfile(os.path.join(in_path, '__init__.py')):
-            return False
-        if not os.path.isfile(os.path.join(in_path, 'metadata.txt')):
-            return False
-
-        return True
-
-    @classmethod
-    def fix_meta_by_setting_defaults(cls, meta):
-        "Attempts to fix missing meta data fields by setting them to their defaults"
-
-        if not meta['experimental'].value_set:
-            meta['experimental'].value = meta['experimental'].default_value
-
-    @classmethod
-    def fix_meta_by_inspecting_plugindir(cls, meta, path):
-        "Attempts to guess missing meta data fields by looking at plugin source code"
-
-        if not isinstance(meta, dtype_metadata_class):
-            raise QgistTypeError(tr('"meta" bust be meta data'))
-        if not isinstance(path, str):
-            raise QgistTypeError(tr('"path" must be str'))
-        if not cls.is_python_plugin_dir(path):
-            raise QgistNotAPluginDirectoryError(tr('"path" does not point to a plugin'))
-
-        if not meta['server'].value_set:
-            with open(os.path.join(path, '__init__.py'), 'r', encoding = 'utf-8') as f: # TODO encoding from file?
-                init_raw = f.read()
-            meta['server'].value = cls._is_func_present(init_raw, 'serverClassFactory')
-
-        if not meta['hasProcessingProvider'].value_set:
-            # TODO trace "QgsProcessingProvider" and "initProcessing" method in plugin folder
-            # https://docs.qgis.org/testing/en/docs/pyqgis_developer_cookbook/processing.html
-            meta['hasProcessingProvider'].value = meta['hasProcessingProvider'].default_value
-
-    @staticmethod
-    def _is_func_present(raw_src, func_name):
-        "Is a given function present in raw Python source code?"
-
-        tree = ast.parse(raw_src)
-
-        # TODO catch more edge cases
-        for branch in tree.body:
-            if isinstance(branch, ast.FunctionDef):
-                if getattr(branch, 'name', None) == func_name:
-                    return True
-            if isinstance(branch, ast.ImportFrom):
-                for item in getattr(branch, 'names', tuple()):
-                    if getattr(item, 'asname', None) is None and getattr(item, 'name', None) == func_name:
-                        return True
-                    if getattr(item, 'asname', None) == func_name:
-                        return True
-            if isinstance(branch, ast.Assign):
-                for target in getattr(branch, 'targets', tuple()):
-                    if getattr(target, 'id', None) == func_name:
-                        return True
-
-        return False
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PRE-CONSTRUCTOR
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -376,34 +309,27 @@ class dtype_plugin_class:
     @classmethod
     def from_installed(cls, path, config, repo_type, protected):
 
-        if not isinstance(path, str):
-            raise QgistTypeError(tr('"path" must be str'))
-        if not cls.is_python_plugin_dir(path):
-            raise QgistNotAPluginDirectoryError(tr('"path" does not point to a plugin'))
-        if not isinstance(config, dtype_settings_class):
-            raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
         if not isinstance(repo_type, str):
             raise QgistTypeError(tr('"repo_type" must be str'))
         if repo_type not in backends.keys():
             raise QgistValueError(tr('Unknown repo type'))
-        if not isinstance(protected, bool):
-            raise QgistTypeError(tr('"protected" must be a bool'))
-
-        with open(os.path.join(path, 'metadata.txt'), 'r', encoding = 'utf-8') as f: # TODO is this always UTF-8?
-            meta_raw = f.read()
-
-        plugin_id = os.path.basename(path)
-        meta = dtype_metadata_class.from_metadatatxt(plugin_id, meta_raw)
-        cls.fix_meta_by_inspecting_plugindir(meta, path)
-        cls.fix_meta_by_setting_defaults(meta)
 
         if not backends[repo_type].module_loaded:
             backends[repo_type].load_module()
 
-        installed_release = backends[repo_type].dtype_pluginrelease_class.from_metadata(meta)
+        if not isinstance(path, str):
+            raise QgistTypeError(tr('"path" must be str'))
+        if not backends[repo_type].dtype_pluginrelease_class.is_python_plugin_dir(path):
+            raise QgistNotAPluginDirectoryError(tr('"path" does not point to a plugin'))
+        if not isinstance(config, dtype_settings_class):
+            raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
+        if not isinstance(protected, bool):
+            raise QgistTypeError(tr('"protected" must be a bool'))
+
+        installed_release = backends[repo_type].dtype_pluginrelease_class.from_installed(path, config)
 
         return cls(
-            plugin_id = plugin_id,
+            plugin_id = installed_release.id,
             installed = True,
             installed_release = installed_release,
             available_releases = (installed_release,),

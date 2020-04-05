@@ -43,6 +43,8 @@ from qgis.core import QgsApplication
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .dtype_pluginrelease import dtype_pluginrelease_class
+
 from ...const import (
     CONFIG_DELIMITER,
     CONFIG_GROUP_QGISLEGACY_REPOS,
@@ -141,7 +143,7 @@ class dtype_repository_class(dtype_repository_base_class):
 
         for plugin_path in plugin_paths:
             for entry in glob.glob(plugin_path + '/*'):
-                if not dtype_plugin_class.is_python_plugin_dir(entry):
+                if not dtype_pluginrelease_class.is_python_plugin_dir(entry):
                     continue
                 plugins.append(dtype_plugin_class.from_installed(entry, config, cls.REPO_TYPE, protected))
 
