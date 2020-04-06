@@ -9,6 +9,8 @@ This plugin should not only be packaged as as QGIS plugin but also stand-alone a
 
 # Testing
 
+Use coverage (through [API](https://coverage.readthedocs.io/en/coverage-5.0.4/api_coverage.html)).
+
 ## `dtype_version_class`
 
 - test run against plugin database while comparing against `python/pyplugin_installer/version_compare.py`
