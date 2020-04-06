@@ -11,7 +11,7 @@ This project attempts to replace QGIS' original plugin manager.
 
 ## How to test
 
-There is no working user interface yet **but** the plugin manager can be tested from the Python Console. Once this plugin is installed, the plugin index is exposed as `iface.pindex`. Go from there.
+There is no working graphical user interface yet **but** the plugin manager can be tested from the Python Console. Once this plugin is installed, the plugin index is exposed as `iface.pindex`. Go from there.
 
 ## For developers (how to contribute)
 
