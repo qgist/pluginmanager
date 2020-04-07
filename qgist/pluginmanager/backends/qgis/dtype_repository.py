@@ -103,9 +103,31 @@ class dtype_repository_class(dtype_repository_base_class):
         self._url = url
         self._authcfg = authcfg
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# SPECIAL PROPERTIES (ONLY THIS REPO TYPE)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     @property
     def url(self):
         return self._url
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# HELPER
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @classmethod
+    def _get_releases_from_config_cache(cls, config_group):
+
+        if not isinstance(config_group, dtype_settings_group_class):
+            raise QgistTypeError(tr('"config_group" is not a group of settings'))
+
+        # TODO
+
+        return list()
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# CLASS-LEVEL API (ALL REPO TYPES)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
     def get_repo_config_groups(cls, config):
@@ -155,6 +177,10 @@ class dtype_repository_class(dtype_repository_base_class):
 
         return (plugin for plugin in plugins)
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PRE-CONSTRUCTOR
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     @classmethod
     def from_default(cls, config):
 
@@ -170,7 +196,7 @@ class dtype_repository_class(dtype_repository_base_class):
             active = True,
             protected = True,
             repository_type = cls.REPO_TYPE,
-            plugin_releases = list(),
+            plugin_releases = tuple(), # This is new, there is no cache.
             config_group = config.get_group(CONFIG_GROUP_QGISLEGACY_REPOS).get_group(repo_id),
             # SPECIAL
             valid = True,
@@ -193,13 +219,13 @@ class dtype_repository_class(dtype_repository_base_class):
                 config_group['url'].strip().lower() == REPO_DEFAULT_URL.strip().lower(),
                 ),
             repository_type = cls.REPO_TYPE,
-            plugin_releases = list(),
+            plugin_releases = cls._get_releases_from_config_cache(config_group.get_group('cache')),
             config_group = config_group,
             # SPECIAL
             valid = config_group.settings.str_to_bool(config_group.get('valid', 'true')),
             authcfg = config_group['authcfg'],
             url = config_group['url'],
-        )
+            )
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ROUTINES
