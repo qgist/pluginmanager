@@ -165,10 +165,10 @@ class dtype_repository_base_class:
 # MANAGEMENT
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    # def refresh_index(self):
-    #     "Rebuild index and/or reload metadata"
-    #
-    #     raise QgistNotImplementedError()
+    def refresh(self):
+        "Refresh index, i.e. reload metadata from remote source"
+
+        raise QgistNotImplementedError()
 
     def remove(self):
         "Run cleanup actions e.g. in config before repo is removed"

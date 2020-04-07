@@ -144,6 +144,8 @@ class dtype_index_class:
         self._ensure_qgislegacypython_default_repo()
         self._ensure_qgislegacycpp_repo()
 
+        # self._refresh_repos() # TODO implement & activate
+
         # Get inventory of installed plugins and match with repos
         # Every local plugin folder (i.e. Python module folder) contains a reference to its repo id!
         # If NOT:
@@ -215,6 +217,13 @@ class dtype_index_class:
 
         if len([repo for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYCPP]) != 1:
             raise QgistRepoError(tr('There must be exactly one C++ repository.'))
+
+    def _refresh_repos(self):
+
+        # TODO refresh option from config
+
+        for repo in self._repos:
+            repo.refresh()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: REPOSITORIES
