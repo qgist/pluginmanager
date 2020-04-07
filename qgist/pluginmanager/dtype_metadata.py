@@ -96,6 +96,16 @@ class dtype_metadata_class:
 
         return (key for key in self._fields.keys())
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PRE-CONSTRUCTOR
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @classmethod
+    def from_config(cls, config_group):
+        "From available releases cache in config"
+
+        return cls() # TODO
+
     @classmethod
     def from_xmldict(cls, xml_dict):
         "Fixes an XML dict from xmltodict and returns a meta data object"

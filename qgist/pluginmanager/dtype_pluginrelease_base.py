@@ -61,8 +61,8 @@ class dtype_pluginrelease_base_class:
 
     def __init__(self,
         plugin_id, version,
-        has_processingprovider, has_serverfuncs, experimental, path,
-        meta,
+        has_processingprovider, has_serverfuncs, experimental,
+        meta, path = None,
         ):
 
         if not isinstance(plugin_id, str):
@@ -77,21 +77,21 @@ class dtype_pluginrelease_base_class:
             raise QgistTypeError(tr('"has_serverfuncs" must be a bool.'))
         if not isinstance(experimental, bool):
             raise QgistTypeError(tr('"experimental" must be a bool.'))
+        if not isinstance(meta, dtype_metadata_class):
+            raise QgistTypeError(tr('"meta" must be meta data.'))
         if not isinstance(path, str) and path is not None:
             raise QgistTypeError(tr('"path" must be a str or None.'))
         if isinstance(path, str):
             if not os.path.isdir(path):
                 raise QgistValueError(tr('If "path" is a str, it must exist'))
-        if not isinstance(meta, dtype_metadata_class):
-            raise QgistTypeError(tr('"meta" must be meta data.'))
 
         self._id = plugin_id
         self._version = version
         self._has_processingprovider = has_processingprovider
         self._has_serverfuncs = has_serverfuncs
         self._experimental = experimental
-        self._path = path
         self._meta = meta
+        self._path = path # None if not locally installed
 
     def __repr__(self):
 
@@ -219,13 +219,29 @@ class dtype_pluginrelease_base_class:
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
+    def from_config(cls, config_group):
+        "From available releases cache in config"
+
+        meta = dtype_metadata_class.from_config(config_group)
+
+        return cls(
+            plugin_id = meta['id'].value,
+            version = meta['version'].value,
+            has_processingprovider = meta['hasProcessingProvider'].value,
+            has_serverfuncs = meta['server'].value,
+            experimental = meta['experimental'].value,
+            meta = meta,
+            )
+
+    @classmethod
     def from_installed(cls, path, config):
+        "From locally installed plugin release (folder)"
 
         if not isinstance(path, str):
             raise QgistTypeError(tr('"path" must be str'))
         if not cls.is_python_plugin_dir(path):
             raise QgistNotAPluginDirectoryError(tr('"path" does not point to a plugin'))
-        if not isinstance(config, dtype_settings_class):
+        if not isinstance(config, dtype_settings_class): # TODO unused (?)
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
         with open(os.path.join(path, 'metadata.txt'), 'r', encoding = 'utf-8') as f: # TODO is this always UTF-8?
