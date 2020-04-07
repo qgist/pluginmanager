@@ -25,6 +25,14 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+import base64
+import json
+import zlib
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (External Dependencies)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -181,6 +189,56 @@ class dtype_settings_class:
             raise QgistTypeError(tr('value is not bool'))
 
         return str(value).lower()
+
+    @staticmethod
+    def load(data):
+        """
+        Converts compressed configuration data back to Python objects
+        """
+
+        PACKING_VERSION = 'REPO_V001' # Making this future-proofed!
+
+        if not isinstance(data, str):
+            raise QgistTypeError(tr('data must be a str'))
+        if not data.startswith(PACKING_VERSION):
+            raise QgistValueError(tr('data must be packed configuration'))
+
+        length_raw = data[len(PACKING_VERSION):(len(PACKING_VERSION) + 16)]
+        if not length_raw.isnumeric():
+            raise QgistValueError(tr('data does not have numeric length field - broken'))
+
+        length = int(length_raw)
+        data_raw = data[(len(PACKING_VERSION) + 16):]
+        if length != len(data_raw):
+            raise QgistValueError(tr('length information in data does not match actual length'))
+
+        return json.loads(
+            zlib.decompress(
+                base64.b64decode(
+                    data_raw.encode('utf-8') # to bytes (BASE64)
+                    ) # to bytes (regular)
+                ).decode('utf-8') # to decompressed, to string
+            ) # to Python
+
+    @staticmethod
+    def dump(data):
+        """
+        Accepts anything that can be handled by JSON.
+        Compresses data and prepares string which can be stored in configuration.
+        """
+
+        PACKING_VERSION = 'REPO_V001' # Making this future-proofed!
+
+        if not config_class.check_value(data):
+            raise QgistTypeError(tr('"value" contains not allowed types.'))
+
+        packed = base64.b64encode(
+            zlib.compress(
+                json.dumps(data).encode('utf-8') # to JSON, to bytes
+                ) # to compressed bytes
+            ).decode('utf-8') # to base64, to string
+
+        return f'{PACKING_VERSION:s}{len(packed):016d}{packed:s}'
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS: SETTINGS GROUP
