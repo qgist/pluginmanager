@@ -112,6 +112,7 @@ class dtype_pluginrelease_base_class:
             self.experimental == other.experimental,
             self.has_processingprovider == other.has_processingprovider,
             self.has_serverfuncs == other.has_serverfuncs,
+            self.REPO_TYPE == other.REPO_TYPE,
             ))
 
     @property
