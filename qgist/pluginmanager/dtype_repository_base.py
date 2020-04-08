@@ -118,6 +118,16 @@ class dtype_repository_base_class:
 
         return len(self._plugin_releases)
 
+    def __contains__(self, test_release):
+
+        if not isinstance(test_release, dtype_pluginrelease_base_class):
+            raise QgistTypeError(tr('"release" must be a release'))
+
+        return any((
+            release == test_release
+            for release in self._plugin_releases
+            ))
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
