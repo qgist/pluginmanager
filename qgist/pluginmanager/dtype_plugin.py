@@ -119,6 +119,16 @@ class dtype_plugin_class:
             '>'
             )
 
+    def __contains__(self, test_release):
+
+        if not isinstance(test_release, dtype_pluginrelease_base_class):
+            raise QgistTypeError(tr('"release" must be a release'))
+
+        return any((
+            release == test_release
+            for release in self._available_releases
+            ))
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -226,6 +236,33 @@ class dtype_plugin_class:
             available_release.version != self._installed_release.version
             for available_release in self._available_releases
             ))
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# MANAGE RELEASES
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def add_release(self, release):
+        "Add a potentially new and uninstalled but available release"
+
+        if not isinstance(release, dtype_pluginrelease_base_class):
+            raise QgistTypeError(tr('"release" must be a release'))
+        if release in self:
+            raise QgistValueError(tr('"release" is already part of this plugin'))
+
+        self._available_releases.append(release)
+
+    def clear_uninstalled_releases(self):
+        "Remove all uninstalled releases"
+
+        self._available_releases.clear()
+
+        if not self._installed:
+            return
+
+        if not isinstance(self._installed_release, dtype_pluginrelease_base_class):
+            raise QgistValueError(tr('internal error: plugin is installed but has no release'))
+
+        self._available_releases.append(self._installed_release)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # INSTALL / UNINSTALL
