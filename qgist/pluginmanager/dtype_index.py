@@ -146,6 +146,8 @@ class dtype_index_class:
 
         # self._refresh_repos() # TODO implement & activate
 
+        self._match_releases_from_repos_to_plugins()
+
         # Get inventory of installed plugins and match with repos
         # Every local plugin folder (i.e. Python module folder) contains a reference to its repo id!
         # If NOT:
@@ -224,6 +226,14 @@ class dtype_index_class:
 
         for repo in self._repos:
             repo.refresh()
+
+    def _match_releases_from_repos_to_plugins(self):
+
+        # TODO
+        # Go through all repos, find all available releases
+        # Add them to matching plugins
+
+        pass
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: REPOSITORIES
