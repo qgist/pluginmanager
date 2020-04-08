@@ -234,6 +234,7 @@ class dtype_index_class:
         # Add them to matching plugins
 
         # Remove uninstalled releases from plugins first? (`clear_uninstalled_releases`)
+        # Remove plugins with zero releases
 
         for repo in self._repos:
             for release in repo.plugin_releases:
