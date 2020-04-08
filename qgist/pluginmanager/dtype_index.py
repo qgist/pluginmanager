@@ -233,7 +233,13 @@ class dtype_index_class:
         # Go through all repos, find all available releases
         # Add them to matching plugins
 
-        pass
+        # Remove uninstalled releases from plugins first? (`clear_uninstalled_releases`)
+
+        for repo in self._repos:
+            for release in repo.plugin_releases:
+                pass
+                # if release in plugins: add to plugin
+                # if not: new (uninstalled) plugin
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: REPOSITORIES
