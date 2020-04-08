@@ -57,7 +57,7 @@ class dtype_pluginrelease_base_class:
     Mutable.
     """
 
-    REPO_TYPE = None
+    _repo_type = None
 
     def __init__(self,
         plugin_id, version,
@@ -101,7 +101,7 @@ class dtype_pluginrelease_base_class:
             f'experimental={"yes" if self._experimental else "no":s} '
             f'processingprovider={"yes" if self.has_processingprovider else "no":s} '
             f'serverfuncs={"yes" if self.has_serverfuncs else "no":s} '
-            f'repo_type={self.REPO_TYPE:s}'
+            f'repo_type={self.repo_type:s}'
             '>'
             )
 
@@ -112,7 +112,7 @@ class dtype_pluginrelease_base_class:
             self.experimental == other.experimental,
             self.has_processingprovider == other.has_processingprovider,
             self.has_serverfuncs == other.has_serverfuncs,
-            self.REPO_TYPE == other.REPO_TYPE,
+            self.repo_type == other.repo_type,
             ))
 
     @property
@@ -142,6 +142,10 @@ class dtype_pluginrelease_base_class:
     @property
     def path(self):
         return self._path
+
+    @property
+    def repo_type(self):
+        return self._repo_type
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # HELPER

@@ -36,7 +36,7 @@ from ...dtype_repository_base import dtype_repository_base_class
 
 class dtype_repository_class(dtype_repository_base_class):
 
-    REPO_TYPE = 'conda'
+    _repo_type = 'conda'
 
     @classmethod
     def find_plugins(cls, config, protected, plugin_modules):

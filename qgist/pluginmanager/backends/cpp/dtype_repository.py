@@ -50,7 +50,7 @@ from ....util import tr
 
 class dtype_repository_class(dtype_repository_base_class):
 
-    REPO_TYPE = REPO_BACKEND_QGISLEGACYCPP
+    _repo_type = REPO_BACKEND_QGISLEGACYCPP
 
     @classmethod
     def find_plugins(cls, config, protected, plugin_modules):
@@ -71,7 +71,7 @@ class dtype_repository_class(dtype_repository_base_class):
             name = name,
             active = True,
             protected = True,
-            repository_type = cls.REPO_TYPE,
+            repository_type = cls._repo_type,
             plugin_releases = list(),
             config_group = config.get_group(CONFIG_GROUP_MANAGER_REPOS).get_group(repo_id),
             )

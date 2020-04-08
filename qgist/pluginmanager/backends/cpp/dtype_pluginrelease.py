@@ -37,7 +37,7 @@ from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
 
 class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
 
-    REPO_TYPE = REPO_BACKEND_QGISLEGACYCPP
+    _repo_type = REPO_BACKEND_QGISLEGACYCPP
 
     # @property
     # def protected(self):

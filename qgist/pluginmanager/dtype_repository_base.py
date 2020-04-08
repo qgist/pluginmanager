@@ -63,10 +63,10 @@ class dtype_repository_base_class:
     Mutable.
     """
 
-    REPO_TYPE = None
+    _repo_type = None
 
     def __init__(self,
-        repo_id, name, active, protected, repository_type, plugin_releases,
+        repo_id, name, active, protected, plugin_releases,
         config_group
         ):
 
@@ -82,10 +82,6 @@ class dtype_repository_base_class:
             raise QgistTypeError(tr('"active" must be a bool.'))
         if not isinstance(protected, bool):
             raise QgistTypeError(tr('"protected" must be a bool.'))
-        if not isinstance(repository_type, str):
-            raise QgistTypeError(tr('"repository_type" must be a str.'))
-        if repository_type not in backends.keys():
-            raise QgistValueError(tr('"repository_type" is unknown.'))
         if not any((isinstance(plugin_releases, dtype) for dtype in (Generator, Iterator, list, tuple))):
             raise QgistTypeError(tr('"plugin_releases" must be any of the floowing: list, tuple, generator, iterator.'))
         plugin_releases = list(plugin_releases)
@@ -98,7 +94,6 @@ class dtype_repository_base_class:
         self._name = name # TODO: enable translations!
         self._active = active
         self._protected = protected
-        self._repository_type = repository_type
         self._plugin_releases = plugin_releases
 
         self._config_group = config_group
@@ -107,7 +102,7 @@ class dtype_repository_base_class:
 
         return (
             '<repository '
-            f'id="{self._id:s}" name="{self._name:s}" type="{self._repository_type:s}" '
+            f'id="{self._id:s}" name="{self._name:s}" type="{self._repo_type:s}" '
             f'plugin_releases={len(self):d} '
             f'protected={"yes" if self._protected else "no":s} '
             f'active={"yes" if self._active else "no":s}'
@@ -156,12 +151,12 @@ class dtype_repository_base_class:
         return self._protected
 
     @property
-    def repository_type(self):
-        return self._repository_type
-
-    @property
     def plugin_releases(self):
         return (release for release in self._plugin_releases)
+
+    @property
+    def repo_type(self):
+        return self._repo_type
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES: STUBS FOR SPECIALS
@@ -195,7 +190,7 @@ class dtype_repository_base_class:
         if not isinstance(config, dtype_settings_class):
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
-        repotype_group = config.get_group(CONFIG_GROUP_MANAGER_REPOS).get_group(cls.REPO_TYPE)
+        repotype_group = config.get_group(CONFIG_GROUP_MANAGER_REPOS).get_group(cls._repo_type)
 
         return (
             repotype_group.get_group(repo_id)

@@ -199,7 +199,7 @@ class dtype_index_class:
 
         if not any((
             repo.url == REPO_DEFAULT_URL
-            for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYPYTHON
+            for repo in self._repos if repo.repo_type == REPO_BACKEND_QGISLEGACYPYTHON
             )):
             self.add_repo(self.create_repo(
                 self._config,
@@ -209,7 +209,7 @@ class dtype_index_class:
     def _ensure_qgislegacycpp_repo(self):
 
         if not any((
-            repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYCPP
+            repo.repo_type == REPO_BACKEND_QGISLEGACYCPP
             for repo in self._repos
             )):
             self.add_repo(self.create_repo(
@@ -217,7 +217,7 @@ class dtype_index_class:
                 repo_type = REPO_BACKEND_QGISLEGACYCPP, method = 'default',
                 ))
 
-        if len([repo for repo in self._repos if repo.REPO_TYPE == REPO_BACKEND_QGISLEGACYCPP]) != 1:
+        if len([repo for repo in self._repos if repo.repo_type == REPO_BACKEND_QGISLEGACYCPP]) != 1:
             raise QgistRepoError(tr('There must be exactly one C++ repository.'))
 
     def _refresh_repos(self):

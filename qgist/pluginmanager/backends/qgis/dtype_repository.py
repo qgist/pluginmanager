@@ -88,7 +88,7 @@ class dtype_repository_class(dtype_repository_base_class):
         - AUTH?
     """
 
-    REPO_TYPE = REPO_BACKEND_QGISLEGACYPYTHON
+    _repo_type = REPO_BACKEND_QGISLEGACYPYTHON
 
     def __init__(self, *args,
         valid = None, authcfg = None, url = None,
@@ -186,7 +186,7 @@ class dtype_repository_class(dtype_repository_base_class):
                 if not dtype_pluginrelease_class.is_python_plugin_dir(entry):
                     continue
                 plugins.append(dtype_plugin_class.from_installed(
-                    entry, config, cls.REPO_TYPE, protected, plugin_modules,
+                    entry, config, cls._repo_type, protected, plugin_modules,
                     ))
 
         return (plugin for plugin in plugins)
@@ -209,7 +209,6 @@ class dtype_repository_class(dtype_repository_base_class):
             name = name,
             active = True,
             protected = True,
-            repository_type = cls.REPO_TYPE,
             plugin_releases = tuple(), # This is new, there is no cache.
             config_group = config.get_group(CONFIG_GROUP_QGISLEGACY_REPOS).get_group(repo_id),
             # SPECIAL
@@ -232,7 +231,6 @@ class dtype_repository_class(dtype_repository_base_class):
                 'protected',
                 config_group['url'].strip().lower() == REPO_DEFAULT_URL.strip().lower(),
                 ),
-            repository_type = cls.REPO_TYPE,
             plugin_releases = cls._get_releases_from_config_cache(config_group),
             config_group = config_group,
             # SPECIAL
