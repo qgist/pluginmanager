@@ -219,10 +219,11 @@ class dtype_pluginrelease_base_class:
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
-    def from_config(cls, config_group):
+    def from_config_decompressed(cls, config_decompressed):
         "From available releases cache in config"
 
-        meta = dtype_metadata_class.from_config(config_group)
+        # `config_decompressed` is checked in `dtype_metadata_class.from_config_decompressed`
+        meta = dtype_metadata_class.from_config_decompressed(config_decompressed)
 
         return cls(
             plugin_id = meta['id'].value,

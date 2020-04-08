@@ -41,6 +41,8 @@ CONFIG_DELIMITER = '/'
 CONFIG_KEY_ALLOW_DEPRECATED = 'app/plugin_installer/allowDeprecated' # TODO
 CONFIG_KEY_ALLOW_EXPERIMENTAL = 'app/plugin_installer/allowExperimental' # TODO
 
+CONFIG_KEY_CACHE = 'cache'
+
 CONFIG_GROUP_MANAGER_REPOS = 'app/pluginmanager/repositories' # TODO
 CONFIG_GROUP_QGISLEGACY_REPOS = 'app/plugin_repositories' # TODO
 

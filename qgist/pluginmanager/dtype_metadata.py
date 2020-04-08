@@ -101,10 +101,15 @@ class dtype_metadata_class:
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
-    def from_config(cls, config_group):
+    def from_config_decompressed(cls, config_decompressed):
         "From available releases cache in config"
 
-        return cls() # TODO
+        if not isinstance(config_decompressed, dict):
+            raise QgistTypeError(tr('"config_decompressed" must be a dict.'))
+        if not all((isinstance(key, str) for key in config_decompressed.keys())):
+            raise QgistTypeError(tr('All keys in config_decompressed must be str'))
+
+        return cls(**config_decompressed)
 
     @classmethod
     def from_xmldict(cls, xml_dict):
