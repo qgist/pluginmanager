@@ -34,7 +34,10 @@ from typing import Generator, Iterator
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .const import CONFIG_GROUP_MANAGER_REPOS
+from .const import (
+    CONFIG_GROUP_MANAGER_REPOS,
+    CONFIG_KEY_CACHE,
+    )
 from .backends import backends
 from .dtype_pluginrelease_base import dtype_pluginrelease_base_class
 from .dtype_settings import (
@@ -180,14 +183,46 @@ class dtype_repository_base_class:
 
         raise QgistNotImplementedError()
 
-    def to_config(self, config):
+    def to_config(self):
         "Write repository to configuration"
 
-        raise QgistNotImplementedError()
+        self._config_group['name'] = self._name
+        self._config_group['enabled'] = self._config_group.settings.bool_to_str(self._active, style = 'truefalse')
+        self._config_group['protected'] = self._config_group.settings.bool_to_str(self._protected, style = 'truefalse')
+        self._config_group['repo_type'] = self._repo_type
+        self._config_group[CONFIG_KEY_CACHE] = dtype_settings_class.dump([
+            release.as_config_decompressed() for release in self._plugin_releases
+            ])
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # HELPER STATIC & CLASS METHODS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @classmethod
+    def get_releases_from_config_cache(cls, config_group, repo_type):
+
+        if not isinstance(config_group, dtype_settings_group_class):
+            raise QgistTypeError(tr('"config_group" is not a group of settings'))
+        if not isinstance(repo_type, str):
+            raise QgistTypeError(tr('"repo_type" must be a str.'))
+        if repo_type not in backends.keys():
+            raise QgistValueError(tr('"repo_type" is unknown.'))
+
+        repo_cache_compressed = config_group.get(CONFIG_KEY_CACHE, None)
+        if repo_cache_compressed is None:
+            return tuple()
+
+        repo_cache_decompressed = dtype_settings_class.load(repo_cache_compressed)
+        if not isinstance(repo_cache_decompressed, list):
+            raise QgistTypeError(tr('Inconsistent repository cache: Expected a list'))
+
+        if not backends[repo_type].module_loaded:
+            backends[repo_type].load_module()
+
+        return (
+            backends[repo_type].dtype_pluginrelease_class.from_config_decompressed(release_config_dict)
+            for release_config_dict in repo_cache_decompressed
+            )
 
     @classmethod
     def get_repo_config_groups(cls, config):

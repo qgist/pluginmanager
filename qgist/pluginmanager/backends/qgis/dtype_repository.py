@@ -53,7 +53,6 @@ from .dtype_pluginrelease import dtype_pluginrelease_class
 
 from ...const import (
     CONFIG_DELIMITER,
-    CONFIG_KEY_CACHE,
     CONFIG_GROUP_QGISLEGACY_REPOS,
     REPO_DEFAULT_URL,
     REPO_BACKEND_QGISLEGACYPYTHON,
@@ -119,27 +118,6 @@ class dtype_repository_class(dtype_repository_base_class):
         return self._url
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# HELPER (ONLY THIS REPO TYPE)
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    @classmethod
-    def _get_releases_from_config_cache(cls, config_group):
-
-        if not isinstance(config_group, dtype_settings_group_class):
-            raise QgistTypeError(tr('"config_group" is not a group of settings'))
-
-        repo_cache_compressed = config_group.get(CONFIG_KEY_CACHE, None)
-        if repo_cache_compressed is None:
-            return tuple()
-
-        repo_cache_decompressed = dtype_settings_class.load(repo_cache_compressed)
-
-        return (
-            dtype_pluginrelease_class.from_config_decompressed(release_config_dict)
-            for release_config_dict in repo_cache_decompressed
-            )
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT & EXPORT
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -153,10 +131,14 @@ class dtype_repository_class(dtype_repository_base_class):
     #
     #     raise QgistNotImplementedError()
 
-    def to_config(self, config_group):
-        "Export repository to uncompressed configuration data (JSON-serializable dict)"
+    def to_config(self):
+        "Write repository to configuration"
 
-        return dict() # TODO
+        super().to_config()
+
+        self._config_group['valid'] = self._config_group.settings.bool_to_str(self._valid, style = 'truefalse')
+        self._config_group['authcfg'] = self._authcfg
+        self._config_group['url'] = self._url
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS-LEVEL API (ALL REPO TYPES)
@@ -244,13 +226,13 @@ class dtype_repository_class(dtype_repository_base_class):
 
         return cls(
             repo_id = config_group.root.rsplit(CONFIG_DELIMITER, 1)[-1],
-            name = config_group.root.rsplit(CONFIG_DELIMITER, 1)[-1],
+            name = config_group.root.rsplit(CONFIG_DELIMITER, 1)[-1], # TODO look for name!
             active = config_group.settings.str_to_bool(config_group['enabled']),
             protected = config_group.get(
                 'protected',
                 config_group['url'].strip().lower() == REPO_DEFAULT_URL.strip().lower(),
                 ),
-            plugin_releases = cls._get_releases_from_config_cache(config_group),
+            plugin_releases = cls.get_releases_from_config_cache(config_group, cls._repo_type),
             config_group = config_group,
             # SPECIAL
             valid = config_group.settings.str_to_bool(config_group.get('valid', 'true')),
