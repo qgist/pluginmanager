@@ -115,7 +115,7 @@ class dtype_index_class:
         if not isinstance(value, bool):
             raise QgistTypeError(tr('value is not bool'))
         self._allow_deprecated = value
-        self._config[CONFIG_KEY_ALLOW_DEPRECATED] = self._config.bool_to_str(value)
+        self._config[CONFIG_KEY_ALLOW_DEPRECATED] = self._config.bool_to_str(value, style = 'truefalse')
 
     @property
     def allow_experimental(self):
@@ -125,7 +125,7 @@ class dtype_index_class:
         if not isinstance(value, bool):
             raise QgistTypeError(tr('value is not bool'))
         self._allow_experimental = value
-        self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL] = self._config.bool_to_str(value)
+        self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL] = self._config.bool_to_str(value, style = 'truefalse')
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: INDEX
