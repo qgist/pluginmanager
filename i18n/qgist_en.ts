@@ -118,180 +118,670 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="62"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="70"/>
         <source>config must be an instance of config_class</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="64"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="72"/>
         <source>try_qgis_settings must be a bool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="233"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="317"/>
         <source>name is not str</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="235"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="319"/>
         <source>name must not be empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="243"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="327"/>
         <source>root is not str</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="245"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="329"/>
         <source>root must not be empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="156"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="164"/>
         <source>unknown data type from QGIS settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="196"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="272"/>
         <source>settings must be an instance of config_class</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="198"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="274"/>
         <source>root must be a str</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/core.py" line="115"/>
+        <location filename="../qgist/pluginmanager/core.py" line="116"/>
         <source>&amp;Plugin &amp;Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/core.py" line="121"/>
+        <location filename="../qgist/pluginmanager/core.py" line="122"/>
         <source>Qgist Plugin &amp;Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="58"/>
+        <location filename="../qgist/pluginmanager/backends/qgis/dtype_repository.py" line="170"/>
         <source>&quot;config&quot; must be a &quot;dtype_settings_class&quot; object.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="148"/>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="300"/>
         <source>&quot;repo_id&quot; must be a str.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="150"/>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="302"/>
         <source>&quot;repo_id&quot; must not be empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_repository.py" line="61"/>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="58"/>
         <source>&quot;name&quot; must be a str.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_repository.py" line="63"/>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="60"/>
         <source>&quot;name&quot; must not be empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_repository.py" line="65"/>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="91"/>
         <source>&quot;active&quot; must be a bool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_repository.py" line="67"/>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="89"/>
         <source>&quot;protected&quot; must be a bool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_repository.py" line="69"/>
-        <source>&quot;repository_type&quot; must be a str.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/pluginmanager/dtype_repository.py" line="71"/>
-        <source>&quot;repository_type&quot; is unknown.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/pluginmanager/dtype_repository.py" line="105"/>
+        <location filename="../qgist/pluginmanager/dtype_repository_base.py" line="143"/>
         <source>New value of &quot;name&quot; must be a str.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_repository.py" line="107"/>
+        <location filename="../qgist/pluginmanager/dtype_repository_base.py" line="145"/>
         <source>New value of &quot;name&quot; must not be empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="162"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="170"/>
         <source>value is not str</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_settings.py" line="169"/>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="183"/>
         <source>value can not be converted to bool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="98"/>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="126"/>
         <source>value is not bool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="110"/>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="312"/>
         <source>&quot;repo_type&quot; must be a str.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="112"/>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="314"/>
         <source>&quot;repo_type&quot; is unknown.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="114"/>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="266"/>
         <source>&quot;method&quot; must be a str.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="119"/>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="269"/>
         <source>&quot;method&quot; is unknown.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="128"/>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="280"/>
         <source>&quot;direction&quot; must be a str.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="130"/>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="282"/>
         <source>&quot;direction&quot; must either be 1 or -1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="152"/>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="304"/>
         <source>&quot;repo_id&quot; is unknown. There is no such repository.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="206"/>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="69"/>
         <source>&quot;plugin_id&quot; must be a str.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qgist/pluginmanager/dtype_index.py" line="208"/>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="71"/>
         <source>&quot;plugin_id&quot; must not be empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="68"/>
+        <source>QGIS settings path does not point to a directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="70"/>
+        <source>QGIS settings path does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="74"/>
+        <source>QGIS plugin configuration path exists but is not a directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="80"/>
+        <source>QGIST configuration path exists but is not a directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="221"/>
+        <source>&quot;fn&quot; must be str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="223"/>
+        <source>Parent of &quot;fn&quot; must exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="225"/>
+        <source>Parent of &quot;fn&quot; must be a directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="205"/>
+        <source>&quot;fn&quot; must be a file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="115"/>
+        <source>Config does not contain valid JSON.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="117"/>
+        <source>Configuration data must be a dict.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="131"/>
+        <source>&quot;name&quot; must be str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="124"/>
+        <source>Unknown configuration field &quot;name&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="245"/>
+        <source>&quot;value&quot; contains not allowed types.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="188"/>
+        <source>Could not backup old configuration before saving new - too many old backups.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="203"/>
+        <source>&quot;fn&quot; must exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/config.py" line="213"/>
+        <source>&quot;fn&quot; does not contain valid JSON.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="88"/>
+        <source>&quot;name&quot; must be a str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="90"/>
+        <source>&quot;name&quot; is not a valid meta data field</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="105"/>
+        <source>&quot;ignored_fields&quot; must be any of the following: list, tuple, generator, iterator.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="108"/>
+        <source>All ignored field ids must be str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="142"/>
+        <source>&quot;config_decompressed&quot; must be a dict.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="144"/>
+        <source>All keys in config_decompressed must be str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="153"/>
+        <source>&quot;name&quot; must be a dict.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="158"/>
+        <source>All keys in xml_dict must be str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="160"/>
+        <source>All values in xml_dict must be str or None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="171"/>
+        <source>Neither &quot;id&quot; nor &quot;file_name&quot; in XML meta data - no way to determine plugin id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="173"/>
+        <source>Unusual value for &quot;file_name&quot;, does not end on &quot;.zip&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="175"/>
+        <source>Version is not part of &quot;file_name&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="189"/>
+        <source>failed to parse metadata.txt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="194"/>
+        <source>failed to fetch section &quot;general&quot; from metadata.txt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata.py" line="199"/>
+        <source>failed to convert section &quot;general&quot; from metadata.txt to dict</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository_base.py" line="89"/>
+        <source>&quot;plugin_releases&quot; must be any of the following: list, tuple, generator, iterator.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository_base.py" line="92"/>
+        <source>All releases must be plugin releases.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository_base.py" line="94"/>
+        <source>&quot;config_group&quot; must be a &quot;dtype_settings_group_class&quot; object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="248"/>
+        <source>&quot;release&quot; must be a release</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/backends/qgis/dtype_repository.py" line="225"/>
+        <source>&quot;config_group&quot; is not a group of settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_repository_base.py" line="217"/>
+        <source>Inconsistent repository cache: Expected a list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="62"/>
+        <source>&quot;dtype&quot; unknown or broken.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="64"/>
+        <source>&quot;importer&quot; must be callable or None.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="66"/>
+        <source>&quot;exporter&quot; must be callable or None.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="68"/>
+        <source>&quot;is_required&quot; must be a bool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="70"/>
+        <source>&quot;i18n&quot; must be a bool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="72"/>
+        <source>&quot;known&quot; must be a bool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="74"/>
+        <source>&quot;comment&quot; must be a str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="88"/>
+        <source>&quot;value&quot; does not have matching tyspe.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="90"/>
+        <source>&quot;default_value&quot; does not have matching tyspe.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="123"/>
+        <source>&quot;value_str&quot; must be a str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="145"/>
+        <source>&quot;new_value&quot; does not have valid type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="155"/>
+        <source>Nothing to export to string - value not set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="161"/>
+        <source>&quot;new_value_str&quot; must be a str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_metadata_field.py" line="171"/>
+        <source>Nothing to export to string - default_value not set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="197"/>
+        <source>&quot;value&quot; must be a bool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="199"/>
+        <source>&quot;style&quot; must be a str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="201"/>
+        <source>&quot;style&quot; is unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="214"/>
+        <source>data must be a str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="216"/>
+        <source>data must be packed configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="220"/>
+        <source>data does not have numeric length field - broken</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_settings.py" line="225"/>
+        <source>length information in data does not match actual length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="78"/>
+        <source>&quot;installed&quot; must be a bool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="80"/>
+        <source>plugin is installed, i.e. &quot;installed_release&quot; must be a plugin release.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="82"/>
+        <source>plugin is not installed, i.e. &quot;installed_release&quot; must be None.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="84"/>
+        <source>&quot;available_releases&quot; must be any of the following: list, tuple, generator, iterator.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="87"/>
+        <source>All available releases must be plugin releases.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="93"/>
+        <source>&quot;deprecated&quot; must be a bool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="171"/>
+        <source>&quot;value&quot; must be a bool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="194"/>
+        <source>plugin is not installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="263"/>
+        <source>internal error: plugin is installed but has no release</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="250"/>
+        <source>&quot;release&quot; is already part of this plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="354"/>
+        <source>&quot;repo_type&quot; must be str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_plugin.py" line="356"/>
+        <source>Unknown repo type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="269"/>
+        <source>&quot;path&quot; must be str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="271"/>
+        <source>&quot;path&quot; does not point to a plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/backends/qgis/dtype_repository.py" line="172"/>
+        <source>&quot;protected&quot; must be a bool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/backends/qgis/dtype_repository.py" line="174"/>
+        <source>&quot;plugin_modules&quot; must be a dict</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/backends/qgis/dtype_repository.py" line="176"/>
+        <source>Every plugin_id in &quot;plugin_modules&quot; must be str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="186"/>
+        <source>Two or more plugins with identical ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="221"/>
+        <source>There must be exactly one C++ repository.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="253"/>
+        <source>&quot;repo&quot; is not a repo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="255"/>
+        <source>&quot;repo&quot; can not be added - its id is already in list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="272"/>
+        <source>&quot;method&quot; can not be called.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="342"/>
+        <source>&quot;plugin&quot; is not a plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="344"/>
+        <source>&quot;plugin&quot; can not be added - it is already in dict</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_index.py" line="356"/>
+        <source>&quot;plugin_id&quot; is unknown. There is no such plugin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="73"/>
+        <source>&quot;version&quot; must be a version.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="75"/>
+        <source>&quot;has_processingprovider&quot; must be a bool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="77"/>
+        <source>&quot;has_serverfuncs&quot; must be a bool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="79"/>
+        <source>&quot;experimental&quot; must be a bool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="81"/>
+        <source>&quot;meta&quot; must be meta data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="83"/>
+        <source>&quot;path&quot; must be a str or None.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="86"/>
+        <source>If &quot;path&quot; is a str, it must exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="186"/>
+        <source>&quot;meta&quot; bust be meta data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="246"/>
+        <source>&quot;config_decompressed&quot; must be a dict</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/dtype_pluginrelease_base.py" line="250"/>
+        <source>&quot;config_decompressed&quot; has invalid structure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/backends/cpp/dtype_repository.py" line="66"/>
+        <source>Local QGIS C++ Plugin Repository</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/backends/qgis/dtype_repository.py" line="100"/>
+        <source>&quot;valid&quot; must be bool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/backends/qgis/dtype_repository.py" line="102"/>
+        <source>&quot;authcfg&quot; must be str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/backends/qgis/dtype_repository.py" line="104"/>
+        <source>&quot;url&quot; must be str</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/backends/qgis/dtype_repository.py" line="205"/>
+        <source>QGIS Official Python Plugin Repository</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/backends/qgis/dtype_repository.py" line="280"/>
+        <source>The extra plugin path does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qgist/pluginmanager/backends/qgis/dtype_repository.py" line="282"/>
+        <source>&quot;QGIS_PLUGINPATH&quot; contains a protected path</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Python</name>
     <message>
-        <location filename="../qgist/pluginmanager/staging.py" line="79"/>
+        <location filename="../qgist/pluginmanager/staging.py" line="116"/>
         <source>Couldn&apos;t load plugin &apos;{0}&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -306,6 +796,14 @@
     <message>
         <location filename="../qgist/pluginmanager/ui_qgsplugindependenciesdialogbase.py" line="48"/>
         <source>Plugin dependencies</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QgsPluginInstaller</name>
+    <message>
+        <location filename="../qgist/pluginmanager/staging.py" line="61"/>
+        <source>QGIS Official Plugin Repository</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -709,124 +1207,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qgist/pluginmanager/ui_qgspluginmanagerbase.py" line="596"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>global</name>
-    <message>
-        <location filename="../qgist/config.py" line="68"/>
-        <source>QGIS settings path does not point to a directory. (config path)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="70"/>
-        <source>QGIS settings path does not exist. (config path)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="74"/>
-        <source>QGIS plugin configuration path exists but is not a directory. (config path)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="80"/>
-        <source>QGIST configuration path exists but is not a directory. (config path)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="96"/>
-        <source>&quot;fn&quot; must be str. (config)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="102"/>
-        <source>Parent of &quot;fn&quot; must exists. (config)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="104"/>
-        <source>Parent of &quot;fn&quot; must be a directory. (config)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="109"/>
-        <source>&quot;fn&quot; must be a file. (config)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="117"/>
-        <source>Configuration data must be a dict. (config)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="122"/>
-        <source>&quot;name&quot; must be str. (config getitem)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="124"/>
-        <source>Unknown configuration field &quot;name&quot;. (config getitem)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="131"/>
-        <source>&quot;name&quot; must be str. (config setitem)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="133"/>
-        <source>&quot;value&quot; contains not allowed types. (config setitem)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="188"/>
-        <source>Could not backup old configuration before saving new - too many old backups. (config save)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="115"/>
-        <source>Config does not contain valid JSON. (config)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="201"/>
-        <source>&quot;fn&quot; must be str. (config import)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="203"/>
-        <source>&quot;fn&quot; must exists. (config import)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="205"/>
-        <source>&quot;fn&quot; must be a file. (config import)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="213"/>
-        <source>&quot;fn&quot; does not contain valid JSON. (config import)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="221"/>
-        <source>&quot;fn&quot; must be str. (config export)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="223"/>
-        <source>Parent of &quot;fn&quot; must exists. (config export)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="225"/>
-        <source>Parent of &quot;fn&quot; must be a directory. (config export)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qgist/config.py" line="227"/>
-        <source>&quot;value&quot; contains not allowed types. (config export)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
