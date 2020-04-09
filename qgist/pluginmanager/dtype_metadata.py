@@ -60,17 +60,20 @@ class dtype_metadata_class:
     Mutable.
     """
 
-    def __init__(self, **fields):
+    def __init__(self, **import_fields):
+        """
+        `import_fields` is a dict of keys (field names, type `str`) and values (field values, all type `str`).
+        """
 
         self._fields = {
             field['name']: dtype_metadata_field_class(**field) for field in METADATA_FIELDS_SPEC
             }
 
-        for key in fields.keys():
+        for key in import_fields.keys():
             if key not in self._fields.keys():
-                self._fields[key] = dtype_metadata_field_class.from_unknown(key, fields[key])
+                self._fields[key] = dtype_metadata_field_class.from_unknown(key, import_fields[key])
             else:
-                self._fields[key].value_string = fields[key]
+                self._fields[key].value_string = import_fields[key] # Import of values of known fields and type cast happens here!
 
         # TODO "email" is required but e.g. not exposed in plugins.xml from plugins.qgis.org
         # for key in self._fields.keys():
@@ -95,6 +98,18 @@ class dtype_metadata_class:
     def keys(self):
 
         return (key for key in self._fields.keys())
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# EXPORT
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def as_config_decompressed(self):
+
+        return {
+            field_id: field.value_string
+            for field_id, field in self._fields.items()
+            if field.value_set
+            }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PRE-CONSTRUCTOR
