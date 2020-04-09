@@ -34,7 +34,12 @@ import os
 # IMPORT (QGIS)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from qgis.core import QgsApplication
+from qgis.core import QgsApplication as _QgsApplication
+
+# TODO <HACK>
+# remove this eventually - Plugin Manager should manage this on its own
+from qgis.utils import plugins as _plugins
+# TODO </HACK>
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ROUTINES
@@ -43,18 +48,24 @@ from qgis.core import QgsApplication
 def get_python_path():
 
     root_fld = (
-        QgsApplication.buildOutputPath()
-        if QgsApplication.isRunningFromBuildDir() else
-        QgsApplication.pkgDataPath()
+        _QgsApplication.buildOutputPath()
+        if _QgsApplication.isRunningFromBuildDir() else
+        _QgsApplication.pkgDataPath()
         )
 
     return os.path.abspath(os.path.join(root_fld, 'python'))
 
 def get_home_python_path():
 
-    root_fld = QgsApplication.qgisSettingsDirPath()
+    root_fld = _QgsApplication.qgisSettingsDirPath()
 
     if os.path.abspath(root_fld) == os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3')):
         return os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3', 'python'))
 
     return os.path.abspath(os.path.join(root_fld, 'python'))
+
+# TODO <HACK>
+# remove this eventually - Plugin Manager should manage this on its own
+def get_plugin_modules():
+    return _plugins
+# TODO </HACK>

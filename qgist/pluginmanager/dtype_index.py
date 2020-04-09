@@ -44,6 +44,7 @@ from .error import (
 from .dtype_plugin import dtype_plugin_class
 from .dtype_repository_base import dtype_repository_base_class
 from .dtype_settings import dtype_settings_class
+from .qgis_api import get_plugin_modules
 
 from ..error import (
     QgistTypeError,
@@ -73,9 +74,8 @@ class dtype_index_class:
 
         # TODO <HACK>
         # remove this eventually - Plugin Manager should manage this on its own
-        from qgis.utils import plugins as _plugins
-        self._plugin_modules = _plugins # dict by plugin_id: reference on imported Python plugin modules
-        del _plugins
+        # dict by plugin_id: reference on imported Python plugin modules
+        self._plugin_modules = get_plugin_modules()
         # TODO </HACK>
 
         self._allow_deprecated = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_DEPRECATED])
