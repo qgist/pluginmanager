@@ -71,7 +71,6 @@ class dtype_repository_class(dtype_repository_base_class):
             name = name,
             active = True,
             protected = True,
-            repository_type = cls._repo_type,
             plugin_releases = list(),
             config_group = config.get_group(CONFIG_GROUP_MANAGER_REPOS).get_group(repo_id),
             )
