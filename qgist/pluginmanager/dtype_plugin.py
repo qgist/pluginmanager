@@ -81,7 +81,7 @@ class dtype_plugin_class:
         if not installed and installed_release is not None:
             raise QgistTypeError(tr('plugin is not installed, i.e. "installed_release" must be None.'))
         if not any((isinstance(available_releases, dtype) for dtype in (Generator, Iterator, list, tuple))):
-            raise QgistTypeError(tr('"available_releases" must be any of the floowing: list, tuple, generator, iterator.'))
+            raise QgistTypeError(tr('"available_releases" must be any of the following: list, tuple, generator, iterator.'))
         available_releases = list(available_releases)
         if not all((isinstance(release, dtype_pluginrelease_base_class) for release in available_releases)):
             raise QgistTypeError(tr('All available releases must be plugin releases.'))

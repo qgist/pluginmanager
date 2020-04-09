@@ -30,6 +30,7 @@ specific language governing rights and limitations under the License.
 
 from configparser import ConfigParser
 from collections import OrderedDict
+from typing import Generator, Iterator
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
@@ -75,11 +76,6 @@ class dtype_metadata_class:
             else:
                 self._fields[key].value_string = import_fields[key] # Import of values of known fields and type cast happens here!
 
-        # TODO "email" is required but e.g. not exposed in plugins.xml from plugins.qgis.org
-        # for key in self._fields.keys():
-        #     if self._fields[key].value is None and self._fields[key].is_required:
-        #         raise QgistMetaRequirementError(tr('meta data field not present but required'))
-
         self._id = self._fields['id'].value
 
     def __repr__(self):
@@ -98,6 +94,28 @@ class dtype_metadata_class:
     def keys(self):
 
         return (key for key in self._fields.keys())
+
+    def required_fields_present(self, ignored_fields = None):
+        "`email` is required but e.g. not exposed in plugins.xml from plugins.qgis.org - can be ignored"
+
+        if ignored_fields is None:
+            ignored_fields = tuple()
+
+        if not any((isinstance(ignored_fields, dtype) for dtype in (Generator, Iterator, list, tuple))):
+            raise QgistTypeError(tr('"ignored_fields" must be any of the following: list, tuple, generator, iterator.'))
+        ignored_fields = tuple(ignored_fields)
+        if not all((isinstance(field_id, str) for field_id in ignored_fields)):
+            raise QgistTypeError(tr('All ignored field ids must be str.'))
+
+        for field_id in self._fields.keys():
+            if all((
+                not self._fields[field_id].value_set,
+                self._fields[field_id].is_required,
+                field_id not in ignored_fields,
+                )):
+                return False
+
+        return True
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # EXPORT

@@ -83,7 +83,7 @@ class dtype_repository_base_class:
         if not isinstance(protected, bool):
             raise QgistTypeError(tr('"protected" must be a bool.'))
         if not any((isinstance(plugin_releases, dtype) for dtype in (Generator, Iterator, list, tuple))):
-            raise QgistTypeError(tr('"plugin_releases" must be any of the floowing: list, tuple, generator, iterator.'))
+            raise QgistTypeError(tr('"plugin_releases" must be any of the following: list, tuple, generator, iterator.'))
         plugin_releases = list(plugin_releases)
         if not all((isinstance(release, dtype_pluginrelease_base_class) for release in plugin_releases)):
             raise QgistTypeError(tr('All releases must be plugin releases.'))
