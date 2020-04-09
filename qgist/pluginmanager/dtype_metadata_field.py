@@ -105,6 +105,10 @@ class dtype_metadata_field_class:
             '>'
             )
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# HELPER
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     def _is_valid_value(self, value):
 
         return isinstance(value, self._dtype)
@@ -118,6 +122,10 @@ class dtype_metadata_field_class:
         if not isinstance(value_str, str):
             raise QgistTypeError(tr('"value_str" must be a str.'))
         return value_str
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PROPERTIES
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @property
     def value_set(self):
@@ -166,6 +174,10 @@ class dtype_metadata_field_class:
     @property
     def is_required(self):
         return self._is_required
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PRE-CONSTRUCTOR
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
     def from_unknown(cls, name, value):
