@@ -224,6 +224,16 @@ class dtype_pluginrelease_base_class:
         return False
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# EXPORT
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def as_config_decompressed(self):
+
+        return {
+            'meta': self._meta.as_config_decompressed(),
+            }
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PRE-CONSTRUCTOR
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -231,8 +241,15 @@ class dtype_pluginrelease_base_class:
     def from_config_decompressed(cls, config_decompressed):
         "From available releases cache in config"
 
-        # `config_decompressed` is checked in `dtype_metadata_class.from_config_decompressed`
-        meta = dtype_metadata_class.from_config_decompressed(config_decompressed)
+        if not isinstance(config_decompressed, dict):
+            raise QgistTypeError(tr('"config_decompressed" must be a dict'))
+        if not all((
+            key in config_decompressed.keys() for key in ('meta',)
+            )) and len(config_decompressed) != 1:
+            raise ValueError(tr('"config_decompressed" has invalid structure'))
+
+        # `config_decompressed['meta']` is checked in `dtype_metadata_class.from_config_decompressed`
+        meta = dtype_metadata_class.from_config_decompressed(config_decompressed['meta'])
 
         return cls(
             plugin_id = meta['id'].value,
