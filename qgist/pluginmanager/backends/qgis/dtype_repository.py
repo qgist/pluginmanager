@@ -153,7 +153,7 @@ class dtype_repository_class(dtype_repository_base_class):
     #
     #     raise QgistNotImplementedError()
 
-    def to_config(self):
+    def to_config(self, config_group):
         "Export repository to uncompressed configuration data (JSON-serializable dict)"
 
         return dict() # TODO
