@@ -125,6 +125,8 @@ class dtype_repository_class(dtype_repository_base_class):
         "Refresh index, i.e. reload metadata from remote source"
 
         # TODO
+        self._plugin_releases.clear()
+        # TODO
 
         self.to_config()
 
