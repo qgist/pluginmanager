@@ -119,7 +119,7 @@ class dtype_repository_class(dtype_repository_base_class):
         return self._url
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# HELPER
+# HELPER (ONLY THIS REPO TYPE)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
@@ -192,7 +192,7 @@ class dtype_repository_class(dtype_repository_base_class):
         return (plugin for plugin in plugins)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# PRE-CONSTRUCTOR
+# PRE-CONSTRUCTOR (ALL REPO TYPES)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
