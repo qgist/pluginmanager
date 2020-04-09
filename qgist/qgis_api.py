@@ -6,7 +6,7 @@ QGIST PLUGIN MANAGER
 QGIS Plugin for Managing QGIS Plugins
 https://github.com/qgist/pluginmanager
 
-    qgist/pluginmanager/qgis_api.py: Collects references to QGIS API in central location
+    qgist/qgis_api.py: Collects references to QGIS API in central location
 
     Copyright (C) 2017-2020 QGIST project <info@qgist.org>
 

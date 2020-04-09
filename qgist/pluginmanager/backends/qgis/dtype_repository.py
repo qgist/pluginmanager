@@ -60,14 +60,14 @@ from ...dtype_settings import (
     dtype_settings_group_class,
     dtype_settings_class,
     )
-from ...qgis_api import (
-    get_home_python_path,
-    get_python_path,
-    )
 
 from ....error import (
     QgistTypeError,
     QgistValueError,
+    )
+from ....qgis_api import (
+    get_home_python_path,
+    get_python_path,
     )
 from ....util import tr
 

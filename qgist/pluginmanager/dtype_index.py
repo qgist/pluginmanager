@@ -44,12 +44,12 @@ from .error import (
 from .dtype_plugin import dtype_plugin_class
 from .dtype_repository_base import dtype_repository_base_class
 from .dtype_settings import dtype_settings_class
-from .qgis_api import get_plugin_modules
 
 from ..error import (
     QgistTypeError,
     QgistValueError,
     )
+from ..qgis_api import get_plugin_modules
 from ..util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
