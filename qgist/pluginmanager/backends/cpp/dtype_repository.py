@@ -52,10 +52,37 @@ class dtype_repository_class(dtype_repository_base_class):
 
     _repo_type = REPO_BACKEND_QGISLEGACYCPP
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# MANAGEMENT & EXPORT
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def refresh(self):
+        "Refresh index, i.e. reload metadata from remote source"
+
+        return # there is nothing to refresh
+
+    # def remove(self):
+    #     "Run cleanup actions e.g. in config before repo is removed"
+    #
+    #     raise QgistNotImplementedError()
+    #
+    # def to_config(self):
+    #     "Write repository to configuration"
+    #
+    #     raise QgistNotImplementedError()
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# CLASS-LEVEL API
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     @classmethod
     def find_plugins(cls, config, protected, plugin_modules):
 
         return tuple() # TODO
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PRE-CONSTRUCTOR
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
     def from_default(cls, config):
