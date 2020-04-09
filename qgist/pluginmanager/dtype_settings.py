@@ -183,12 +183,24 @@ class dtype_settings_class:
         raise QgistValueError(tr('value can not be converted to bool'), value)
 
     @staticmethod
-    def bool_to_str(value):
+    def bool_to_str(value, style):
+
+        styles = {
+            'TrueFalse': lambda x: 'True' if x else 'False',
+            'truefalse': lambda x: 'true' if x else 'false',
+            'YesNo': lambda x: 'Yes' if x else 'No',
+            'yesno': lambda x: 'yes' if x else 'no',
+            '10': lambda x: '1' if x else '0',
+            }
 
         if not isinstance(value, bool):
-            raise QgistTypeError(tr('value is not bool'))
+            raise QgistTypeError(tr('"value" must be a bool'))
+        if not isinstance(style, str):
+            raise QgistTypeError(tr('"style" must be a str'))
+        if style not in styles.keys():
+            raise QgistTypeError(tr('"style" is unknown'))
 
-        return str(value).lower()
+        return styles[style](value)
 
     @staticmethod
     def load(data):
