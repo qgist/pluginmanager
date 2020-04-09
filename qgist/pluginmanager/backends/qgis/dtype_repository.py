@@ -140,6 +140,25 @@ class dtype_repository_class(dtype_repository_base_class):
             )
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# MANAGEMENT & EXPORT
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    # def refresh(self):
+    #     "Refresh index, i.e. reload metadata from remote source"
+    #
+    #     raise QgistNotImplementedError()
+    #
+    # def remove(self):
+    #     "Run cleanup actions e.g. in config before repo is removed"
+    #
+    #     raise QgistNotImplementedError()
+
+    def to_config(self):
+        "Export repository to uncompressed configuration data (JSON-serializable dict)"
+
+        return dict() # TODO
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS-LEVEL API (ALL REPO TYPES)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

@@ -167,7 +167,7 @@ class dtype_repository_base_class:
         raise QgistNotImplementedError()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# MANAGEMENT
+# MANAGEMENT & EXPORT
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     def refresh(self):
@@ -177,6 +177,11 @@ class dtype_repository_base_class:
 
     def remove(self):
         "Run cleanup actions e.g. in config before repo is removed"
+
+        raise QgistNotImplementedError()
+
+    def to_config(self):
+        "Export repository to uncompressed configuration data (JSON-serializable dict)"
 
         raise QgistNotImplementedError()
 

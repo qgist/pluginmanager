@@ -122,6 +122,7 @@ class dtype_metadata_class:
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     def as_config_decompressed(self):
+        "Export meta data to uncompressed configuration data (JSON-serializable dict)"
 
         return {
             field_id: field.value_string
