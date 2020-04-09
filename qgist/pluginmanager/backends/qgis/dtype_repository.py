@@ -34,12 +34,6 @@ import random
 import sys
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# IMPORT (QGIS)
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-from qgis.core import QgsApplication
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (External)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -65,6 +59,10 @@ from ...dtype_repository_base import dtype_repository_base_class
 from ...dtype_settings import (
     dtype_settings_group_class,
     dtype_settings_class,
+    )
+from ...qgis_api import (
+    get_home_python_path,
+    get_python_path,
     )
 
 from ....error import (
@@ -180,9 +178,9 @@ class dtype_repository_class(dtype_repository_base_class):
             raise QgistTypeError(tr('Every plugin_id in "plugin_modules" must be str'))
 
         if protected:
-            plugin_paths = (_get_python_path(),)
+            plugin_paths = (os.path.join(get_python_path(), 'plugins'),)
         else:
-            plugin_paths = (*_get_extra_plugins_paths(), _get_home_python_path())
+            plugin_paths = (*_get_extra_plugins_paths(), os.path.join(get_home_python_path(), 'plugins'))
 
         plugins = []
 
@@ -248,25 +246,6 @@ class dtype_repository_class(dtype_repository_base_class):
 # ROUTINES (ONLY THIS REPO TYPE)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-def _get_python_path():
-
-    root_fld = (
-        QgsApplication.buildOutputPath()
-        if QgsApplication.isRunningFromBuildDir() else
-        QgsApplication.pkgDataPath()
-        )
-
-    return os.path.abspath(os.path.join(root_fld, 'python', 'plugins'))
-
-def _get_home_python_path():
-
-    root_fld = QgsApplication.qgisSettingsDirPath()
-
-    if os.path.abspath(root_fld) == os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3')):
-        return os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3', 'python', 'plugins'))
-
-    return os.path.abspath(os.path.join(root_fld, 'python', 'plugins'))
-
 def _get_extra_plugins_paths():
 
     if 'QGIS_PLUGINPATH' not in os.environ.keys():
@@ -276,7 +255,7 @@ def _get_extra_plugins_paths():
     delimiter = ';' if sys.platform.startswith('win') else ':'
     checked_paths = []
 
-    python_path = _get_python_path()
+    python_path = os.path.join(get_python_path(), 'plugins')
 
     for path in paths.split(delimiter):
         path = os.path.abspath(path)

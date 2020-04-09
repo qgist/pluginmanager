@@ -23,3 +23,38 @@ specific language governing rights and limitations under the License.
 </LICENSE_BLOCK>
 
 """
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+import os
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (QGIS)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from qgis.core import QgsApplication
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ROUTINES
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+def get_python_path():
+
+    root_fld = (
+        QgsApplication.buildOutputPath()
+        if QgsApplication.isRunningFromBuildDir() else
+        QgsApplication.pkgDataPath()
+        )
+
+    return os.path.abspath(os.path.join(root_fld, 'python'))
+
+def get_home_python_path():
+
+    root_fld = QgsApplication.qgisSettingsDirPath()
+
+    if os.path.abspath(root_fld) == os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3')):
+        return os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3', 'python'))
+
+    return os.path.abspath(os.path.join(root_fld, 'python'))
