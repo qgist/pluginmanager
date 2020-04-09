@@ -67,5 +67,10 @@ def get_home_python_path():
 # TODO <HACK>
 # remove this eventually - Plugin Manager should manage this on its own
 def get_plugin_modules():
+
     return _plugins
 # TODO </HACK>
+
+def get_qgis_settings_dir_path():
+
+    return _QgsApplication.qgisSettingsDirPath()

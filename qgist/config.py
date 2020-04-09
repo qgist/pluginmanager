@@ -32,14 +32,6 @@ import copy
 import json
 import os
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# IMPORT (QGIS)
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-from qgis.core import QgsApplication
-
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -54,8 +46,8 @@ from .error import (
     QgistTypeError,
     QgistValueError,
     )
+from .qgis_api import get_qgis_settings_dir_path
 from .util import tr
-
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ROUTINES
@@ -63,7 +55,7 @@ from .util import tr
 
 def get_config_path():
 
-    root_fld = QgsApplication.qgisSettingsDirPath()
+    root_fld = get_qgis_settings_dir_path()
     if os.path.exists(root_fld) and not os.path.isdir(root_fld):
         raise QgistValueError(tr('QGIS settings path does not point to a directory.'))
     if not os.path.exists(root_fld):
@@ -82,7 +74,6 @@ def get_config_path():
         os.mkdir(root_qgis_qgist_fld)
 
     return root_qgis_qgist_fld
-
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
