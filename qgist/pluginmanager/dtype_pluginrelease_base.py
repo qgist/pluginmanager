@@ -228,6 +228,7 @@ class dtype_pluginrelease_base_class:
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     def as_config_decompressed(self):
+        "Export plugin release to uncompressed configuration data (JSON-serializable dict)"
 
         return {
             'meta': self._meta.as_config_decompressed(),
