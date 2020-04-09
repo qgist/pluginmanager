@@ -121,11 +121,13 @@ class dtype_repository_class(dtype_repository_base_class):
 # MANAGEMENT & EXPORT
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    # def refresh(self):
-    #     "Refresh index, i.e. reload metadata from remote source"
-    #
-    #     raise QgistNotImplementedError()
-    #
+    def refresh(self):
+        "Refresh index, i.e. reload metadata from remote source"
+
+        # TODO
+
+        self.to_config()
+
     # def remove(self):
     #     "Run cleanup actions e.g. in config before repo is removed"
     #
@@ -141,7 +143,7 @@ class dtype_repository_class(dtype_repository_base_class):
         self._config_group['url'] = self._url
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# CLASS-LEVEL API (ALL REPO TYPES)
+# CLASS-LEVEL API
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
@@ -193,7 +195,7 @@ class dtype_repository_class(dtype_repository_base_class):
         return (plugin for plugin in plugins)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# PRE-CONSTRUCTOR (ALL REPO TYPES)
+# PRE-CONSTRUCTOR
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @classmethod
@@ -241,7 +243,7 @@ class dtype_repository_class(dtype_repository_base_class):
             )
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# ROUTINES
+# ROUTINES (ONLY THIS REPO TYPE)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 def _get_python_path():
