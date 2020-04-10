@@ -178,6 +178,12 @@ class dtype_pluginrelease_base_class:
         if not meta['deprecated'].value_set:
             meta['deprecated'].value = meta['deprecated'].default_value
 
+        if not meta['server'].value_set:
+            meta['server'].value = meta['server'].default_value
+
+        if not meta['hasProcessingProvider'].value_set:
+            meta['hasProcessingProvider'].value = meta['hasProcessingProvider'].default_value
+
     @classmethod
     def fix_meta_by_inspecting_plugindir(cls, meta, path):
         "Attempts to guess missing meta data fields by looking at plugin source code"
@@ -298,6 +304,7 @@ class dtype_pluginrelease_base_class:
             raise QgistTypeError(tr('"xml_dict" must be a dict'))
 
         meta = dtype_metadata_class.from_xmldict(xml_dict)
+        cls.fix_meta_by_setting_defaults(meta)
 
         return cls(
             plugin_id = meta['id'].value,
