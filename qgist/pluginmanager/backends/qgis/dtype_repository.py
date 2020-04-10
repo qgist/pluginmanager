@@ -37,7 +37,7 @@ import sys
 # IMPORT (External)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-# import xmltodict
+import xmltodict
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
@@ -68,6 +68,7 @@ from ....error import (
 from ....qgis_api import (
     get_home_python_path,
     get_python_path,
+    request_data,
     )
 from ....util import tr
 
@@ -122,9 +123,18 @@ class dtype_repository_class(dtype_repository_base_class):
     def refresh(self):
         "Refresh index, i.e. reload metadata from remote source"
 
-        # TODO
+        raw_xml_bytes = request_data(self._url, self._authcfg)
+
+        raw_xml = raw_xml_bytes.decode('utf-8')
+        raw_xml = raw_xml.replace('& ', '&amp; ') # From plugin installer: Fix lonely ampersands in metadata
+        tree = xmltodict.parse(raw_xml)
+        new_releases = [
+            dtype_pluginrelease_class.from_xmldict(dict(release_dict))
+            for release_dict in tree['plugins']['pyqgis_plugin']
+            ]
+
         self._plugin_releases.clear()
-        # TODO
+        self._plugin_releases.extend(new_releases)
 
         self.to_config()
 
