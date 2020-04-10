@@ -14,6 +14,22 @@ See:
 - https://github.com/qgis/QGIS/blob/4e33bc1fcf76cf00c8288d16db3273bb05b43fea/src/auth/basic/qgsauthbasicmethod.cpp#L67
 - https://github.com/qgis/QGIS/blob/c76c3904050ae3660ee42435380ae479958023bd/src/auth/oauth2/qgsauthoauth2method.cpp#L106
 
+# Metadata (XML)
+
+There are problems with "lonely ampersands".
+
+```python
+def _fix_metadata(metadata):
+    "Fix lonely ampersands in metadata"
+
+    a = _QByteArray()
+    a.append("& ")
+    b = _QByteArray()
+    b.append("&amp; ")
+
+    return metadata.replace(a, b)
+```
+
 # Packaging
 
 This plugin should not only be packaged as as QGIS plugin but also stand-alone as wheel and conda package. How does a reasonable project / directory structure look like?
