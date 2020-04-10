@@ -40,6 +40,9 @@ class QgistConfigKeyError(KeyError):
 class QgistIndexError(IndexError):
     pass
 
+class QgistRequestError(Exception):
+    pass
+
 class QgistTranslationError(Exception):
     pass
 
