@@ -71,6 +71,8 @@ class dtype_metadata_class:
             }
 
         for key in import_fields.keys():
+            if import_fields[key] is None:
+                continue
             if key not in self._fields.keys():
                 self._fields[key] = dtype_metadata_field_class.from_unknown(key, import_fields[key])
             else:
