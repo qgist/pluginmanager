@@ -31,10 +31,34 @@ specific language governing rights and limitations under the License.
 import os
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Internal)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from .error import (
+    QgistRequestError,
+    QgistTypeError,
+    QgistValueError,
+    )
+from .util import tr
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (External)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from PyQt5.QtCore import QUrl as _QUrl
+from PyQt5.QtNetwork import (
+    QNetworkRequest as _QNetworkRequest,
+    QNetworkReply as _QNetworkReply,
+    )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (QGIS)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from qgis.core import QgsApplication as _QgsApplication
+from qgis.core import (
+    QgsApplication as _QgsApplication,
+    QgsBlockingNetworkRequest as _QgsBlockingNetworkRequest,
+    )
 
 # TODO <HACK>
 # remove this eventually - Plugin Manager should manage this on its own
@@ -42,7 +66,7 @@ from qgis.utils import plugins as _plugins
 # TODO </HACK>
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# ROUTINES
+# ROUTINES: DIRECTORIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 def get_python_path():
@@ -74,3 +98,68 @@ def get_plugin_modules():
 def get_qgis_settings_dir_path():
 
     return _QgsApplication.qgisSettingsDirPath()
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# HTTP AND QGIS AUTH MANAGER
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+def request_data(url, authcfg = None, redirection_counter = 1, max_redirect = 4):
+
+    if not isinstance(url, str):
+        raise QgistTypeError(tr('"url" must be a str'))
+    if not url.lower().startswith('http://') and not url.lower().startswith('https://'):
+        raise QgistValueError(tr('"url" does not look like a URL'))
+    if not isinstance(authcfg, str) and authcfg is not None:
+        raise QgistTypeError(tr('"authcfg" must be a str or None'))
+    if not isinstance(redirection_counter, int):
+        raise QgistTypeError(tr('"redirection_counter" must be a int'))
+    if redirection_counter < 1:
+        raise QgistValueError(tr('"redirection_counter" must be greater than zero'))
+    if not isinstance(max_redirect, int):
+        raise QgistTypeError(tr('"max_redirect" must be a int'))
+    if max_redirect < 1:
+        raise QgistValueError(tr('"max_redirect" must be greater than zero'))
+    if redirection_counter > max_redirect:
+        raise QgistValueError(tr('Exceeding maximum redirects'))
+
+    request_blocking = _QgsBlockingNetworkRequest()
+    request = _QNetworkRequest(_QUrl(url))
+    _autothenticate_request(request, authcfg)
+    _ = request_blocking.get(request) # TODO blocking_error?
+    reply = request_blocking.reply()
+    reply_error = reply.error()
+
+    if reply_error != _QNetworkReply.NoError:
+        raise QgistRequestError(tr('Request failed') + ':\n\n' + reply.errorString())
+
+    if reply.attribute(_QNetworkRequest.HttpStatusCodeAttribute) == 301: # HTTP 301
+
+        redirection_url = reply.attribute(_QNetworkRequest.RedirectionTargetAttribute)
+        if redirection_url.isRelative():
+            redirection_url = reply.url().resolved(redirection_url)
+
+        redirection_counter += 1
+        if redirection_counter > max_redirect:
+            raise QgistRequestError(tr('Too many redirections!'))
+
+        return request_data(
+            url = redirection_url, authcfg = authcfg,
+            redirection_counter = redirection_counter, max_redirect = max_redirect,
+            )
+
+    try:
+        content = bytes(reply.content())
+        return content
+    except Exception as e:
+        raise QgistRequestError(tr('Unexpected error while processing content') + ':\n\n' + str(e))
+
+def _autothenticate_request(request, authcfg):
+
+    if authcfg is None:
+        return
+    if len(authcfg.strip()) == 0:
+        return
+
+    success_bool = _QgsApplication.authManager().updateNetworkRequest(request, authcfg.strip())
+    if not success_bool:
+        raise QgistRequestError(tr('Failed to authenticate request'))
