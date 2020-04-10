@@ -289,3 +289,21 @@ class dtype_pluginrelease_base_class:
             path = path,
             meta = meta,
             )
+
+    @classmethod
+    def from_xmldict(cls, xml_dict):
+        "From XML meta data (parsed by xmltodict)"
+
+        if not isinstance(xml_dict, dict):
+            raise QgistTypeError(tr('"xml_dict" must be a dict'))
+
+        meta = dtype_metadata_class.from_xmldict(xml_dict)
+
+        return cls(
+            plugin_id = meta['id'].value,
+            version = meta['version'].value,
+            has_processingprovider = meta['hasProcessingProvider'].value,
+            has_serverfuncs = meta['server'].value,
+            experimental = meta['experimental'].value,
+            meta = meta,
+            )
