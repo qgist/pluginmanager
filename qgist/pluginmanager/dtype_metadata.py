@@ -175,7 +175,7 @@ class dtype_metadata_class:
                 raise QgistValueError(tr('Unusual value for "file_name", does not end on ".zip"'))
             if xml_dict['version'] not in xml_dict['file_name']:
                 raise QgistValueError(tr('Version is not part of "file_name"'))
-            xml_dict['id'] = xml_dict['file_name'][:-1*(len('.zip') + len(xml_dict['version']) + len('..'))]
+            xml_dict['id'] = xml_dict['file_name'][:-1*(len('.zip') + len(xml_dict['version']) + len('-'))]
 
         return cls(**xml_dict)
 
