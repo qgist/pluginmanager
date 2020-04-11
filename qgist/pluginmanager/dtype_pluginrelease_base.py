@@ -61,7 +61,7 @@ class dtype_pluginrelease_base_class:
 
     def __init__(self,
         plugin_id, version,
-        has_processingprovider, has_serverfuncs, experimental,
+        has_processingprovider, has_serverfuncs, experimental, deprecated,
         meta, path = None,
         ):
 
@@ -77,6 +77,8 @@ class dtype_pluginrelease_base_class:
             raise QgistTypeError(tr('"has_serverfuncs" must be a bool.'))
         if not isinstance(experimental, bool):
             raise QgistTypeError(tr('"experimental" must be a bool.'))
+        if not isinstance(deprecated, bool):
+            raise QgistTypeError(tr('"deprecated" must be a bool.'))
         if not isinstance(meta, dtype_metadata_class):
             raise QgistTypeError(tr('"meta" must be meta data.'))
         if not isinstance(path, str) and path is not None:
@@ -90,6 +92,7 @@ class dtype_pluginrelease_base_class:
         self._has_processingprovider = has_processingprovider
         self._has_serverfuncs = has_serverfuncs
         self._experimental = experimental
+        self._deprecated = deprecated
         self._meta = meta
         self._path = path # None if not locally installed
 
@@ -100,6 +103,7 @@ class dtype_pluginrelease_base_class:
             f'id="{self._id:s}" '
             f'version={str(self._version):s} '
             f'experimental={"yes" if self._experimental else "no":s} '
+            f'deprecated={"yes" if self._deprecated else "no":s} '
             f'processingprovider={"yes" if self.has_processingprovider else "no":s} '
             f'serverfuncs={"yes" if self.has_serverfuncs else "no":s} '
             f'repo_type={self.repo_type:s}'
@@ -114,7 +118,7 @@ class dtype_pluginrelease_base_class:
             self.has_processingprovider == other.has_processingprovider,
             self.has_serverfuncs == other.has_serverfuncs,
             self.repo_type == other.repo_type,
-            ))
+            )) # TODO check deprecated?
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES
@@ -135,6 +139,10 @@ class dtype_pluginrelease_base_class:
     @property
     def experimental(self):
         return self._experimental
+
+    @property
+    def deprecated(self):
+        return self._deprecated
 
     @property
     def version(self):
@@ -265,6 +273,7 @@ class dtype_pluginrelease_base_class:
             has_processingprovider = meta['hasProcessingProvider'].value,
             has_serverfuncs = meta['server'].value,
             experimental = meta['experimental'].value,
+            deprecated = meta['deprecated'].value,
             meta = meta,
             )
 
@@ -293,6 +302,7 @@ class dtype_pluginrelease_base_class:
             has_processingprovider = meta['hasProcessingProvider'].value,
             has_serverfuncs = meta['server'].value,
             experimental = meta['experimental'].value,
+            deprecated = meta['deprecated'].value,
             path = path,
             meta = meta,
             )
@@ -313,5 +323,6 @@ class dtype_pluginrelease_base_class:
             has_processingprovider = meta['hasProcessingProvider'].value,
             has_serverfuncs = meta['server'].value,
             experimental = meta['experimental'].value,
+            deprecated = meta['deprecated'].value,
             meta = meta,
             )
