@@ -85,14 +85,14 @@ class dtype_plugin_class:
         available_releases = list(available_releases)
         if not all((isinstance(release, dtype_pluginrelease_base_class) for release in available_releases)):
             raise QgistTypeError(tr('All available releases must be plugin releases.'))
+        if any((release.installed for release in available_releases)):
+            raise QgistValueError(tr('An installed release can not be available'))
         if not isinstance(protected, bool):
             raise QgistTypeError(tr('"protected" must be a bool.'))
         if not isinstance(active, bool):
             raise QgistTypeError(tr('"active" must be a bool.'))
         if not isinstance(deprecated, bool):
             raise QgistTypeError(tr('"deprecated" must be a bool.'))
-
-        # TODO check/inspect "module"?
 
         self._id = plugin_id # unique
         self._installed = installed
@@ -103,7 +103,7 @@ class dtype_plugin_class:
         self._deprecated = deprecated
         self._module = module
 
-        self.update_deprecation()
+        self._update_deprecation()
 
         # TODO Implement in derived class!
         self._available = None # bool. Always static? Source available (online), matching QGIS version requirement
@@ -120,6 +120,10 @@ class dtype_plugin_class:
             f'protected={"yes" if self._protected else "no":s}'
             '>'
             )
+
+    def __len__(self):
+
+        return len(self._available_releases)
 
     def __contains__(self, test_release):
 
@@ -250,25 +254,21 @@ class dtype_plugin_class:
             raise QgistTypeError(tr('"release" must be a release'))
         if release in self:
             raise QgistValueError(tr('"release" is already part of this plugin'))
+        if self._id != release.id:
+            raise QgistValueError(tr('Trying to add a release with a different id'))
+        if release.installed and self._installed:
+            raise QgistValueError(tr('Trying to add an installed release to an installed plugin'))
 
         self._available_releases.append(release)
-        self.update_deprecation()
+        self._update_deprecation()
 
     def clear_uninstalled_releases(self):
         "Remove all uninstalled releases"
 
         self._available_releases.clear()
+        self._update_deprecation()
 
-        if not self._installed:
-            return
-
-        if not isinstance(self._installed_release, dtype_pluginrelease_base_class):
-            raise QgistValueError(tr('internal error: plugin is installed but has no release'))
-
-        self._available_releases.append(self._installed_release)
-        self.update_deprecation()
-
-    def update_deprecation(self):
+    def _update_deprecation(self):
         "Checks all releases for deprecated flag and taint entire plugin"
 
         self._deprecated = any((release.deprecated for release in self._available_releases))
@@ -393,7 +393,7 @@ class dtype_plugin_class:
             plugin_id = installed_release.id,
             installed = True,
             installed_release = installed_release,
-            available_releases = (installed_release,),
+            available_releases = tuple(),
             protected = protected,
             active = installed_release.id in plugin_modules.keys(),
             deprecated = installed_release.meta['deprecated'].value,
