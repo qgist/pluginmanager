@@ -66,7 +66,7 @@ class dtype_plugin_class:
     """
 
     def __init__(self,
-        plugin_id, installed, installed_release, available_releases, protected, active, deprecated,
+        plugin_id, installed_release, available_releases, protected, active, deprecated,
         module = None,
         ):
 
@@ -74,12 +74,8 @@ class dtype_plugin_class:
             raise QgistTypeError(tr('"plugin_id" must be a str.'))
         if len(plugin_id) == 0:
             raise QgistValueError(tr('"plugin_id" must not be empty.'))
-        if not isinstance(installed, bool):
-            raise QgistTypeError(tr('"installed" must be a bool.'))
-        if installed and not isinstance(installed_release, dtype_pluginrelease_base_class):
-            raise QgistTypeError(tr('plugin is installed, i.e. "installed_release" must be a plugin release.'))
-        if not installed and installed_release is not None:
-            raise QgistTypeError(tr('plugin is not installed, i.e. "installed_release" must be None.'))
+        if not isinstance(installed_release, dtype_pluginrelease_base_class) and installed_release is not None:
+            raise QgistTypeError(tr('"installed_release" must be a plugin release or None'))
         if not any((isinstance(available_releases, dtype) for dtype in (Generator, Iterator, list, tuple))):
             raise QgistTypeError(tr('"available_releases" must be any of the following: list, tuple, generator, iterator.'))
         available_releases = list(available_releases)
@@ -95,7 +91,6 @@ class dtype_plugin_class:
             raise QgistTypeError(tr('"deprecated" must be a bool.'))
 
         self._id = plugin_id # unique
-        self._installed = installed
         self._installed_release = installed_release
         self._available_releases = available_releases # list of dtype_pluginrelease. Source available (online), matching QGIS version requirement
         self._protected = protected
@@ -112,7 +107,7 @@ class dtype_plugin_class:
         return (
             '<plugin '
             f'id="{self._id:s}" '
-            f'installed={"yes" if self._installed else "no":s} '
+            f'installed={"yes" if self.installed else "no":s} '
             f'active={"yes" if self._active else "no":s} '
             f'available_releases={len(self):d} '
             f'upgradable={"yes" if self.upgradable else "no":s} '
@@ -147,12 +142,12 @@ class dtype_plugin_class:
 
     @property
     def installed(self):
-        return self._installed
+        return self._installed_release is not None
     @installed.setter
     def installed(self, value):
         if not isinstance(value, bool):
             raise QgistTypeError(tr('"value" must be a bool.'))
-        if value == self._installed:
+        if value == (self._installed_release is not None):
             return
         if value:
             self.install()
@@ -162,13 +157,6 @@ class dtype_plugin_class:
     @property
     def protected(self):
         return self._protected
-    @protected.setter
-    def protected(self, value):
-        if not isinstance(value, bool):
-            raise QgistTypeError(tr('"value" must be a bool.'))
-        if not self._installed:
-            raise QgistValueError(tr('plugin is not installed'))
-        self._protected = value
 
     @property
     def active(self):
@@ -194,10 +182,8 @@ class dtype_plugin_class:
 
     @property
     def installed_release(self):
-        if not self._installed:
+        if not self.installed:
             raise QgistValueError(tr('plugin is not installed'))
-        if not isinstance(self._installed_release, dtype_pluginrelease_base_class):
-            raise QgistValueError(tr('internal error: plugin is installed but has no release'))
         return self._installed_release
 
     @property
@@ -206,12 +192,10 @@ class dtype_plugin_class:
 
     @property
     def upgradable(self):
-        if not self._installed:
+        if not self.installed:
             return False
         if len(self._available_releases) == 0:
             return False
-        if not isinstance(self._installed_release, dtype_pluginrelease_base_class):
-            raise QgistValueError(tr('internal error: plugin is installed but has no release'))
         return any((
             available_release.version > self._installed_release.version
             for available_release in self._available_releases
@@ -219,12 +203,10 @@ class dtype_plugin_class:
 
     @property
     def downgradable(self):
-        if not self._installed:
+        if not self.installed:
             return False
         if len(self._available_releases) == 0:
             return False
-        if not isinstance(self._installed_release, dtype_pluginrelease_base_class):
-            raise QgistValueError(tr('internal error: plugin is installed but has no release'))
         return any((
             available_release.version < self._installed_release.version
             for available_release in self._available_releases
@@ -232,10 +214,8 @@ class dtype_plugin_class:
 
     @property
     def orphan(self):
-        if not self._installed:
+        if not self.installed:
             return False
-        if not isinstance(self._installed_release, dtype_pluginrelease_base_class):
-            raise QgistValueError(tr('internal error: plugin is installed but has no release'))
         return all((
             available_release != self._installed_release
             for available_release in self._available_releases
@@ -254,7 +234,7 @@ class dtype_plugin_class:
             raise QgistValueError(tr('"new_release" is already part of this plugin'))
         if self._id != new_release.id:
             raise QgistValueError(tr('Trying to add a new_release with a different id'))
-        if new_release.installed and self._installed:
+        if new_release.installed and self.installed:
             raise QgistValueError(tr('Trying to add an installed release to an installed plugin'))
 
         self._available_releases.append(new_release)
@@ -273,7 +253,7 @@ class dtype_plugin_class:
 
         if self._deprecated:
             return
-        if not self._installed:
+        if not self.installed:
             return
 
         self._deprecated = self._installed_release.deprecated
@@ -389,7 +369,6 @@ class dtype_plugin_class:
 
         return cls(
             plugin_id = installed_release.id,
-            installed = True,
             installed_release = installed_release,
             available_releases = tuple(),
             protected = protected,
@@ -408,7 +387,6 @@ class dtype_plugin_class:
 
         return cls(
             plugin_id = release.id,
-            installed = False,
             installed_release = None,
             available_releases = (release,),
             protected = False,
