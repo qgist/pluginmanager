@@ -135,18 +135,18 @@ class dtype_repository_class(dtype_repository_base_class):
         raw_xml = raw_xml_bytes.decode('utf-8')
         raw_xml = raw_xml.replace('& ', '&amp; ') # From plugin installer: Fix lonely ampersands in metadata
         tree = xmltodict.parse(raw_xml)
-        latest_releases = [
-            dtype_pluginrelease_class.from_xmldict(dict(release_dict))
+        release_id_set = {
+            dtype_pluginrelease_class.from_xmldict(dict(release_dict)).id
             for release_dict in tree['plugins']['pyqgis_plugin']
-            ]
+            }
 
         dict_release_list_list = []
         with multiprocessing.Pool(processes = multiprocessing.cpu_count()) as p:
             dict_release_list_list.extend(p.imap_unordered(
                 func = self._request_dict_releases_per_plugin,
                 iterable = (
-                    (f'{self._url:s}?package_name={latest_release.id:s}&qgis={qgis_version[0]:s}.{qgis_version[1]:s}', self._authcfg)
-                    for latest_release in latest_releases
+                    (f'{self._url:s}?package_name={release_id:s}&qgis={qgis_version[0]:s}.{qgis_version[1]:s}', self._authcfg)
+                    for release_id in release_id_set
                     ),
                 chunksize = 50,
                 ))
