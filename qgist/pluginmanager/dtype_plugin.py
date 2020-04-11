@@ -105,9 +105,7 @@ class dtype_plugin_class:
 
         self._update_deprecation()
 
-        # TODO Implement in derived class!
-        self._available = None # bool. Always static? Source available (online), matching QGIS version requirement
-        self._watchdog = None # bool
+        self._watchdog = None # TODO in release?
 
     def __repr__(self):
 
