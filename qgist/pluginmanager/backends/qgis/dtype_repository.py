@@ -29,6 +29,7 @@ specific language governing rights and limitations under the License.
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 import glob
+import multiprocessing
 import os
 import random
 import sys
@@ -139,13 +140,21 @@ class dtype_repository_class(dtype_repository_base_class):
             for release_dict in tree['plugins']['pyqgis_plugin']
             ]
 
+        raw_xml_bytes_list = []
+        with multiprocessing.Pool(processes = 10) as p:
+            raw_xml_bytes_list.extend(p.imap_unordered(
+                func = self._request_xml_bytes,
+                iterable = (
+                    (f'{self._url:s}?package_name={latest_release.id:s}&qgis={qgis_version[0]:s}.{qgis_version[1]:s}', self._authcfg, latest_release.id)
+                    for latest_release in latest_releases
+                    ),
+                chunksize = 20,
+                ))
+
         all_releases = []
-        for index, latest_release in enumerate(latest_releases):
-            print(index, len(latest_releases), latest_release.id)
-            raw_xml_bytes = request_data(
-                f'{self._url:s}?package_name={latest_release.id:s}&qgis={qgis_version[0]:s}.{qgis_version[1]:s}',
-                self._authcfg,
-                )
+        for index, raw_xml_bytes in enumerate(raw_xml_bytes_list):
+            print(index)
+            raw_xml_bytes.decode('utf-8')
             raw_xml = raw_xml.replace('& ', '&amp; ') # From plugin installer: Fix lonely ampersands in metadata
             tree = xmltodict.parse(raw_xml)
             all_releases.extend((
@@ -156,7 +165,12 @@ class dtype_repository_class(dtype_repository_base_class):
         self._plugin_releases.clear()
         self._plugin_releases.extend(all_releases)
 
-        self.to_config()
+        # self.to_config()
+
+    @staticmethod
+    def _request_xml_bytes(param):
+
+        return request_data(param[0], param[1])
 
     # def remove(self):
     #     "Run cleanup actions e.g. in config before repo is removed"
