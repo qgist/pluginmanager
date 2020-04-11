@@ -148,25 +148,6 @@ class dtype_index_class:
 
         self._match_releases_from_repos_to_plugins()
 
-        # Get inventory of installed plugins and match with repos
-        # Every local plugin folder (i.e. Python module folder) contains a reference to its repo id!
-        # If NOT:
-        #   - legacy plugins are "detected" by default repo (plugins.qgis.org) - what about symlinks?
-        #   - Cpp plugins are dected by THE ONE AND ONLY cpp-repo (no ID required)
-        #   - Conda plugins require ID or they are NOT detected at all
-        #   - Pip plugins require ID or they are NOT detected at all - what about `-e`?
-        # Avoid double detections:
-        #   - Detection based on type is handled by repo backend class (not by repo instances)
-        #   - (Detected plugins are then given to backend objects until no plugin is left)
-        # A plugin folder always contains a `metadata.txt` and `__init__.py`!
-
-        # Sync repos from remote
-        #   - Fetch remote repo meta data ("fetch" is job of repo backend)
-        #   - Parse meta data into meta objects ("parse" is job of repo backends and release backends)
-        #   - Produce list of releases per repo, add releases to repos
-
-        # Go through repos and their releases - produce list of (avaialble) plugins
-
     def _rebuild_plugins(self):
 
         for repo_type in backends.keys():
