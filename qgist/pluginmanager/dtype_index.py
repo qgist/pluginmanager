@@ -144,7 +144,7 @@ class dtype_index_class:
         self._ensure_qgislegacypython_default_repo()
         self._ensure_qgislegacycpp_repo()
 
-        # self._refresh_repos() # TODO implement & activate
+        # self._refresh_repos() # TODO activate depending on settings
 
         self._match_releases_from_repos_to_plugins()
 
