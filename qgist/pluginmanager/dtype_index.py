@@ -229,18 +229,17 @@ class dtype_index_class:
 
     def _match_releases_from_repos_to_plugins(self):
 
-        # TODO
-        # Go through all repos, find all available releases
-        # Add them to matching plugins
+        # TODO Remove plugins with zero releases?
 
-        # Remove uninstalled releases from plugins first? (`clear_uninstalled_releases`)
-        # Remove plugins with zero releases
+        for plugin in self._plugins.values():
+            plugin.clear_releases()
 
         for repo in self._repos:
-            for release in repo.plugin_releases:
-                pass
-                # if release in plugins: add to plugin
-                # if not: new (uninstalled) plugin
+            for release in sorted(repo.plugin_releases, key = lambda x: x.version):
+                if release.id in self._plugins.keys():
+                    self._plugins[release.id].add_release(release)
+                else:
+                    self._plugins[release.id] = dtype_plugin_class.from_uninstalled_release(release)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: REPOSITORIES
@@ -254,7 +253,7 @@ class dtype_index_class:
         if repo.id in (present_repo.id for present_repo in self._repos):
             raise QgistValueError(tr('"repo" can not be added - its id is already in list'))
 
-        self._repos.append(repo) # Add to list at the end, i.e. with lowest priority
+        self._repos.insert(0, repo) # Add to list at the end, i.e. with lowest priority
 
     @classmethod
     def create_repo(cls, *args, repo_type = None, method = None, **kwargs):
@@ -274,10 +273,10 @@ class dtype_index_class:
         return method(*args, **kwargs) # TODO: Catch user abort
 
     def change_repo_priority(self, repo_id, direction):
-        "Repository can be moved up (lower priority) or down (higher priority) by one"
+        "Repository can be moved up (higher priority) or down (lower priority) by one"
 
         if not isinstance(direction, int):
-            raise QgistTypeError(tr('"direction" must be a str.'))
+            raise QgistTypeError(tr('"direction" must be a int.'))
         if direction not in (1, -1):
             raise QgistValueError(tr('"direction" must either be 1 or -1.'))
 
