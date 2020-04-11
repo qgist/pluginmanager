@@ -131,17 +131,30 @@ class dtype_repository_class(dtype_repository_base_class):
             f'{self._url:s}?qgis={qgis_version[0]:s}.{qgis_version[1]:s}',
             self._authcfg,
             )
-
         raw_xml = raw_xml_bytes.decode('utf-8')
         raw_xml = raw_xml.replace('& ', '&amp; ') # From plugin installer: Fix lonely ampersands in metadata
         tree = xmltodict.parse(raw_xml)
-        new_releases = [
+        latest_releases = [
             dtype_pluginrelease_class.from_xmldict(dict(release_dict))
             for release_dict in tree['plugins']['pyqgis_plugin']
             ]
 
+        all_releases = []
+        for index, latest_release in enumerate(latest_releases):
+            print(index, len(latest_releases), latest_release.id)
+            raw_xml_bytes = request_data(
+                f'{self._url:s}?package_name={latest_release.id:s}&qgis={qgis_version[0]:s}.{qgis_version[1]:s}',
+                self._authcfg,
+                )
+            raw_xml = raw_xml.replace('& ', '&amp; ') # From plugin installer: Fix lonely ampersands in metadata
+            tree = xmltodict.parse(raw_xml)
+            all_releases.extend((
+                dtype_pluginrelease_class.from_xmldict(dict(release_dict))
+                for release_dict in tree['plugins']['pyqgis_plugin']
+                ))
+
         self._plugin_releases.clear()
-        self._plugin_releases.extend(new_releases)
+        self._plugin_releases.extend(all_releases)
 
         self.to_config()
 
