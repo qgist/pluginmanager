@@ -140,37 +140,41 @@ class dtype_repository_class(dtype_repository_base_class):
             for release_dict in tree['plugins']['pyqgis_plugin']
             ]
 
-        raw_xml_bytes_list = []
-        with multiprocessing.Pool(processes = 10) as p:
-            raw_xml_bytes_list.extend(p.imap_unordered(
-                func = self._request_xml_bytes,
+        dict_release_list_list = []
+        with multiprocessing.Pool(processes = multiprocessing.cpu_count()) as p:
+            dict_release_list_list.extend(p.imap_unordered(
+                func = self._request_dict_releases_per_plugin,
                 iterable = (
-                    (f'{self._url:s}?package_name={latest_release.id:s}&qgis={qgis_version[0]:s}.{qgis_version[1]:s}', self._authcfg, latest_release.id)
+                    (f'{self._url:s}?package_name={latest_release.id:s}&qgis={qgis_version[0]:s}.{qgis_version[1]:s}', self._authcfg)
                     for latest_release in latest_releases
                     ),
-                chunksize = 20,
+                chunksize = 50,
                 ))
 
         all_releases = []
-        for index, raw_xml_bytes in enumerate(raw_xml_bytes_list):
-            print(index)
-            raw_xml_bytes.decode('utf-8')
-            raw_xml = raw_xml.replace('& ', '&amp; ') # From plugin installer: Fix lonely ampersands in metadata
-            tree = xmltodict.parse(raw_xml)
+        for dict_release_list in dict_release_list_list:
             all_releases.extend((
-                dtype_pluginrelease_class.from_xmldict(dict(release_dict))
-                for release_dict in tree['plugins']['pyqgis_plugin']
+                dtype_pluginrelease_class.from_xmldict(dict_release)
+                for dict_release in dict_release_list
                 ))
 
         self._plugin_releases.clear()
         self._plugin_releases.extend(all_releases)
-
-        # self.to_config()
+        self.to_config()
 
     @staticmethod
-    def _request_xml_bytes(param):
+    def _request_dict_releases_per_plugin(param):
 
-        return request_data(param[0], param[1])
+        url, authcfg = param
+        raw_xml_bytes = request_data(url, authcfg)
+
+        raw_xml = raw_xml_bytes.decode('utf-8')
+        raw_xml = raw_xml.replace('& ', '&amp; ') # From plugin installer: Fix lonely ampersands in metadata
+        tree = xmltodict.parse(raw_xml)
+
+        if isinstance(tree['plugins']['pyqgis_plugin'], list): # more than one
+            return [dict(release_dict) for release_dict in tree['plugins']['pyqgis_plugin']]
+        return [dict(tree['plugins']['pyqgis_plugin'])] # just one
 
     # def remove(self):
     #     "Run cleanup actions e.g. in config before repo is removed"
