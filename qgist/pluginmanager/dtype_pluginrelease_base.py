@@ -98,6 +98,7 @@ class dtype_pluginrelease_base_class:
         return (
             '<plugin_release '
             f'id="{self._id:s}" '
+            f'version={str(self._version):s} '
             f'experimental={"yes" if self._experimental else "no":s} '
             f'processingprovider={"yes" if self.has_processingprovider else "no":s} '
             f'serverfuncs={"yes" if self.has_serverfuncs else "no":s} '
