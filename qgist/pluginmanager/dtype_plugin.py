@@ -103,6 +103,8 @@ class dtype_plugin_class:
         self._deprecated = deprecated
         self._module = module
 
+        self.update_deprecation()
+
         # TODO Implement in derived class!
         self._available = None # bool. Always static? Source available (online), matching QGIS version requirement
         self._watchdog = None # bool
@@ -250,6 +252,7 @@ class dtype_plugin_class:
             raise QgistValueError(tr('"release" is already part of this plugin'))
 
         self._available_releases.append(release)
+        self.update_deprecation()
 
     def clear_uninstalled_releases(self):
         "Remove all uninstalled releases"
@@ -263,6 +266,19 @@ class dtype_plugin_class:
             raise QgistValueError(tr('internal error: plugin is installed but has no release'))
 
         self._available_releases.append(self._installed_release)
+        self.update_deprecation()
+
+    def update_deprecation(self):
+        "Checks all releases for deprecated flag and taint entire plugin"
+
+        self._deprecated = any((release.deprecated for release in self._available_releases))
+
+        if self._deprecated:
+            return
+        if not self._installed:
+            return
+
+        self._deprecated = self._installed_release.deprecated
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # INSTALL / UNINSTALL
