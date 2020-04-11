@@ -60,6 +60,7 @@ from ...dtype_settings import (
     dtype_settings_group_class,
     dtype_settings_class,
     )
+from ...dtype_version import dtype_version_class
 
 from ....error import (
     QgistTypeError,
@@ -68,6 +69,7 @@ from ....error import (
 from ....qgis_api import (
     get_home_python_path,
     get_python_path,
+    get_qgis_version,
     request_data,
     )
 from ....util import tr
@@ -123,7 +125,12 @@ class dtype_repository_class(dtype_repository_base_class):
     def refresh(self):
         "Refresh index, i.e. reload metadata from remote source"
 
-        raw_xml_bytes = request_data(self._url, self._authcfg)
+        qgis_version = dtype_version_class.from_qgisversion(get_qgis_version(), fix_plugin_compatibility = True)
+
+        raw_xml_bytes = request_data(
+            f'{self._url:s}?qgis={qgis_version[0]:s}.{qgis_version[1]:s}',
+            self._authcfg,
+            )
 
         raw_xml = raw_xml_bytes.decode('utf-8')
         raw_xml = raw_xml.replace('& ', '&amp; ') # From plugin installer: Fix lonely ampersands in metadata
