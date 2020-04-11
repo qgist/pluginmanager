@@ -118,9 +118,9 @@ class dtype_pluginrelease_base_class:
 
         return all((
             self.version == other.version,
-            self.experimental == other.experimental,
-            self.has_processingprovider == other.has_processingprovider,
-            self.has_serverfuncs == other.has_serverfuncs,
+            # self.experimental == other.experimental,
+            # self.has_processingprovider == other.has_processingprovider,
+            # self.has_serverfuncs == other.has_serverfuncs,
             self.repo_type == other.repo_type,
             )) # TODO check deprecated?
 
