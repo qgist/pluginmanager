@@ -138,16 +138,13 @@ class dtype_index_class:
         self._plugins.clear()
         # TODO what about self._plugin_modules?
 
-        self._rebuild_plugins()
-        self._rebuild_repos()
-
+        self._add_installed_plugins()
+        self._add_configured_repos()
         self._ensure_qgislegacypython_default_repo()
         self._ensure_qgislegacycpp_repo()
 
-        self._match_releases_from_repos_to_plugins()
-
-    def _rebuild_plugins(self):
-        "Find installed plugins"
+    def _add_installed_plugins(self):
+        "Find installed plugins and add them"
 
         for repo_type in backends.keys():
             for protected in (True, False):
@@ -166,8 +163,8 @@ class dtype_index_class:
                     raise QgistPluginIdCollisionError(tr('Two or more plugins with identical ID'))
                 self._plugins.update(found_plugins)
 
-    def _rebuild_repos(self):
-        "Find configured repos"
+    def _add_configured_repos(self):
+        "Find configured repos and add them"
 
         for repo_type in backends.keys():
             for config_group in self.get_repo_class(repo_type).get_repo_config_groups(self._config):
@@ -209,9 +206,9 @@ class dtype_index_class:
 
         # TODO set last refresh to config
 
-        self._match_releases_from_repos_to_plugins()
+        self._refresh_plugins()
 
-    def _match_releases_from_repos_to_plugins(self):
+    def _refresh_plugins(self):
 
         for plugin in self._plugins.values():
             plugin.clear_releases()
@@ -244,6 +241,7 @@ class dtype_index_class:
             raise QgistValueError(tr('"repo" can not be added - its id is already in list'))
 
         self._repos.insert(0, repo) # Add to list at the end, i.e. with lowest priority
+        self._refresh_plugins()
 
     @classmethod
     def create_repo(cls, *args, repo_type = None, method = None, **kwargs):
@@ -281,6 +279,7 @@ class dtype_index_class:
             return
 
         self._repos[index + direction], self._repos[index] = self._repos[index], self._repos[index + direction]
+        self._refresh_plugins()
 
     def get_repo(self, repo_id):
         "Get repository from index by id (if it is present)"
@@ -314,25 +313,11 @@ class dtype_index_class:
         repo.remove()
         self._repos.remove(repo)
 
-    # def refresh_repos(self):
-    #     "Reload index of every repo"
-    #
-    #     for repo in self._repos:
-    #         repo.refresh()
+        self._refresh_plugins()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: PLUGINS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    def add_plugin(self, plugin):
-        "Add a plugin to index"
-
-        if not isinstance(plugin, dtype_plugin_class):
-            raise QgistTypeError(tr('"plugin" is not a plugin'))
-        if plugin.id in self._plugins.keys():
-            raise QgistValueError(tr('"plugin" can not be added - it is already in dict'))
-
-        self._plugins[plugin.id] = plugin
 
     def get_plugin(self, plugin_id):
         "Get a plugin from index by id"
@@ -345,10 +330,6 @@ class dtype_index_class:
             raise QgistValueError(tr('"plugin_id" is unknown. There is no such plugin.'))
 
         return self._plugins[plugin_id]
-
-    # def remove_plugin(self, plugin_id):
-    #
-    #     pass
 
     def get_all_installed_plugins(self):
         "Currently installed plugins"
