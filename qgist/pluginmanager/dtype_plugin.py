@@ -114,6 +114,10 @@ class dtype_plugin_class:
             f'id="{self._id:s}" '
             f'installed={"yes" if self._installed else "no":s} '
             f'active={"yes" if self._active else "no":s} '
+            f'available_releases={len(self):d} '
+            f'upgradable={"yes" if self.upgradable else "no":s} '
+            f'downgradable={"yes" if self.downgradable else "no":s} '
+            f'orphan={"yes" if self.orphan else "no":s} '
             f'deprecated={"yes" if self._deprecated else "no":s} '
             f'protected={"yes" if self._protected else "no":s}'
             '>'
@@ -237,7 +241,7 @@ class dtype_plugin_class:
         if not isinstance(self._installed_release, dtype_pluginrelease_base_class):
             raise QgistValueError(tr('internal error: plugin is installed but has no release'))
         return all((
-            available_release.version != self._installed_release.version
+            available_release != self._installed_release
             for available_release in self._available_releases
             ))
 
