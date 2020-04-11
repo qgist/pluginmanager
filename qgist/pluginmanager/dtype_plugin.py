@@ -193,10 +193,6 @@ class dtype_plugin_class:
         return self._module
 
     @property
-    def available(self):
-        return self._available
-
-    @property
     def installed_release(self):
         if not self._installed:
             raise QgistValueError(tr('plugin is not installed'))
@@ -249,22 +245,22 @@ class dtype_plugin_class:
 # MANAGE RELEASES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def add_release(self, release):
+    def add_release(self, new_release):
         "Add a potentially new and uninstalled but available release"
 
-        if not isinstance(release, dtype_pluginrelease_base_class):
-            raise QgistTypeError(tr('"release" must be a release'))
-        if release in self:
-            raise QgistValueError(tr('"release" is already part of this plugin'))
-        if self._id != release.id:
-            raise QgistValueError(tr('Trying to add a release with a different id'))
-        if release.installed and self._installed:
+        if not isinstance(new_release, dtype_pluginrelease_base_class):
+            raise QgistTypeError(tr('"new_release" must be a release'))
+        if new_release in self:
+            raise QgistValueError(tr('"new_release" is already part of this plugin'))
+        if self._id != new_release.id:
+            raise QgistValueError(tr('Trying to add a new_release with a different id'))
+        if new_release.installed and self._installed:
             raise QgistValueError(tr('Trying to add an installed release to an installed plugin'))
 
-        self._available_releases.append(release)
+        self._available_releases.append(new_release)
         self._update_deprecation()
 
-    def clear_uninstalled_releases(self):
+    def clear_releases(self):
         "Remove all uninstalled releases"
 
         self._available_releases.clear()
@@ -400,4 +396,23 @@ class dtype_plugin_class:
             active = installed_release.id in plugin_modules.keys(),
             deprecated = installed_release.meta['deprecated'].value,
             module = plugin_modules.get(installed_release.id, None),
+            )
+
+    @classmethod
+    def from_uninstalled_release(cls, release):
+
+        if not isinstance(release, dtype_pluginrelease_base_class):
+            raise QgistTypeError(tr('"release" must be a plugin release'))
+        if release.installed:
+            raise QgistValueError(tr('"release" must not be installed'))
+
+        return cls(
+            plugin_id = release.id,
+            installed = False,
+            installed_release = None,
+            available_releases = (release,),
+            protected = False,
+            active = False,
+            deprecated = release.deprecated,
+            module = None,
             )
