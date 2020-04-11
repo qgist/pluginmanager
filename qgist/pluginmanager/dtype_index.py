@@ -144,11 +144,10 @@ class dtype_index_class:
         self._ensure_qgislegacypython_default_repo()
         self._ensure_qgislegacycpp_repo()
 
-        # self._refresh_repos() # TODO activate depending on settings
-
         self._match_releases_from_repos_to_plugins()
 
     def _rebuild_plugins(self):
+        "Find installed plugins"
 
         for repo_type in backends.keys():
             for protected in (True, False):
@@ -168,6 +167,7 @@ class dtype_index_class:
                 self._plugins.update(found_plugins)
 
     def _rebuild_repos(self):
+        "Find configured repos"
 
         for repo_type in backends.keys():
             for config_group in self.get_repo_class(repo_type).get_repo_config_groups(self._config):
@@ -201,19 +201,28 @@ class dtype_index_class:
         if len([repo for repo in self._repos if repo.repo_type == REPO_BACKEND_QGISLEGACYCPP]) != 1:
             raise QgistRepoError(tr('There must be exactly one C++ repository.'))
 
-    def _refresh_repos(self):
-
-        # TODO refresh option from config
+    def refresh(self):
+        "Refresh (from remote) repos and plugins"
 
         for repo in self._repos:
             repo.refresh()
 
-    def _match_releases_from_repos_to_plugins(self):
+        # TODO set last refresh to config
 
-        # TODO Remove plugins with zero releases?
+        self._match_releases_from_repos_to_plugins()
+
+    def _match_releases_from_repos_to_plugins(self):
 
         for plugin in self._plugins.values():
             plugin.clear_releases()
+
+        remaining_plugins = {
+            plugin_id: plugin
+            for plugin_id, plugin in self._plugins.items()
+            if plugin.installed or len(plugin) != 0
+            }
+        self._plugins.clear()
+        self._plugins.update(remaining_plugins)
 
         for repo in self._repos:
             for release in sorted(repo.plugin_releases, key = lambda x: x.version):
