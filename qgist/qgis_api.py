@@ -75,6 +75,17 @@ def get_qgis_version():
     return _Qgis.version()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ROUTINES: RUNTIME
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# TODO <HACK>
+# remove this eventually - Plugin Manager should manage this on its own
+def get_plugin_modules():
+
+    return _plugins
+# TODO </HACK>
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ROUTINES: DIRECTORIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -96,13 +107,6 @@ def get_home_python_path():
         return os.path.abspath(os.path.join(os.path.expanduser('~'), '.qgis3', 'python'))
 
     return os.path.abspath(os.path.join(root_fld, 'python'))
-
-# TODO <HACK>
-# remove this eventually - Plugin Manager should manage this on its own
-def get_plugin_modules():
-
-    return _plugins
-# TODO </HACK>
 
 def get_qgis_settings_dir_path():
 
