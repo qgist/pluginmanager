@@ -61,7 +61,7 @@ class dtype_pluginrelease_base_class:
 
     def __init__(self,
         plugin_id, version,
-        has_processingprovider, has_serverfuncs, experimental, deprecated,
+        has_processingprovider, has_serverfuncs, experimental, deprecated, installed,
         meta, path = None,
         ):
 
@@ -79,6 +79,8 @@ class dtype_pluginrelease_base_class:
             raise QgistTypeError(tr('"experimental" must be a bool.'))
         if not isinstance(deprecated, bool):
             raise QgistTypeError(tr('"deprecated" must be a bool.'))
+        if not isinstance(installed, bool):
+            raise QgistTypeError(tr('"installed" must be a bool.'))
         if not isinstance(meta, dtype_metadata_class):
             raise QgistTypeError(tr('"meta" must be meta data.'))
         if not isinstance(path, str) and path is not None:
@@ -93,6 +95,7 @@ class dtype_pluginrelease_base_class:
         self._has_serverfuncs = has_serverfuncs
         self._experimental = experimental
         self._deprecated = deprecated
+        self._installed = installed
         self._meta = meta
         self._path = path # None if not locally installed
 
@@ -102,11 +105,12 @@ class dtype_pluginrelease_base_class:
             '<plugin_release '
             f'id="{self._id:s}" '
             f'version={str(self._version):s} '
+            f'repo_type={self._repo_type:s} '
+            f'installed={"yes" if self._installed else "no":s} '
             f'experimental={"yes" if self._experimental else "no":s} '
             f'deprecated={"yes" if self._deprecated else "no":s} '
             f'processingprovider={"yes" if self.has_processingprovider else "no":s} '
-            f'serverfuncs={"yes" if self.has_serverfuncs else "no":s} '
-            f'repo_type={self.repo_type:s}'
+            f'serverfuncs={"yes" if self.has_serverfuncs else "no":s}'
             '>'
             )
 
@@ -143,6 +147,10 @@ class dtype_pluginrelease_base_class:
     @property
     def deprecated(self):
         return self._deprecated
+
+    @property
+    def installed(self):
+        return self._installed
 
     @property
     def version(self):
@@ -274,6 +282,7 @@ class dtype_pluginrelease_base_class:
             has_serverfuncs = meta['server'].value,
             experimental = meta['experimental'].value,
             deprecated = meta['deprecated'].value,
+            installed = False,
             meta = meta,
             )
 
@@ -303,6 +312,7 @@ class dtype_pluginrelease_base_class:
             has_serverfuncs = meta['server'].value,
             experimental = meta['experimental'].value,
             deprecated = meta['deprecated'].value,
+            installed = True,
             path = path,
             meta = meta,
             )
@@ -324,5 +334,6 @@ class dtype_pluginrelease_base_class:
             has_serverfuncs = meta['server'].value,
             experimental = meta['experimental'].value,
             deprecated = meta['deprecated'].value,
+            installed = False,
             meta = meta,
             )
