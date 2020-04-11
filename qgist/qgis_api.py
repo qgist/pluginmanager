@@ -58,12 +58,21 @@ from PyQt5.QtNetwork import (
 from qgis.core import (
     QgsApplication as _QgsApplication,
     QgsBlockingNetworkRequest as _QgsBlockingNetworkRequest,
+    Qgis as _Qgis,
     )
 
 # TODO <HACK>
 # remove this eventually - Plugin Manager should manage this on its own
 from qgis.utils import plugins as _plugins
 # TODO </HACK>
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ROUTINES: MISC
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+def get_qgis_version():
+
+    return _Qgis.version()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ROUTINES: DIRECTORIES
