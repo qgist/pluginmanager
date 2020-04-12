@@ -31,6 +31,7 @@ specific language governing rights and limitations under the License.
 import glob
 import hashlib
 import os
+import zipfile
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
@@ -157,6 +158,9 @@ class dtype_cache_class:
                 f.write(raw_data)
         except Exception as e:
             raise QgistValueError(tr('failed to write cache file'), e)
+
+        if not zipfile.is_zipfile(filepath):
+            raise QgistValueError(tr('based on its content, file appears to be no ZIP-file'))
 
         self._files[filename] = filepath
 
