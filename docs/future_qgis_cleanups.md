@@ -15,3 +15,8 @@ Still contains highly critical Python 2 compatibility code (which is not marked 
 # `/src/app/qgspluginregistry.cpp`
 
 Is `QgsPluginRegistry::restoreSessionPlugins` being used at all? Search shots now result ...
+
+# Server side
+
+- expose plugin dependencies in `plugins.xml`
+- expose plugin ZIP-file hash sum in `plugins.xml`
