@@ -46,3 +46,20 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
     #         - inter-plugin
     #         - plugin to python packages (through source / other package manager)
     # """
+
+    def _is_in_cache(self):
+        return False # TODO
+
+    def _fetch_from_remote_to_cache_file(self):
+        pass # TODO
+
+    def _read_metadata_from_cache_file(self):
+        pass # TODO
+
+    def _unpack_from_cache_file_to_tmp_fld(self):
+        pass # TODO
+
+    # is_python_plugin_dir is implemented in dtype_pluginrelease_base_class
+
+    def _move_from_tmp_fld_to_install_fld(self):
+        pass # TODO
