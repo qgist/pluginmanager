@@ -59,6 +59,7 @@ from qgis.core import (
     QgsApplication as _QgsApplication,
     QgsBlockingNetworkRequest as _QgsBlockingNetworkRequest,
     Qgis as _Qgis,
+    QgsSettings as _QgsSettings,
     )
 
 # TODO <HACK>
@@ -73,6 +74,11 @@ from qgis.utils import plugins as _plugins
 def get_qgis_version():
 
     return _Qgis.version()
+
+def get_qgis_settings(default):
+
+    # TODO return default if qgis import fails
+    return _QgsSettings()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ROUTINES: RUNTIME

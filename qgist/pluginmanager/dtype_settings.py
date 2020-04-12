@@ -48,6 +48,7 @@ from ..error import (
     QgistTypeError,
     QgistValueError,
     )
+from ..qgis_api import get_qgis_settings
 from ..util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -64,24 +65,13 @@ class dtype_settings_class:
     Mutable.
     """
 
-    def __init__(self, config, try_qgis_settings = True):
+    def __init__(self, config):
 
         if not isinstance(config, config_class):
             raise QgistTypeError(tr('config must be an instance of config_class'))
-        if not isinstance(try_qgis_settings, bool):
-            raise QgistTypeError(tr('try_qgis_settings must be a bool'))
 
         self._config = config
-        self._settings = None
-
-        if not try_qgis_settings:
-            return
-
-        try:
-            from qgis.core import QgsSettings
-        except ModuleNotFoundError:
-            QgsSettings = None
-        self._settings = QgsSettings() if QgsSettings is not None else None
+        self._settings = get_qgis_settings(default = None)
 
     def __repr__(self):
 
