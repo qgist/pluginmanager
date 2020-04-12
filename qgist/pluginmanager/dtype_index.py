@@ -209,6 +209,7 @@ class dtype_index_class:
         self._refresh_plugins()
 
     def _refresh_plugins(self):
+        "Should run once after every change of repositories (e.g. add, remove, change of priority)"
 
         for plugin in self._plugins.values():
             plugin.clear_releases()
