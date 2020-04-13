@@ -86,7 +86,7 @@ class dtype_index_class:
 
     def __repr__(self):
 
-        return f'<index ({id(self):x}) repos={len(self.repos):d} plugins={len(self.plugins):d}>'
+        return f'<index id={id(self):x} repos={len(self.repos):d} plugins={len(self.plugins):d}>'
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES
@@ -225,7 +225,7 @@ class _repos_wrapper_class:
 
     def __repr__(self):
 
-        return f'<repos (index {id(self._index):x}) len={len(self):d}>'
+        return f'<repos index={id(self._index):x} len={len(self):d}>'
 
     def __len__(self):
 
@@ -379,7 +379,7 @@ class _plugins_wrapper_class:
 
     def __repr__(self):
 
-        return f'<plugins (index {id(self._index):x}) len={len(self):d}>'
+        return f'<plugins index={id(self._index):x} len={len(self):d}>'
 
     def __len__(self):
 
