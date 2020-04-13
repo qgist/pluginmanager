@@ -55,6 +55,10 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
     _repo_type = REPO_BACKEND_QGISLEGACYPYTHON
     _cache = dtype_cache_class(_repo_type)
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# API
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     """
 
     def install(self):
@@ -65,6 +69,10 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
         self._unpack_from_cache_file_to_install_fld()
 
     """
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# HELPER
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     def _is_in_cache(self):
 
