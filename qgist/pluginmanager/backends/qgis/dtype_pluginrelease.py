@@ -28,6 +28,8 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .dtype_cache import dtype_cache_class
+
 from ...const import REPO_BACKEND_QGISLEGACYPYTHON
 from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
 
@@ -38,6 +40,7 @@ from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
 class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
 
     _repo_type = REPO_BACKEND_QGISLEGACYPYTHON
+    _cache = dtype_cache_class(_repo_type)
 
     # """
     # - Properties
