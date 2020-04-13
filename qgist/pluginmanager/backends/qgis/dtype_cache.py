@@ -164,6 +164,43 @@ class dtype_cache_class:
 
         self._files[filename] = filepath
 
+    def get_file_entries(self, filename):
+
+        self._check_filename(filename)
+        if filename not in self:
+            raise QgistValueError(tr('"filename" is not present in cache'))
+
+        try:
+            with zipfile.ZipFile(self._files[filename], 'r') as f:
+                namelist = f.namelist()
+        except Exception as e:
+            raise QgistValueError(tr('failed to open ZIP-file'), e)
+
+        return (name for name in namelist)
+
+    def get_file_entry(self, filename, entryname, password = None):
+
+        self._check_filename(filename)
+        if filename not in self:
+            raise QgistValueError(tr('"filename" is not present in cache'))
+        if not isinstance(entryname, str):
+            raise QgistTypeError(tr('"entry" must be str'))
+        if len(entryname) == 0:
+            raise QgistValueError(tr('"entry" must not be empty'))
+        if entryname not in self.get_file_entries(filename):
+            raise QgistValueError(tr('"entryname" is not present in ZIP-file'))
+        if not isinstance(password, str) and password is not None:
+            raise QgistTypeError(tr('"password" must either be a str or None'))
+
+        try:
+            with zipfile.ZipFile(self._files[filename], 'r') as f:
+                with f.open(entryname, mode = 'r', pwd = password) as fe:
+                    data = fe.read()
+        except Exception as e:
+            raise QgistValueError(tr('failed to read ZIP-file'), e)
+
+        return data # bytes
+
     def clear(self):
 
         for path in self._files.values():
