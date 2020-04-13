@@ -124,8 +124,48 @@ class dtype_metadata_field_class:
         return value_str
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# API
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def copy(self):
+
+        return type(self)(
+            name = self._name,
+            dtype = self._dtype,
+            value = self._value,
+            default_value = self._default_value,
+            importer = self._importer,
+            exporter = self._exporter,
+            is_required = self._is_required,
+            i18n = self._i18n,
+            known = self._known,
+            comment = self._comment,
+            )
+
+    def update(self, other):
+
+        if not isinstance(other, type(self)):
+            raise QgistTypeError(tr('"other" is not a meta data field'))
+        if self.name != other.name:
+            raise QgistTypeError(tr('name mismatch'))
+        if self.dtype != other.dtype:
+            raise QgistTypeError(tr('dtype mismatch'))
+        if not other.value_set:
+            return
+
+        self.value = other.value
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def dtype(self):
+        return self._dtype
 
     @property
     def value_set(self):
