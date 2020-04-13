@@ -176,7 +176,7 @@ class dtype_index_class:
 
         for repo_type in backends.keys():
             for config_group in self.repos.get_class(repo_type).get_repo_config_groups(self._config):
-                self.repos.add(self.create_repo(
+                self.repos.add(self.repos.create(
                     config_group,
                     repo_type = repo_type, method = 'config',
                     ))
@@ -187,7 +187,7 @@ class dtype_index_class:
             repo.url == REPO_DEFAULT_URL
             for repo in self._repos if repo.repo_type == REPO_BACKEND_QGISLEGACYPYTHON
             )):
-            self.repos.add(self.create_repo(
+            self.repos.add(self.repos.create(
                 self._config,
                 repo_type = REPO_BACKEND_QGISLEGACYPYTHON, method = 'default',
                 ))
@@ -198,7 +198,7 @@ class dtype_index_class:
             repo.repo_type == REPO_BACKEND_QGISLEGACYCPP
             for repo in self._repos
             )):
-            self.repos.add(self.create_repo(
+            self.repos.add(self.repos.create(
                 self._config,
                 repo_type = REPO_BACKEND_QGISLEGACYCPP, method = 'default',
                 ))
@@ -209,22 +209,6 @@ class dtype_index_class:
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: REPOSITORIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    def create_repo(self, *args, repo_type = None, method = None, **kwargs):
-        "Initialize repository based on type, method and arbitrary parameters"
-
-        repository_class = self.repos.get_class(repo_type)
-
-        if not isinstance(method, str):
-            raise QgistTypeError(tr('"method" must be a str.'))
-
-        if method not in (item[5:] for item in dir(repository_class) if item.startswith('from_')):
-            raise QgistValueError(tr('"method" is unknown.'))
-        method = getattr(repository_class, f'from_{method:s}')
-        if not hasattr(method, '__call__'):
-            raise QgistTypeError(tr('"method" can not be called.'))
-
-        return method(*args, **kwargs) # TODO: Catch user abort
 
     def change_repo_priority(self, repo_id, direction):
         "Repository can be moved up (higher priority) or down (lower priority) by one"
@@ -317,6 +301,23 @@ class _repos_wrapper_class:
 
         self._repos.insert(0, repo) # Add to list at the end, i.e. with lowest priority
         self._index.reconnect()
+
+    @classmethod
+    def create(cls, *args, repo_type = None, method = None, **kwargs):
+        "Initialize repository based on type, method and arbitrary parameters"
+
+        repository_class = cls.get_class(repo_type)
+
+        if not isinstance(method, str):
+            raise QgistTypeError(tr('"method" must be a str.'))
+
+        if method not in (item[5:] for item in dir(repository_class) if item.startswith('from_')):
+            raise QgistValueError(tr('"method" is unknown.'))
+        method = getattr(repository_class, f'from_{method:s}')
+        if not hasattr(method, '__call__'):
+            raise QgistTypeError(tr('"method" can not be called.'))
+
+        return method(*args, **kwargs) # TODO: Catch user abort
 
     @staticmethod
     def get_class(repo_type):
