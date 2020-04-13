@@ -316,27 +316,10 @@ class dtype_index_class:
 # MANAGEMENT: PLUGINS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def get_plugin(self, plugin_id):
-        "Get a plugin from index by id"
-
-        if not isinstance(plugin_id, str):
-            raise QgistTypeError(tr('"plugin_id" must be a str.'))
-        if len(plugin_id) == 0:
-            raise QgistValueError(tr('"plugin_id" must not be empty.'))
-        if plugin_id not in self._plugins.keys():
-            raise QgistValueError(tr('"plugin_id" is unknown. There is no such plugin.'))
-
-        return self._plugins[plugin_id]
-
     def get_all_installed_plugins(self):
         "Currently installed plugins"
 
         return (plugin for plugin in self._plugins.values() if plugin.installed)
-
-    def get_all_available_plugins(self):
-        "Available plugins, compatible to QGIS version"
-
-        return (plugin for plugin in self._plugins.values() if plugin.available)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASSES: PROPERTY WRAPPERS
