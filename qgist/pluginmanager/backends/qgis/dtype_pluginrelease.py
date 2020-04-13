@@ -42,7 +42,10 @@ from ...const import REPO_BACKEND_QGISLEGACYPYTHON
 from ...dtype_metadata import dtype_metadata_class
 from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
 
-from ....error import QgistValueError
+from ....error import (
+    QgistTypeError,
+    QgistValueError,
+    )
 from ....qgis_api import get_home_python_path
 from ....util import tr
 
@@ -121,12 +124,7 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
         if not self._is_in_cache():
             raise QgistValueError(tr('file is not in cache'))
 
-        new_meta_raw = self._cache.get_file_entry(
-            filename = self._meta['file_name'].value,
-            entryname = f'{self._id:s}/metadata.txt',
-            password = None, # TODO
-            ).decode('utf-8')
-        new_meta = dtype_metadata_class.from_metadatatxt(self._id, new_meta_raw)
+        new_meta = self._get_metadata_from_cache()
         self._meta.update(new_meta)
 
     def _unpack_from_cache_file_to_install_fld(self):
@@ -170,3 +168,30 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
             meta = self._meta,
             path = os.path.join(install_fld, self._id),
             )
+
+    def _get_dependencies(self, fetch = False):
+
+        if not isinstance(fetch, bool):
+            raise QgistTypeError(tr('"fetch" must be a bool'))
+        if not self._is_in_cache() and not fetch:
+            raise QgistValueError(tr('file is not in cache'))
+
+        if not self._is_in_cache() and fetch:
+            self._fetch_from_remote_to_cache_file()
+
+        meta = self._get_metadata_from_cache()
+        if not meta['plugin_dependencies'].value_set:
+            return meta['plugin_dependencies'].default_value
+        return (dep for dep in meta['plugin_dependencies'].value)
+
+    def _get_metadata_from_cache(self):
+
+        if not self._is_in_cache():
+            raise QgistValueError(tr('file is not in cache'))
+
+        new_meta_raw = self._cache.get_file_entry(
+            filename = self._meta['file_name'].value,
+            entryname = f'{self._id:s}/metadata.txt',
+            password = None, # TODO
+            ).decode('utf-8')
+        return dtype_metadata_class.from_metadatatxt(self._id, new_meta_raw)
