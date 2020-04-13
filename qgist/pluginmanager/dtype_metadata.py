@@ -184,6 +184,13 @@ class dtype_metadata_class:
             raise QgistValueError('One single plugin release has two versions')
         xml_dict.pop('@version')
 
+        for a, b in (
+            ('qgis_minimum_version', 'qgisMinimumVersion'),
+            ('qgis_maximum_version', 'qgisMaximumVersion'),
+            ('author_name', 'author'),
+            ):
+            xml_dict[b] = xml_dict.pop(a)
+
         if 'id' not in xml_dict.keys():
             if 'file_name' not in xml_dict.keys():
                 raise QgistMetaKeyError(tr('Neither "id" nor "file_name" in XML meta data - no way to determine plugin id'))
