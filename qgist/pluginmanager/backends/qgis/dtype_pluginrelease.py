@@ -151,3 +151,5 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
                     )
             except Exception as e:
                 raise QgistValueError(tr('Moving unpacked plugin to default QGIS plugin installation path failed'), e)
+            if not self.is_python_plugin_dir(os.path.join(install_fld, self._id)):
+                raise QgistValueError(tr('Moved unpacked plugin is no valid plugin'))
