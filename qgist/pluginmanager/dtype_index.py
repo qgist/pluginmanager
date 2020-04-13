@@ -88,6 +88,43 @@ class dtype_index_class:
         return f'<index ({id(self):x}) repos={self.len_repos:d} plugins={self.len_plugins:d}>'
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PROPERTY WRAPPERS
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    class _repo_wrapper:
+        def __init__(self, repos):
+            self._repos = repos
+        def __repr__(self):
+            return '<index.repo (property)>'
+        def __getitem__(self, name):
+            if not isinstance(name, str):
+                raise QgistTypeError(tr('"name" must be str'))
+            repos = {repo.id: repo for repo in self._repos}
+            if not name in repos.keys():
+                raise QgistValueError(tr('"name" is not a known repo'))
+            return repos[name]
+
+    @property
+    def repo(self):
+        return self._repo_wrapper(self._repos)
+
+    class _plugin_wrapper:
+        def __init__(self, plugins):
+            self._plugins = plugins
+        def __repr__(self):
+            return '<index.plugin (property)>'
+        def __getitem__(self, name):
+            if not isinstance(name, str):
+                raise QgistTypeError(tr('"name" must be str'))
+            if not name in self._plugins.keys():
+                raise QgistValueError(tr('"name" is not a known plugin'))
+            return self._plugins[name]
+
+    @property
+    def plugin(self):
+        return self._plugin_wrapper(self._plugins)
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
