@@ -31,7 +31,11 @@ specific language governing rights and limitations under the License.
 from .dtype_cache import dtype_cache_class
 
 from ...const import REPO_BACKEND_QGISLEGACYPYTHON
+from ...dtype_metadata import dtype_metadata_class
 from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
+
+from ....error import QgistValueError
+from ....util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS
@@ -51,13 +55,59 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
     # """
 
     def _is_in_cache(self):
-        return False # TODO
+
+        if not self._meta['file_name'].value_set:
+            raise QgistValueError(tr('"file_name" not set in meta data'))
+
+        return self._meta['file_name'].value in self._cache
 
     def _fetch_from_remote_to_cache_file(self):
-        pass # TODO
 
-    def _read_metadata_from_cache_file(self):
-        pass # TODO
+        if self._is_in_cache():
+            return
+        if not self._meta['download_url'].value_set:
+            raise QgistValueError(tr('"download_url" not set in meta data'))
+
+        self._cache.add_remote_file(
+            filename = self._meta['file_name'].value,
+            url = self._meta['download_url'].value,
+            authcfg = None, # TODO
+            )
+
+    def _check_file_in_cache(self):
+
+        if not self._is_in_cache():
+            raise QgistValueError(tr('file is not in cache'))
+
+        namelist = self._cache.get_file_entries(self._meta['file_name'].value)
+
+        plugin_names = [name[:-1] for name in namelist if name.count('/') == 1 and name.endswith('/')]
+        if len(plugin_names) == 0:
+            raise QgistValueError(tr('There is no plugin in the zip-file (top-level directory missing)'))
+        if len(plugin_names) > 1:
+            raise QgistValueError(tr('There is more than one plugin in the zip-file (multiple top-level directories)'))
+
+        plugin_name = plugin_names[0]
+        if plugin_name != self._id:
+            raise QgistValueError(tr('Plugin name mismatch'))
+
+        if not f'{self._id:s}/__init__.py' in namelist:
+            raise QgistValueError(tr('Plugin init file missing'))
+        if not f'{self._id:s}/metadata.py' in namelist:
+            raise QgistValueError(tr('Plugin metadata file missing'))
+
+    def _update_metadata_from_cache_file(self):
+
+        if not self._is_in_cache():
+            raise QgistValueError(tr('file is not in cache'))
+
+        new_meta_raw = self._cache.get_file_entry(
+            filename = self._meta['file_name'].value,
+            entryname = f'{self._id:s}/metadata.txt',
+            password = None, # TODO
+            )
+        new_meta = dtype_metadata_class.from_metadatatxt(self._id, new_meta_raw)
+        # TODO self._meta.update(new_meta)
 
     def _unpack_from_cache_file_to_tmp_fld(self):
         pass # TODO
