@@ -387,6 +387,10 @@ class _plugins_wrapper_class:
 
         return self._plugins[plugin_id]
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PROPERTIES
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     @property
     def allow_deprecated(self):
         return self._allow_deprecated
@@ -406,6 +410,10 @@ class _plugins_wrapper_class:
             raise QgistTypeError(tr('value is not bool'))
         self._allow_experimental = value
         self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL] = self._config.bool_to_str(value, style = 'truefalse')
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# API
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     def keys(self, installed = None):
 
