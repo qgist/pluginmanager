@@ -46,6 +46,7 @@ from .dtype_repository_base import dtype_repository_base_class
 from .dtype_settings import dtype_settings_class
 
 from ..error import (
+    QgistIndexError,
     QgistTypeError,
     QgistValueError,
     )
@@ -266,22 +267,6 @@ class dtype_index_class:
 
         return backends[repo_type].dtype_repository_class
 
-    def remove_repo(self, repo_id):
-        "Remove repository from index by id (if it is present)"
-
-        if not isinstance(repo_id, str):
-            raise QgistTypeError(tr('"repo_id" must be a str.'))
-        if len(repo_id) == 0:
-            raise QgistValueError(tr('"repo_id" must not be empty.'))
-        if repo_id not in self.repos.keys():
-            raise QgistValueError(tr('"repo_id" is unknown. There is no such repository.'))
-
-        repo = self.repos[repo_id]
-        repo.remove()
-        self._repos.remove(repo)
-
-        self.reconnect()
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS: REPOS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -312,7 +297,7 @@ class _repos_wrapper_class:
         if isinstance(repo_info, str):
 
             if len(repo_info) == 0:
-                raise QgistTypeError(tr('if str, "repo_info" must not be empty'))
+                raise QgistValueError(tr('if str, "repo_info" must not be empty'))
             repos = {repo.id: repo for repo in self._repos}
             if not repo_info in repos.keys():
                 raise QgistValueError(tr('if str, "repo_info" is not a known repo'))
@@ -322,9 +307,9 @@ class _repos_wrapper_class:
         elif isinstance(repo_info, int):
 
             if repo_info >= len(self):
-                raise QgistValueError(tr('if int, "repo_info" is out of bounds (too large)'))
+                raise QgistIndexError(tr('if int, "repo_info" is out of bounds (too large)'))
             if repo_info < (-1 * len(self)):
-                raise QgistValueError(tr('if int, "repo_info" is out of bounds (too small)'))
+                raise QgistIndexError(tr('if int, "repo_info" is out of bounds (too small)'))
 
             return self._repos[repo_info]
 
@@ -354,6 +339,26 @@ class _repos_wrapper_class:
     def values(self):
 
         return (repo for repo in self._repos)
+
+    def remove(self, repo_id):
+        "Remove repository from index by id (if it is present)"
+
+        if not isinstance(repo_id, str):
+            raise QgistTypeError(tr('"repo_id" must be a str.'))
+        if len(repo_id) == 0:
+            raise QgistValueError(tr('"repo_id" must not be empty.'))
+        if repo_id not in self.keys():
+            raise QgistValueError(tr('"repo_id" is unknown. There is no such repository.'))
+
+        repo = self[repo_id]
+
+        if repo.protected:
+            raise QgistValueError(tr('repo is protected and can not be removed'))
+
+        repo.remove()
+        self._repos.remove(repo)
+
+        self._index.reconnect()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS: PLUGINS
