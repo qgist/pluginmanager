@@ -58,7 +58,7 @@ from ..util import tr
 
 class dtype_index_class:
     """
-    Index of repositories
+    Index (root) - holds plugins and repositories
 
     Mutable.
     """
@@ -313,69 +313,111 @@ class dtype_index_class:
         self._refresh_plugins()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# MANAGEMENT: PLUGINS
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-# TODO
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# CLASSES: PROPERTY WRAPPERS
+# CLASS: REPOS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class _repos_wrapper_class:
+    """
+    Index of repos
+
+    Mutable.
+    """
+
     def __init__(self, repos):
+
         self._repos = repos
+
     def __repr__(self):
+
         return f'<index.repos len={len(self):d} (property)>'
+
     def __len__(self):
+
         return len(self._repos)
+
     def __getitem__(self, repo_info):
+
         if isinstance(repo_info, str):
+
             if len(repo_info) == 0:
                 raise QgistTypeError(tr('if str, "repo_info" must not be empty'))
             repos = {repo.id: repo for repo in self._repos}
             if not repo_info in repos.keys():
                 raise QgistValueError(tr('if str, "repo_info" is not a known repo'))
+
             return repos[repo_info]
+
         elif isinstance(repo_info, int):
+
             if repo_info >= len(self):
                 raise QgistValueError(tr('if int, "repo_info" is out of bounds (too large)'))
             if repo_info < (-1 * len(self)):
                 raise QgistValueError(tr('if int, "repo_info" is out of bounds (too small)'))
+
             return self._repos[repo_info]
+
         else:
+
             raise QgistTypeError(tr('"repo_info" is neither str nor int'))
+
     def keys(self):
+
         return (repo.id for repo in self._repos)
+
     def values(self):
+
         return (repo for repo in self._repos)
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# CLASS: PLUGINS
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 class _plugins_wrapper_class:
+    """
+    Index of plugins
+
+    Mutable.
+    """
+
     def __init__(self, plugins):
+
         self._plugins = plugins
+
     def __repr__(self):
+
         return f'<index.plugins len={len(self):d} (property)>'
+
     def __len__(self):
+
         return len(self._plugins)
+
     def __getitem__(self, plugin_id):
+
         if not isinstance(plugin_id, str):
             raise QgistTypeError(tr('"plugin_id" must be str'))
         if len(plugin_id) == 0:
             raise QgistValueError(tr('"plugin_id" must not be empty'))
         if not plugin_id in self._plugins.keys():
             raise QgistValueError(tr('"plugin_id" is not a known plugin'))
+
         return self._plugins[plugin_id]
+
     def keys(self, installed = None):
+
         if not isinstance(installed, bool) and installed is not None:
             raise QgistTypeError(tr('"installed" must be bool or None'))
+
         return (
             plugin_id
             for plugin_id, plugin in self._plugins.items()
             if ((plugin.installed == installed) if isinstance(installed, bool) else True)
             )
+
     def values(self, installed = None):
+
         if not isinstance(installed, bool) and installed is not None:
             raise QgistTypeError(tr('"installed" must be bool or None'))
+
         return (
             plugin
             for plugin in self._plugins.values()
