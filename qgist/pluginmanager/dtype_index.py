@@ -100,7 +100,7 @@ class dtype_index_class:
         return self._plugins_wrapper
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# MANAGEMENT: INDEX
+# API
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     def rebuild(self):
@@ -114,6 +114,20 @@ class dtype_index_class:
         self._add_configured_repos()
         self._ensure_qgislegacypython_default_repo()
         self._ensure_qgislegacycpp_repo()
+
+    def refresh(self):
+        "Refresh (from remote) repos and plugins"
+
+        for repo in self._repos:
+            repo.refresh()
+
+        # TODO set last refresh to config
+
+        self._refresh_plugins()
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# HELPER
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     def _add_installed_plugins(self):
         "Find installed plugins and add them"
@@ -169,16 +183,6 @@ class dtype_index_class:
 
         if len([repo for repo in self._repos if repo.repo_type == REPO_BACKEND_QGISLEGACYCPP]) != 1:
             raise QgistRepoError(tr('There must be exactly one C++ repository.'))
-
-    def refresh(self):
-        "Refresh (from remote) repos and plugins"
-
-        for repo in self._repos:
-            repo.refresh()
-
-        # TODO set last refresh to config
-
-        self._refresh_plugins()
 
     def _refresh_plugins(self):
         "Should run once after every change of repositories (e.g. add, remove, change of priority)"
