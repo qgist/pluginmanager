@@ -207,7 +207,7 @@ class dtype_metadata_class:
         "Parses a metadata.txt string and returns a meta data object"
 
         cp = ConfigParser(
-            interpolation = None, # TODO ok? Because pf e.g. tuflow.3.0.4.zip (containing `%` in changelog)
+            interpolation = None, # TODO ok? Because of e.g. tuflow.3.0.4.zip (containing `%` in changelog)
             strict = False, # TODO ok? Because of e.g. Sentinel-2 Download 3.5 (field `email` twice)
             )
 
