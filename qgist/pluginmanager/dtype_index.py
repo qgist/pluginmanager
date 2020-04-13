@@ -154,7 +154,7 @@ class dtype_index_class:
 
         for repo_type in backends.keys():
             for config_group in self.get_repo_class(repo_type).get_repo_config_groups(self._config):
-                self.add_repo(self.create_repo(
+                self.repos.add(self.create_repo(
                     config_group,
                     repo_type = repo_type, method = 'config',
                     ))
@@ -165,7 +165,7 @@ class dtype_index_class:
             repo.url == REPO_DEFAULT_URL
             for repo in self._repos if repo.repo_type == REPO_BACKEND_QGISLEGACYPYTHON
             )):
-            self.add_repo(self.create_repo(
+            self.repos.add(self.create_repo(
                 self._config,
                 repo_type = REPO_BACKEND_QGISLEGACYPYTHON, method = 'default',
                 ))
@@ -176,7 +176,7 @@ class dtype_index_class:
             repo.repo_type == REPO_BACKEND_QGISLEGACYCPP
             for repo in self._repos
             )):
-            self.add_repo(self.create_repo(
+            self.repos.add(self.create_repo(
                 self._config,
                 repo_type = REPO_BACKEND_QGISLEGACYCPP, method = 'default',
                 ))
@@ -208,17 +208,6 @@ class dtype_index_class:
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: REPOSITORIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    def add_repo(self, repo):
-        "Add a repository"
-
-        if not isinstance(repo, dtype_repository_base_class):
-            raise QgistTypeError(tr('"repo" is not a repo'))
-        if repo.id in (present_repo.id for present_repo in self._repos):
-            raise QgistValueError(tr('"repo" can not be added - its id is already in list'))
-
-        self._repos.insert(0, repo) # Add to list at the end, i.e. with lowest priority
-        self._refresh_plugins()
 
     @classmethod
     def create_repo(cls, *args, repo_type = None, method = None, **kwargs):
@@ -342,6 +331,21 @@ class _repos_wrapper_class:
         else:
 
             raise QgistTypeError(tr('"repo_info" is neither str nor int'))
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# API
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def add(self, repo):
+        "Add a repository"
+
+        if not isinstance(repo, dtype_repository_base_class):
+            raise QgistTypeError(tr('"repo" is not a repo'))
+        if repo.id in self.keys():
+            raise QgistValueError(tr('"repo" can not be added - its id is already in list'))
+
+        self._repos.insert(0, repo) # Add to list at the end, i.e. with lowest priority
+        self._index._refresh_plugins()
 
     def keys(self):
 
