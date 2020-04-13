@@ -119,6 +119,22 @@ class dtype_metadata_class:
 
         return True
 
+    def update(self, other):
+        "Similar to dict.update, update this metadata with content from other metadata"
+
+        if not isinstance(other, type(self)):
+            raise QgistTypeError(tr('"other" is not meta data'))
+        if self['id'].value != other['id'].value:
+            raise QgistValueError(tr('id mismatch'))
+
+        for key in other.keys():
+            if key == 'id':
+                continue
+            if key not in self.keys():
+                self._fields[key] = other[key].copy()
+            else:
+                self._fields[key].update(other[key])
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # EXPORT
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
