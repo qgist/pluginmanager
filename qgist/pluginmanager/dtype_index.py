@@ -158,7 +158,7 @@ class dtype_index_class:
             for protected in (True, False):
                 found_plugins = {
                     plugin.id: plugin
-                    for plugin in self.get_repo_class(repo_type).find_plugins(
+                    for plugin in self.repos.get_class(repo_type).find_plugins(
                         self._config, protected = protected,
                         # TODO <HACK>
                         # remove this eventually - Plugin Manager should load plugins
@@ -175,7 +175,7 @@ class dtype_index_class:
         "Find configured repos and add them"
 
         for repo_type in backends.keys():
-            for config_group in self.get_repo_class(repo_type).get_repo_config_groups(self._config):
+            for config_group in self.repos.get_class(repo_type).get_repo_config_groups(self._config):
                 self.repos.add(self.create_repo(
                     config_group,
                     repo_type = repo_type, method = 'config',
@@ -210,11 +210,10 @@ class dtype_index_class:
 # MANAGEMENT: REPOSITORIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    @classmethod
-    def create_repo(cls, *args, repo_type = None, method = None, **kwargs):
+    def create_repo(self, *args, repo_type = None, method = None, **kwargs):
         "Initialize repository based on type, method and arbitrary parameters"
 
-        repository_class = cls.get_repo_class(repo_type)
+        repository_class = self.repos.get_class(repo_type)
 
         if not isinstance(method, str):
             raise QgistTypeError(tr('"method" must be a str.'))
@@ -253,19 +252,6 @@ class dtype_index_class:
 
         self._repos[index + direction], self._repos[index] = self._repos[index], self._repos[index + direction]
         self.reconnect()
-
-    @staticmethod
-    def get_repo_class(repo_type):
-
-        if not isinstance(repo_type, str):
-            raise QgistTypeError(tr('"repo_type" must be a str.'))
-        if repo_type not in backends.keys():
-            raise QgistValueError(tr('"repo_type" is unknown.'))
-
-        if not backends[repo_type].module_loaded:
-            backends[repo_type].load_module()
-
-        return backends[repo_type].dtype_repository_class
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS: REPOS
@@ -331,6 +317,19 @@ class _repos_wrapper_class:
 
         self._repos.insert(0, repo) # Add to list at the end, i.e. with lowest priority
         self._index.reconnect()
+
+    @staticmethod
+    def get_class(repo_type):
+
+        if not isinstance(repo_type, str):
+            raise QgistTypeError(tr('"repo_type" must be a str.'))
+        if repo_type not in backends.keys():
+            raise QgistValueError(tr('"repo_type" is unknown.'))
+
+        if not backends[repo_type].module_loaded:
+            backends[repo_type].load_module()
+
+        return backends[repo_type].dtype_repository_class
 
     def keys(self):
 
