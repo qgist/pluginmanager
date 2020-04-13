@@ -72,14 +72,14 @@ class dtype_index_class:
         self._repos = [] # From high to low priority
         self._plugins = {} # Individual plugins, not their releases
 
-        self._repos_wrapper = _repos_wrapper_class(self._repos, self, self._config)
-        self._plugins_wrapper = _plugins_wrapper_class(self._plugins, self, self._config)
-
         # TODO <HACK>
         # remove this eventually - Plugin Manager should manage this on its own
         # dict by plugin_id: reference on imported Python plugin modules
         self._plugin_modules = get_plugin_modules()
         # TODO </HACK>
+
+        self._repos_wrapper = _repos_wrapper_class(self._repos, self, self._config)
+        self._plugins_wrapper = _plugins_wrapper_class(self._plugins, self._plugin_modules, self, self._config)
 
         self._allow_deprecated = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_DEPRECATED])
         self._allow_experimental = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL])
@@ -381,9 +381,10 @@ class _plugins_wrapper_class:
     Mutable.
     """
 
-    def __init__(self, plugins, index, config):
+    def __init__(self, plugins, modules, index, config):
 
         self._plugins = plugins
+        self._modules = modules
         self._index = index
         self._config = config
 
