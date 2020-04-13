@@ -191,16 +191,16 @@ METADATA_FIELDS_SPEC = (
     #     'dtype': str,
     #     'name': 'zip_repository',
     # }, # TODO
-    # {
-    #     'comment': 'url for downloading the plugin',
-    #     'dtype': str,
-    #     'name': 'download_url',
-    # },
-    # {
-    #     'comment': 'the zip file name to be unzipped after downloaded',
-    #     'dtype': str,
-    #     'name': 'filename',
-    # },
+    {
+        'comment': 'url for downloading the plugin',
+        'dtype': str,
+        'name': 'download_url',
+    },
+    {
+        'comment': 'the zip file name to be unzipped after downloaded',
+        'dtype': str,
+        'name': 'file_name',
+    },
     # {
     #     'comment': 'number of downloads',
     #     'dtype': str,
