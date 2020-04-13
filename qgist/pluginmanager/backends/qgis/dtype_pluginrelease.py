@@ -55,14 +55,6 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
     _repo_type = REPO_BACKEND_QGISLEGACYPYTHON
     _cache = dtype_cache_class(_repo_type)
 
-    # """
-    # - Properties
-    #     - Caches
-    #     - Dependencies
-    #         - inter-plugin
-    #         - plugin to python packages (through source / other package manager)
-    # """
-
     """
 
     def install(self):
