@@ -107,7 +107,7 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
             password = None, # TODO
             )
         new_meta = dtype_metadata_class.from_metadatatxt(self._id, new_meta_raw)
-        # TODO self._meta.update(new_meta)
+        self._meta.update(new_meta)
 
     def _unpack_from_cache_file_to_tmp_fld(self):
         pass # TODO
