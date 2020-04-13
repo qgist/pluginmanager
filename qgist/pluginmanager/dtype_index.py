@@ -424,24 +424,34 @@ class _plugins_wrapper_class:
 # API
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def keys(self, installed = None):
+    def keys(self, installed = None, deprecated = None):
 
         if not isinstance(installed, bool) and installed is not None:
             raise QgistTypeError(tr('"installed" must be bool or None'))
+        if not isinstance(deprecated, bool) and deprecated is not None:
+            raise QgistTypeError(tr('"deprecated" must be bool or None'))
 
         return (
             plugin_id
             for plugin_id, plugin in self._plugins.items()
-            if ((plugin.installed == installed) if isinstance(installed, bool) else True)
+            if all((
+                ((plugin.installed == installed) if isinstance(installed, bool) else True),
+                ((plugin.deprecated == deprecated) if isinstance(deprecated, bool) else True),
+                ))
             )
 
-    def values(self, installed = None):
+    def values(self, installed = None, deprecated = None):
 
         if not isinstance(installed, bool) and installed is not None:
             raise QgistTypeError(tr('"installed" must be bool or None'))
+        if not isinstance(deprecated, bool) and deprecated is not None:
+            raise QgistTypeError(tr('"deprecated" must be bool or None'))
 
         return (
             plugin
             for plugin in self._plugins.values()
-            if ((plugin.installed == installed) if isinstance(installed, bool) else True)
+            if all((
+                ((plugin.installed == installed) if isinstance(installed, bool) else True),
+                ((plugin.deprecated == deprecated) if isinstance(deprecated, bool) else True),
+                ))
             )
