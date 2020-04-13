@@ -222,6 +222,7 @@ METADATA_FIELDS_SPEC = (
         'importer': lambda x: tuple(x.split(',')),
         'exporter': lambda x: ','.join(x),
         'name': 'plugin_dependencies',
+        'default_value': tuple(),
     },
     {
         'comment': 'dotted notation of minimum QGIS version',
