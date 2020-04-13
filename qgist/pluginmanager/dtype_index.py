@@ -207,37 +207,6 @@ class dtype_index_class:
             raise QgistRepoError(tr('There must be exactly one C++ repository.'))
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# MANAGEMENT: REPOSITORIES
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    def change_repo_priority(self, repo_id, direction):
-        "Repository can be moved up (higher priority) or down (lower priority) by one"
-
-        if not isinstance(repo_id, str):
-            raise QgistTypeError(tr('"repo_id" must be a str.'))
-        if len(repo_id) == 0:
-            raise QgistValueError(tr('"repo_id" must not be empty.'))
-        if repo_id not in self.repos.keys():
-            raise QgistValueError(tr('"repo_id" is unknown. There is no such repository.'))
-        if not isinstance(direction, int):
-            raise QgistTypeError(tr('"direction" must be a int.'))
-        if direction not in (1, -1):
-            raise QgistValueError(tr('"direction" must either be 1 or -1.'))
-
-        repo = self.repos[repo_id]
-        index = self._repos.index(repo)
-
-        if len(self.repos) < 2:
-            return
-        if index == 0 and direction == -1:
-            return
-        if index == (len(self.repos) - 1) and direction == 1:
-            return
-
-        self._repos[index + direction], self._repos[index] = self._repos[index], self._repos[index + direction]
-        self.reconnect()
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS: REPOS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -300,6 +269,33 @@ class _repos_wrapper_class:
             raise QgistValueError(tr('"repo" can not be added - its id is already in list'))
 
         self._repos.insert(0, repo) # Add to list at the end, i.e. with lowest priority
+        self._index.reconnect()
+
+    def change_priority(self, repo_id, direction):
+        "Repository can be moved up (higher priority) or down (lower priority) by one"
+
+        if not isinstance(repo_id, str):
+            raise QgistTypeError(tr('"repo_id" must be a str.'))
+        if len(repo_id) == 0:
+            raise QgistValueError(tr('"repo_id" must not be empty.'))
+        if repo_id not in self.keys():
+            raise QgistValueError(tr('"repo_id" is unknown. There is no such repository.'))
+        if not isinstance(direction, int):
+            raise QgistTypeError(tr('"direction" must be a int.'))
+        if direction not in (1, -1):
+            raise QgistValueError(tr('"direction" must either be 1 or -1.'))
+
+        repo = self[repo_id]
+        index = self._repos.index(repo)
+
+        if len(self) < 2:
+            return
+        if index == 0 and direction == -1:
+            return
+        if index == (len(self) - 1) and direction == 1:
+            return
+
+        self._repos[index + direction], self._repos[index] = self._repos[index], self._repos[index + direction]
         self._index.reconnect()
 
     @classmethod
