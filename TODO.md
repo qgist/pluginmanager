@@ -27,6 +27,15 @@ https://docs.python.org/3/library/configparser.html#configparser.BasicInterpolat
 
 If activated, it is causing issues in some cases (e.g. `tuflow.3.0.4.zip`).
 
+# Metadata - dependencies (QGIS legacy style)
+
+Some folks use `plugin_dependencies` for Python package dependencies, e.g.
+
+- go_to_xyz.0.2.zip: ('mercantile',)
+- geodatafarm.2.6.0.zip: ('matplotlib', ' reportlab')
+
+How should this be handled?
+
 # Packaging
 
 This plugin should not only be packaged as as QGIS plugin but also stand-alone as wheel and conda package. How does a reasonable project / directory structure look like?
