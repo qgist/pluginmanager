@@ -25,6 +25,14 @@ specific language governing rights and limitations under the License.
 """
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# IMPORT (Python Standard Library)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+import tempfile
+import os
+import shutil
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -35,6 +43,7 @@ from ...dtype_metadata import dtype_metadata_class
 from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
 
 from ....error import QgistValueError
+from ....qgis_api import get_home_python_path
 from ....util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -105,14 +114,40 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
             filename = self._meta['file_name'].value,
             entryname = f'{self._id:s}/metadata.txt',
             password = None, # TODO
-            )
+            ).decode('utf-8')
         new_meta = dtype_metadata_class.from_metadatatxt(self._id, new_meta_raw)
         self._meta.update(new_meta)
 
-    def _unpack_from_cache_file_to_tmp_fld(self):
-        pass # TODO
+    def _unpack_from_cache_file_to_install_fld(self):
 
-    # is_python_plugin_dir is implemented in dtype_pluginrelease_base_class
+        if not self._is_in_cache():
+            raise QgistValueError(tr('file is not in cache'))
 
-    def _move_from_tmp_fld_to_install_fld(self):
-        pass # TODO
+        install_fld = os.path.join(get_home_python_path(), 'plugins')
+
+        if not os.path.exists(install_fld):
+            raise QgistValueError(tr('default QGIS plugin installation path does not exist'))
+        if not os.path.isdir(install_fld):
+            raise QgistValueError(tr('default QGIS plugin installation path exists but is no directory'))
+        if not os.access(install_fld, os.W_OK | os.R_OK):
+            raise QgistValueError(tr('default QGIS plugin installation path is not writeable and/or readable'))
+        if self._id in os.listdir(install_fld):
+            raise QgistValueError(tr('file or directory with identical name already in default QGIS plugin installation path'))
+
+        with tempfile.TemporaryDirectory() as tmp_fld:
+            self._cache.extract(
+                self._meta['file_name'].value,
+                tmp_fld,
+                password = None, # TODO
+                )
+            plugin_tmp_fld = os.path.join(tmp_fld, self._id)
+            if not self.is_python_plugin_dir(plugin_tmp_fld):
+                raise QgistValueError(tr('unpacked plugin zip file folder is no valid plugin'))
+            try:
+                shutil.move(
+                    src = plugin_tmp_fld,
+                    dst = install_fld,
+                    copy_function = shutil.copy, # allow to succeed if filesystem metadata can not be copied
+                    )
+            except Exception as e:
+                raise QgistValueError(tr('Moving unpacked plugin to default QGIS plugin installation path failed'), e)
