@@ -199,7 +199,7 @@ class dtype_metadata_class:
     def from_metadatatxt(cls, plugin_id, metadatatxt_string):
         "Parses a metadata.txt string and returns a meta data object"
 
-        cp = ConfigParser()
+        cp = ConfigParser(interpolation = None)
 
         try:
             cp.read_string(metadatatxt_string)

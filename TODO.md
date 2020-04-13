@@ -19,6 +19,14 @@ def _fix_metadata(metadata):
     return metadata.replace(a, b)
 ```
 
+# Metadata (TXT)
+
+Are people using interpolation?
+
+https://docs.python.org/3/library/configparser.html#configparser.BasicInterpolation
+
+If activated, it is causing issues in some cases (e.g. `tuflow.3.0.4.zip`).
+
 # Packaging
 
 This plugin should not only be packaged as as QGIS plugin but also stand-alone as wheel and conda package. How does a reasonable project / directory structure look like?
