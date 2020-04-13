@@ -102,7 +102,7 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
         if not self._is_in_cache():
             raise QgistValueError(tr('file is not in cache'))
 
-        namelist = self._cache.get_file_entries(self._meta['file_name'].value)
+        namelist = list(self._cache.get_file_entries(self._meta['file_name'].value))
 
         plugin_names = [name[:-1] for name in namelist if name.count('/') == 1 and name.endswith('/')]
         if len(plugin_names) == 0:
@@ -116,7 +116,7 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
 
         if not f'{self._id:s}/__init__.py' in namelist:
             raise QgistValueError(tr('Plugin init file missing'))
-        if not f'{self._id:s}/metadata.py' in namelist:
+        if not f'{self._id:s}/metadata.txt' in namelist:
             raise QgistValueError(tr('Plugin metadata file missing'))
 
     def _update_metadata_from_cache_file(self):
