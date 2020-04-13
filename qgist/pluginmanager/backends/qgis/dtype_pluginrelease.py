@@ -154,3 +154,8 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
 
         if not self.is_python_plugin_dir(os.path.join(install_fld, self._id)):
             raise QgistValueError(tr('Moved unpacked plugin is no valid plugin'))
+
+        self.fix_meta_by_inspecting_plugindir(
+            meta = self._meta,
+            path = os.path.join(install_fld, self._id),
+            )
