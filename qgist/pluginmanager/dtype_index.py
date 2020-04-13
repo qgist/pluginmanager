@@ -81,9 +81,6 @@ class dtype_index_class:
         self._repos_wrapper = _repos_wrapper_class(self._repos, self, self._config)
         self._plugins_wrapper = _plugins_wrapper_class(self._plugins, self._plugin_modules, self, self._config)
 
-        self._allow_deprecated = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_DEPRECATED])
-        self._allow_experimental = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL])
-
         self.rebuild()
 
     def __repr__(self):
@@ -101,26 +98,6 @@ class dtype_index_class:
     @property
     def plugins(self):
         return self._plugins_wrapper
-
-    @property
-    def allow_deprecated(self):
-        return self._allow_deprecated
-    @allow_deprecated.setter
-    def allow_deprecated(self, value):
-        if not isinstance(value, bool):
-            raise QgistTypeError(tr('value is not bool'))
-        self._allow_deprecated = value
-        self._config[CONFIG_KEY_ALLOW_DEPRECATED] = self._config.bool_to_str(value, style = 'truefalse')
-
-    @property
-    def allow_experimental(self):
-        return self._allow_experimental
-    @allow_experimental.setter
-    def allow_experimental(self, value):
-        if not isinstance(value, bool):
-            raise QgistTypeError(tr('value is not bool'))
-        self._allow_experimental = value
-        self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL] = self._config.bool_to_str(value, style = 'truefalse')
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: INDEX
@@ -331,7 +308,7 @@ class _repos_wrapper_class:
 
     def __repr__(self):
 
-        return f'<index.repos len={len(self):d} (property)>'
+        return f'<repos (index {id(self._index):x}) len={len(self):d}>'
 
     def __len__(self):
 
@@ -388,9 +365,12 @@ class _plugins_wrapper_class:
         self._index = index
         self._config = config
 
+        self._allow_deprecated = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_DEPRECATED])
+        self._allow_experimental = self._config.str_to_bool(self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL])
+
     def __repr__(self):
 
-        return f'<index.plugins len={len(self):d} (property)>'
+        return f'<plugins (index {id(self._index):x}) len={len(self):d}>'
 
     def __len__(self):
 
@@ -406,6 +386,26 @@ class _plugins_wrapper_class:
             raise QgistValueError(tr('"plugin_id" is not a known plugin'))
 
         return self._plugins[plugin_id]
+
+    @property
+    def allow_deprecated(self):
+        return self._allow_deprecated
+    @allow_deprecated.setter
+    def allow_deprecated(self, value):
+        if not isinstance(value, bool):
+            raise QgistTypeError(tr('value is not bool'))
+        self._allow_deprecated = value
+        self._config[CONFIG_KEY_ALLOW_DEPRECATED] = self._config.bool_to_str(value, style = 'truefalse')
+
+    @property
+    def allow_experimental(self):
+        return self._allow_experimental
+    @allow_experimental.setter
+    def allow_experimental(self, value):
+        if not isinstance(value, bool):
+            raise QgistTypeError(tr('value is not bool'))
+        self._allow_experimental = value
+        self._config[CONFIG_KEY_ALLOW_EXPERIMENTAL] = self._config.bool_to_str(value, style = 'truefalse')
 
     def keys(self, installed = None):
 
