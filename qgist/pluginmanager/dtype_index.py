@@ -123,7 +123,28 @@ class dtype_index_class:
 
         # TODO set last refresh to config
 
-        self._refresh_plugins()
+        self.reconnect()
+
+    def reconnect(self):
+        "Should run once after every change of repositories (e.g. add, remove, change of priority)"
+
+        for plugin in self._plugins.values():
+            plugin.clear_releases()
+
+        remaining_plugins = {
+            plugin_id: plugin
+            for plugin_id, plugin in self._plugins.items()
+            if plugin.installed or len(plugin) != 0
+            }
+        self._plugins.clear()
+        self._plugins.update(remaining_plugins)
+
+        for repo in self._repos:
+            for release in sorted(repo.plugin_releases, key = lambda x: x.version):
+                if release.id in self._plugins.keys():
+                    self._plugins[release.id].add_release(release)
+                else:
+                    self._plugins[release.id] = dtype_plugin_class.from_uninstalled_release(release)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # HELPER
@@ -184,27 +205,6 @@ class dtype_index_class:
         if len([repo for repo in self._repos if repo.repo_type == REPO_BACKEND_QGISLEGACYCPP]) != 1:
             raise QgistRepoError(tr('There must be exactly one C++ repository.'))
 
-    def _refresh_plugins(self):
-        "Should run once after every change of repositories (e.g. add, remove, change of priority)"
-
-        for plugin in self._plugins.values():
-            plugin.clear_releases()
-
-        remaining_plugins = {
-            plugin_id: plugin
-            for plugin_id, plugin in self._plugins.items()
-            if plugin.installed or len(plugin) != 0
-            }
-        self._plugins.clear()
-        self._plugins.update(remaining_plugins)
-
-        for repo in self._repos:
-            for release in sorted(repo.plugin_releases, key = lambda x: x.version):
-                if release.id in self._plugins.keys():
-                    self._plugins[release.id].add_release(release)
-                else:
-                    self._plugins[release.id] = dtype_plugin_class.from_uninstalled_release(release)
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # MANAGEMENT: REPOSITORIES
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -251,7 +251,7 @@ class dtype_index_class:
             return
 
         self._repos[index + direction], self._repos[index] = self._repos[index], self._repos[index + direction]
-        self._refresh_plugins()
+        self.reconnect()
 
     @staticmethod
     def get_repo_class(repo_type):
@@ -280,7 +280,7 @@ class dtype_index_class:
         repo.remove()
         self._repos.remove(repo)
 
-        self._refresh_plugins()
+        self.reconnect()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS: REPOS
@@ -345,7 +345,7 @@ class _repos_wrapper_class:
             raise QgistValueError(tr('"repo" can not be added - its id is already in list'))
 
         self._repos.insert(0, repo) # Add to list at the end, i.e. with lowest priority
-        self._index._refresh_plugins()
+        self._index.reconnect()
 
     def keys(self):
 
