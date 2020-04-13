@@ -316,10 +316,7 @@ class dtype_index_class:
 # MANAGEMENT: PLUGINS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def get_all_installed_plugins(self):
-        "Currently installed plugins"
-
-        return (plugin for plugin in self._plugins.values() if plugin.installed)
+# TODO
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASSES: PROPERTY WRAPPERS
@@ -368,7 +365,19 @@ class _plugins_wrapper_class:
         if not plugin_id in self._plugins.keys():
             raise QgistValueError(tr('"plugin_id" is not a known plugin'))
         return self._plugins[plugin_id]
-    def keys(self):
-        return (plugin_id for plugin_id in self._plugins.keys())
-    def values(self):
-        return (plugin for plugin in self._plugins.values())
+    def keys(self, installed = None):
+        if not isinstance(installed, bool) and installed is not None:
+            raise QgistTypeError(tr('"installed" must be bool or None'))
+        return (
+            plugin_id
+            for plugin_id, plugin in self._plugins.items()
+            if ((plugin.installed == installed) if isinstance(installed, bool) else True)
+            )
+    def values(self, installed = None):
+        if not isinstance(installed, bool) and installed is not None:
+            raise QgistTypeError(tr('"installed" must be bool or None'))
+        return (
+            plugin
+            for plugin in self._plugins.values()
+            if ((plugin.installed == installed) if isinstance(installed, bool) else True)
+            )
