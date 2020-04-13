@@ -164,6 +164,26 @@ class dtype_cache_class:
 
         self._files[filename] = filepath
 
+    def extract(self, filename, path, password = None):
+
+        self._check_filename(filename)
+        if filename not in self:
+            raise QgistValueError(tr('"filename" is not present in cache'))
+        if not isinstance(path, str):
+            raise QgistTypeError(tr('"path" must be str'))
+        if len(path) == 0:
+            raise QgistValueError(tr('"path" must not be empty'))
+        if not isinstance(password, str) and password is not None:
+            raise QgistTypeError(tr('"password" must either be a str or None'))
+
+        self._ensure_path(path)
+
+        try:
+            with zipfile.ZipFile(self._files[filename], 'r') as f:
+                f.extractall(path = path, pwd = password)
+        except Exception as e:
+            raise QgistValueError(tr('failed to extract ZIP-file'), e)
+
     def get_file_entries(self, filename):
 
         self._check_filename(filename)
