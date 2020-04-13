@@ -63,6 +63,17 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
     #         - plugin to python packages (through source / other package manager)
     # """
 
+    """
+
+    def install(self):
+
+        self._fetch_from_remote_to_cache_file()
+        self._check_file_in_cache()
+        self._update_metadata_from_cache_file()
+        self._unpack_from_cache_file_to_install_fld()
+
+    """
+
     def _is_in_cache(self):
 
         if not self._meta['file_name'].value_set:
