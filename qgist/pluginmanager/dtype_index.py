@@ -72,8 +72,8 @@ class dtype_index_class:
         self._repos = [] # From high to low priority
         self._plugins = {} # Individual plugins, not their releases
 
-        self._repos_wrapper = _repos_wrapper_class(self._repos)
-        self._plugins_wrapper = _plugins_wrapper_class(self._plugins)
+        self._repos_wrapper = _repos_wrapper_class(self._repos, self)
+        self._plugins_wrapper = _plugins_wrapper_class(self._plugins, self)
 
         # TODO <HACK>
         # remove this eventually - Plugin Manager should manage this on its own
@@ -323,9 +323,10 @@ class _repos_wrapper_class:
     Mutable.
     """
 
-    def __init__(self, repos):
+    def __init__(self, repos, index):
 
         self._repos = repos
+        self._index = index
 
     def __repr__(self):
 
@@ -379,9 +380,10 @@ class _plugins_wrapper_class:
     Mutable.
     """
 
-    def __init__(self, plugins):
+    def __init__(self, plugins, index):
 
         self._plugins = plugins
+        self._index = index
 
     def __repr__(self):
 
