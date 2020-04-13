@@ -81,6 +81,7 @@ class dtype_cache_class:
         return len(self._files)
 
     def __getitem__(self, filename):
+        "Translates filename to full path if filename is present in cache"
 
         self._check_filename(filename)
         if filename not in self:
@@ -89,16 +90,19 @@ class dtype_cache_class:
         return self._files[filename]
 
     def __contains__(self, filename):
+        "Checks if filename is present in cache"
 
         return filename in self._files.keys()
 
     @property
     def files(self):
+        "Returns iterator of cached filenames (not their paths)"
 
         return (fn for fn in self._files.keys())
 
     @staticmethod
     def _check_filename(filename):
+        "Raises exception if filename is not a valid zip-file name"
 
         if not isinstance(filename, str):
             raise QgistTypeError(tr('"filename" must be a str'))
@@ -109,6 +113,7 @@ class dtype_cache_class:
 
     @staticmethod
     def _ensure_path(path):
+        "Ensures that a path to a directory is actually present and writable"
 
         if os.path.exists(path) and not os.path.isdir(path):
             raise QgistValueError(tr('path points to existing path which is not a directory'))
@@ -122,11 +127,13 @@ class dtype_cache_class:
 
     @staticmethod
     def _get_cache_subdirs(filename):
+        "Translates filename to cache sub-directories, i.e. its location in cache"
 
         filename_hash = hashlib.sha256(filename.encode('utf-8')).hexdigest()
         return filename_hash[:2], filename_hash[2:4]
 
     def _refresh(self):
+        "Refreshes, i.e. rebuilds, the _files dict mapping filenames to absolute paths"
 
         new_files = {
             os.path.basename(path): path
@@ -138,6 +145,7 @@ class dtype_cache_class:
         self._files.update(new_files)
 
     def add_remote_file(self, filename, url, authcfg):
+        "Add file from URL"
 
         self._check_filename(filename)
         if filename in self:
@@ -165,6 +173,7 @@ class dtype_cache_class:
         self._files[filename] = filepath
 
     def extract(self, filename, path, password = None):
+        "Extract file from local cache to path"
 
         self._check_filename(filename)
         if filename not in self:
@@ -185,6 +194,7 @@ class dtype_cache_class:
             raise QgistValueError(tr('failed to extract ZIP-file'), e)
 
     def get_file_entries(self, filename):
+        "Get iterator of entires in file in local cache"
 
         self._check_filename(filename)
         if filename not in self:
@@ -199,6 +209,7 @@ class dtype_cache_class:
         return (name for name in namelist)
 
     def get_file_entry(self, filename, entryname, password = None):
+        "Read entry from file in local cache"
 
         self._check_filename(filename)
         if filename not in self:
@@ -222,6 +233,7 @@ class dtype_cache_class:
         return data # bytes
 
     def clear(self):
+        "Clear local cache, i.e. remove all of its files"
 
         for path in self._files.values():
             if not os.path.exists(path):
