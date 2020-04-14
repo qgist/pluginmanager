@@ -102,6 +102,8 @@ class dtype_repository_base_class(repository_abc):
 
         self._config_group = config_group
 
+        self._make_releases_aware_of_repo()
+
     def __repr__(self):
 
         return (
@@ -126,6 +128,11 @@ class dtype_repository_base_class(repository_abc):
             release == test_release
             for release in self._plugin_releases
             ))
+
+    def _make_releases_aware_of_repo(self):
+
+        for release in self._plugin_releases:
+            release.repo = self
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PROPERTIES

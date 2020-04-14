@@ -160,6 +160,7 @@ class dtype_repository_class(dtype_repository_base_class):
 
         self._plugin_releases.clear()
         self._plugin_releases.extend(all_releases)
+        self._make_releases_aware_of_repo()
         self.to_config()
 
     @staticmethod
