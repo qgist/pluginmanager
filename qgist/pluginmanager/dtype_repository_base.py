@@ -34,6 +34,7 @@ from typing import Generator, Iterator
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .abc import repository_abc
 from .const import (
     CONFIG_GROUP_MANAGER_REPOS,
     CONFIG_KEY_CACHE,
@@ -56,7 +57,7 @@ from ..util import tr
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_repository_base_class:
+class dtype_repository_base_class(repository_abc):
     """
     # Repo
 
