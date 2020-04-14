@@ -321,6 +321,9 @@ class dtype_plugin_class(plugin_abc):
         self._installed_release.uninstall()
         self._installed_release = None
 
+        # TODO remove settings for this plugin (e.g. active etc)
+        # TODO remove from index if orhan (nothing available)
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # LOADING / UNLOADING
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
