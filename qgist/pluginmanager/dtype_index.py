@@ -82,8 +82,17 @@ class dtype_index_class(index_abc):
         self._plugin_modules = get_plugin_modules()
         # TODO </HACK>
 
-        self._repos_wrapper = _repos_wrapper_class(self._repos, self, self._config)
-        self._plugins_wrapper = _plugins_wrapper_class(self._plugins, self._plugin_modules, self, self._config)
+        self._repos_wrapper = _repos_wrapper_class(
+            repos = self._repos,
+            index = self,
+            config = self._config,
+            )
+        self._plugins_wrapper = _plugins_wrapper_class(
+            plugins = self._plugins,
+            modules = self._plugin_modules,
+            index = self,
+            config = self._config,
+            )
 
         self.rebuild()
 
@@ -221,6 +230,15 @@ class _repos_wrapper_class:
     """
 
     def __init__(self, repos, index, config):
+
+        if not isinstance(repos, list):
+            raise QgistTypeError(tr('"repos" must be a list'))
+        if len(repos) != 0:
+            raise QgistValueError(tr('"repos" must be empty'))
+        if not isinstance(index, index_abc):
+            raise QgistTypeError(tr('"index" must be an index'))
+        if not isinstance(config, settings_abc):
+            raise QgistTypeError(tr('"config" must be a settings object'))
 
         self._repos = repos
         self._index = index
@@ -371,6 +389,18 @@ class _plugins_wrapper_class:
     """
 
     def __init__(self, plugins, modules, index, config):
+
+        if not isinstance(plugins, dict):
+            raise QgistTypeError(tr('"plugins" must be a dict'))
+        if len(plugins) != 0:
+            raise QgistValueError(tr('"plugins" must be empty'))
+        if not isinstance(modules, dict):
+            raise QgistTypeError(tr('"modules" must be a dict'))
+        # TODO check modules content
+        if not isinstance(index, index_abc):
+            raise QgistTypeError(tr('"index" must be an index'))
+        if not isinstance(config, settings_abc):
+            raise QgistTypeError(tr('"config" must be a settings object'))
 
         self._plugins = plugins
         self._modules = modules
