@@ -39,10 +39,10 @@ from .abc import (
     pluginrelease_abc,
     repository_abc,
     settings_abc,
+    version_abc,
     )
 from .error import QgistNotAPluginDirectoryError
 from .dtype_metadata import dtype_metadata_class
-from .dtype_version import dtype_version_class
 
 from ..error import (
     QgistTypeError,
@@ -73,7 +73,7 @@ class dtype_pluginrelease_base_class(pluginrelease_abc):
             raise QgistTypeError(tr('"plugin_id" must be a str.'))
         if len(plugin_id) == 0:
             raise QgistValueError(tr('"plugin_id" must not be empty.'))
-        if not isinstance(version, dtype_version_class):
+        if not isinstance(version, version_abc):
             raise QgistTypeError(tr('"version" must be a version.'))
         if not isinstance(has_processingprovider, bool):
             raise QgistTypeError(tr('"has_processingprovider" must be a bool.'))
