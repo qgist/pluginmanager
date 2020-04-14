@@ -28,23 +28,37 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .abc import import_abc
+from .abc import imports_abc
+
+from ..error import QgistTypeError
+from ..util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS: IMPORT
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_import_class(import_abc):
+class dtype_imports_class(imports_abc):
     """
     Import module. Holds and manages Python modules (within interpreter)
+
+    This should **REALLY* be atomic and handled by plugins themselves!
+    This class only exists for compatibility with current `qgis.utils`.
 
     Mutable.
     """
 
-    def __init__(self):
+    def __init__(self, modules, module_names):
 
-        pass
+        if not isinstance(modules, dict):
+            raise QgistTypeError(tr('"modules" must be a dict'))
+        # TODO check modules content
+        if not isinstance(module_names, dict):
+            raise QgistTypeError(tr('"module_names" must be a dict'))
+        # TODO check module_names content
+
+        self._modules = modules
+        self._module_names = module_names
 
     def __repr__(self):
 
-        return f'<import len={0:d}>'
+        return f'<imports modules={len(self._modules):d} names={len(self._module_names):d}>'

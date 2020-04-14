@@ -29,6 +29,7 @@ specific language governing rights and limitations under the License.
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from .abc import (
+    imports_abc,
     index_abc,
     repository_abc,
     settings_abc,
@@ -46,6 +47,7 @@ from .error import (
     QgistPluginIdCollisionError,
     QgistRepoError,
     )
+from .dtype_import import dtype_imports_class
 from .dtype_plugin import dtype_plugin_class
 
 from ..error import (
@@ -53,7 +55,10 @@ from ..error import (
     QgistTypeError,
     QgistValueError,
     )
-from ..qgis_api import get_plugin_modules
+from ..qgis_api import (
+    get_plugin_modules,
+    get_plugin_module_names,
+    )
 from ..util import tr
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -80,8 +85,13 @@ class dtype_index_class(index_abc):
         # remove this eventually - Plugin Manager should manage this on its own
         # dict by plugin_id: reference on imported Python plugin modules
         self._plugin_modules = get_plugin_modules()
+        self._plugin_module_names = get_plugin_module_names()
         # TODO </HACK>
 
+        self._imports = dtype_imports_class(
+            modules = self._plugin_modules,
+            module_names = self._plugin_module_names,
+            )
         self._repos_wrapper = _repos_wrapper_class(
             repos = self._repos,
             index = self,
@@ -89,7 +99,7 @@ class dtype_index_class(index_abc):
             )
         self._plugins_wrapper = _plugins_wrapper_class(
             plugins = self._plugins,
-            modules = self._plugin_modules,
+            imports = self._imports,
             index = self,
             config = self._config,
             )
@@ -388,22 +398,21 @@ class _plugins_wrapper_class:
     Mutable.
     """
 
-    def __init__(self, plugins, modules, index, config):
+    def __init__(self, plugins, imports, index, config):
 
         if not isinstance(plugins, dict):
             raise QgistTypeError(tr('"plugins" must be a dict'))
         if len(plugins) != 0:
             raise QgistValueError(tr('"plugins" must be empty'))
-        if not isinstance(modules, dict):
-            raise QgistTypeError(tr('"modules" must be a dict'))
-        # TODO check modules content
+        if not isinstance(imports, imports_abc):
+            raise QgistTypeError(tr('"imports" must be an import object'))
         if not isinstance(index, index_abc):
             raise QgistTypeError(tr('"index" must be an index'))
         if not isinstance(config, settings_abc):
             raise QgistTypeError(tr('"config" must be a settings object'))
 
         self._plugins = plugins
-        self._modules = modules
+        self._imports = imports
         self._index = index
         self._config = config
 
