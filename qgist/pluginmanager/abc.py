@@ -34,6 +34,9 @@ import abc
 # ABCs
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class metadata_abc(abc.ABC):
+    pass
+
 class pluginrelease_abc(abc.ABC):
     pass
 

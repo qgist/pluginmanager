@@ -36,6 +36,7 @@ import os
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from .abc import (
+    metadata_abc,
     pluginrelease_abc,
     repository_abc,
     settings_abc,
@@ -85,7 +86,7 @@ class dtype_pluginrelease_base_class(pluginrelease_abc):
             raise QgistTypeError(tr('"deprecated" must be a bool.'))
         if not isinstance(installed, bool):
             raise QgistTypeError(tr('"installed" must be a bool.'))
-        if not isinstance(meta, dtype_metadata_class):
+        if not isinstance(meta, metadata_abc):
             raise QgistTypeError(tr('"meta" must be meta data.'))
         if not isinstance(path, str) and path is not None:
             raise QgistTypeError(tr('"path" must be a str or None.'))
@@ -221,7 +222,7 @@ class dtype_pluginrelease_base_class(pluginrelease_abc):
     def fix_meta_by_inspecting_plugindir(cls, meta, path):
         "Attempts to guess missing meta data fields by looking at plugin source code"
 
-        if not isinstance(meta, dtype_metadata_class):
+        if not isinstance(meta, metadata_abc):
             raise QgistTypeError(tr('"meta" bust be meta data'))
         if not isinstance(path, str):
             raise QgistTypeError(tr('"path" must be str'))

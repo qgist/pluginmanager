@@ -36,6 +36,7 @@ from typing import Generator, Iterator
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .abc import metadata_abc
 from .metadata_spec import METADATA_FIELDS_SPEC
 from .dtype_metadata_field import dtype_metadata_field_class
 from .error import (
@@ -54,7 +55,7 @@ from ..util import tr
 # CLASS: META DATA
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_metadata_class:
+class dtype_metadata_class(metadata_abc):
     """
     Meta data of one single plugin
 
