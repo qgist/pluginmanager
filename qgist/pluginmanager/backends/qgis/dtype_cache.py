@@ -67,6 +67,8 @@ class dtype_cache_class(cache_abc):
         if len(prefix) == 0:
             raise QgistValueError(tr('"prefix" must not be empty'))
 
+        prefix = hashlib.sha256(prefix.encode('utf-8')).hexdigest()[:8]
+
         path = os.path.join(get_config_path(), REPO_CACHE_FLD, prefix)
         self._ensure_path(path)
 
