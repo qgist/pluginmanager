@@ -29,6 +29,7 @@ specific language governing rights and limitations under the License.
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from .abc import (
+    index_abc,
     repository_abc,
     settings_abc,
     )
@@ -59,7 +60,7 @@ from ..util import tr
 # CLASS: INDEX
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_index_class:
+class dtype_index_class(index_abc):
     """
     Index (root) - holds plugins and repositories
 

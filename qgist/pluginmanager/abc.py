@@ -34,6 +34,9 @@ import abc
 # ABCs
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class index_abc(abc.ABC):
+    pass
+
 class metadata_abc(abc.ABC):
     pass
 
