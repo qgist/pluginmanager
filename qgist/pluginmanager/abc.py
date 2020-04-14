@@ -39,3 +39,9 @@ class pluginrelease_abc(abc.ABC):
 
 class repository_abc(abc.ABC):
     pass
+
+class settings_abc(abc.ABC):
+    pass
+
+class settings_group_abc(abc.ABC):
+    pass

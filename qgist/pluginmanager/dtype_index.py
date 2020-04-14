@@ -28,7 +28,10 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .abc import repository_abc
+from .abc import (
+    repository_abc,
+    settings_abc,
+    )
 from .const import (
     # CONFIG_GROUP_MANAGER_REPOS,
     CONFIG_KEY_ALLOW_DEPRECATED,
@@ -43,7 +46,6 @@ from .error import (
     QgistRepoError,
     )
 from .dtype_plugin import dtype_plugin_class
-from .dtype_settings import dtype_settings_class
 
 from ..error import (
     QgistIndexError,
@@ -66,7 +68,7 @@ class dtype_index_class:
 
     def __init__(self, config):
 
-        if not isinstance(config, dtype_settings_class):
+        if not isinstance(config, settings_abc):
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
         self._config = config

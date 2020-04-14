@@ -42,6 +42,10 @@ from PyQt5.QtCore import QDate
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .abc import (
+    settings_abc,
+    settings_group_abc,
+    )
 from .const import CONFIG_DELIMITER
 from ..config import config_class
 from ..error import (
@@ -55,7 +59,7 @@ from ..util import tr
 # CLASS: SETTINGS MAIN
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_settings_class:
+class dtype_settings_class(settings_abc):
     """
     Transparent wrapper around QgsSettings - so it can be exchanged (for testing etc)
     Class enables redundant storage of settings: Into QgsSettings *and* config_class.
@@ -246,7 +250,7 @@ class dtype_settings_class:
 # CLASS: SETTINGS GROUP
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_settings_group_class:
+class dtype_settings_group_class(settings_group_abc):
     """
     Mimics QgsSettings.beginGroup & QgsSettings.endGroup
 
