@@ -64,7 +64,11 @@ from qgis.core import (
 
 # TODO <HACK>
 # remove this eventually - Plugin Manager should manage this on its own
-from qgis.utils import plugins as _plugins
+from qgis.utils import (
+    plugins as _plugins,
+    _plugin_modules,
+    _builtin_import,
+    )
 # TODO </HACK>
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -89,6 +93,14 @@ def get_qgis_settings(default):
 def get_plugin_modules():
 
     return _plugins
+
+def get_plugin_module_names():
+
+    return _plugin_modules
+
+def get_builtin_import():
+
+    return _builtin_import # builtins.__import__
 # TODO </HACK>
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
