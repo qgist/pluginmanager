@@ -78,16 +78,33 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
 # API
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    """
-
     def install(self):
 
         self._fetch_from_remote_to_cache_file()
         self._check_file_in_cache()
         self._update_metadata_from_cache_file()
+
+        # TODO handle dependencies somewhere here
+
         self._unpack_from_cache_file_to_install_fld()
 
-    """
+    def uninstall(self):
+
+        if self._path is None:
+            raise QgistValueError(tr(''))
+        if not self.is_python_plugin_dir(self._path):
+            raise QgistValueError(tr('release path does not point to valid plugin'))
+        if not os.access(self._path, os.W_OK | os.R_OK):
+            raise QgistValueError(tr('release path is not writeable and/or readable'))
+        if not os.access(os.path.abspath(os.path.join(self._path, '..')), os.W_OK | os.R_OK):
+            raise QgistValueError(tr('parent of release path is not writeable and/or readable'))
+
+        try:
+            shutil.rmtree(self._path)
+        except Exception as e:
+            raise QgistValueError(tr('removing release failed'), e)
+
+        self._path = None
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # HELPER
@@ -177,12 +194,14 @@ class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
             except Exception as e:
                 raise QgistValueError(tr('Moving unpacked plugin to default QGIS plugin installation path failed'), e)
 
-        if not self.is_python_plugin_dir(os.path.join(install_fld, self._id)):
+        path = os.path.join(install_fld, self._id)
+        if not self.is_python_plugin_dir(path):
             raise QgistValueError(tr('Moved unpacked plugin is no valid plugin'))
+        self._path = path
 
         self.fix_meta_by_inspecting_plugindir(
             meta = self._meta,
-            path = os.path.join(install_fld, self._id),
+            path = self._path,
             )
 
     def _get_dependencies(self, fetch = False):
