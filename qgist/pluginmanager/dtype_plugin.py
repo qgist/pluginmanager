@@ -35,6 +35,7 @@ from typing import Generator, Iterator
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from .abc import (
+    plugin_abc,
     pluginrelease_abc,
     settings_abc,
     )
@@ -52,7 +53,7 @@ from ..util import tr
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_plugin_class:
+class dtype_plugin_class(plugin_abc):
     """
     One single plugin
 

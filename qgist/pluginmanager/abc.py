@@ -40,6 +40,9 @@ class index_abc(abc.ABC):
 class metadata_abc(abc.ABC):
     pass
 
+class plugin_abc(abc.ABC):
+    pass
+
 class pluginrelease_abc(abc.ABC):
     pass
 
