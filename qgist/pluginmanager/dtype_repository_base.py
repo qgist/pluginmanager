@@ -34,13 +34,15 @@ from typing import Generator, Iterator
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .abc import repository_abc
+from .abc import (
+    pluginrelease_abc,
+    repository_abc,
+    )
 from .const import (
     CONFIG_GROUP_MANAGER_REPOS,
     CONFIG_KEY_CACHE,
     )
 from .backends import backends
-from .dtype_pluginrelease_base import dtype_pluginrelease_base_class
 from .dtype_settings import (
     dtype_settings_group_class,
     dtype_settings_class,
@@ -89,7 +91,7 @@ class dtype_repository_base_class(repository_abc):
         if not any((isinstance(plugin_releases, dtype) for dtype in (Generator, Iterator, list, tuple))):
             raise QgistTypeError(tr('"plugin_releases" must be any of the following: list, tuple, generator, iterator.'))
         plugin_releases = list(plugin_releases)
-        if not all((isinstance(release, dtype_pluginrelease_base_class) for release in plugin_releases)):
+        if not all((isinstance(release, pluginrelease_abc) for release in plugin_releases)):
             raise QgistTypeError(tr('All releases must be plugin releases.'))
         if not isinstance(config_group, dtype_settings_group_class):
             raise QgistTypeError(tr('"config_group" must be a "dtype_settings_group_class" object.'))
@@ -119,7 +121,7 @@ class dtype_repository_base_class(repository_abc):
 
     def __contains__(self, test_release):
 
-        if not isinstance(test_release, dtype_pluginrelease_base_class):
+        if not isinstance(test_release, pluginrelease_abc):
             raise QgistTypeError(tr('"release" must be a release'))
 
         return any((

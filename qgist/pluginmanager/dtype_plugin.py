@@ -34,9 +34,9 @@ from typing import Generator, Iterator
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .abc import pluginrelease_abc
 from .backends import backends
 from .error import QgistNotAPluginDirectoryError
-from .dtype_pluginrelease_base import dtype_pluginrelease_base_class
 from .dtype_settings import dtype_settings_class
 
 from ..error import (
@@ -68,12 +68,12 @@ class dtype_plugin_class:
             raise QgistTypeError(tr('"plugin_id" must be a str.'))
         if len(plugin_id) == 0:
             raise QgistValueError(tr('"plugin_id" must not be empty.'))
-        if not isinstance(installed_release, dtype_pluginrelease_base_class) and installed_release is not None:
+        if not isinstance(installed_release, pluginrelease_abc) and installed_release is not None:
             raise QgistTypeError(tr('"installed_release" must be a plugin release or None'))
         if not any((isinstance(available_releases, dtype) for dtype in (Generator, Iterator, list, tuple))):
             raise QgistTypeError(tr('"available_releases" must be any of the following: list, tuple, generator, iterator.'))
         available_releases = list(available_releases)
-        if not all((isinstance(release, dtype_pluginrelease_base_class) for release in available_releases)):
+        if not all((isinstance(release, pluginrelease_abc) for release in available_releases)):
             raise QgistTypeError(tr('All available releases must be plugin releases.'))
         if any((release.installed for release in available_releases)):
             raise QgistValueError(tr('An installed release can not be available'))
@@ -118,7 +118,7 @@ class dtype_plugin_class:
 
     def __contains__(self, test_release):
 
-        if not isinstance(test_release, dtype_pluginrelease_base_class):
+        if not isinstance(test_release, pluginrelease_abc):
             raise QgistTypeError(tr('"release" must be a release'))
 
         return any((
@@ -222,7 +222,7 @@ class dtype_plugin_class:
     def add_release(self, new_release):
         "Add a potentially new and uninstalled but available release"
 
-        if not isinstance(new_release, dtype_pluginrelease_base_class):
+        if not isinstance(new_release, pluginrelease_abc):
             raise QgistTypeError(tr('"new_release" must be a release'))
         if new_release in self:
             raise QgistValueError(tr('"new_release" is already part of this plugin'))
@@ -374,7 +374,7 @@ class dtype_plugin_class:
     @classmethod
     def from_uninstalled_release(cls, release):
 
-        if not isinstance(release, dtype_pluginrelease_base_class):
+        if not isinstance(release, pluginrelease_abc):
             raise QgistTypeError(tr('"release" must be a plugin release'))
         if release.installed:
             raise QgistValueError(tr('"release" must not be installed'))
