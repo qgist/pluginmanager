@@ -32,6 +32,7 @@ from .abc import imports_abc
 
 from ..error import QgistTypeError
 from ..util import tr
+from ..qgis_api import get_builtin_import
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CLASS: IMPORT
@@ -58,6 +59,8 @@ class dtype_imports_class(imports_abc):
 
         self._modules = modules
         self._module_names = module_names
+
+        self._import = get_builtin_import() # represents builtins.__import__
 
     def __repr__(self):
 
