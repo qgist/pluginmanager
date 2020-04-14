@@ -35,6 +35,7 @@ import os
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .abc import repository_abc
 from .error import QgistNotAPluginDirectoryError
 from .dtype_metadata import dtype_metadata_class
 from .dtype_settings import dtype_settings_class
@@ -98,6 +99,8 @@ class dtype_pluginrelease_base_class:
         self._installed = installed
         self._meta = meta
         self._path = path # None if not locally installed
+
+        self._repo = None
 
     def __repr__(self):
 
@@ -167,6 +170,16 @@ class dtype_pluginrelease_base_class:
     @property
     def repo_type(self):
         return self._repo_type
+
+    @property
+    def repo(self):
+        return self._repo
+
+    @repo.setter
+    def repo(self, parent_repo):
+        if not isinstance(parent_repo, repository_abc) and parent_repo is not None:
+            raise QgistTypeError(tr('"parent_repo" must be a repository or None'))
+        self._repo = parent_repo
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # HELPER
