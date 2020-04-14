@@ -306,12 +306,6 @@ class dtype_plugin_class(plugin_abc):
         release.install()
         self._installed_release = release
 
-    # def validate_install(self):
-    #     """
-    #     Post-install or post-update/-downgrade checks of files and folders
-    #     """
-    #     raise QgistNotImplementedError()
-
     def uninstall(self):
         "Uninstalled the currently installed plugin release"
         # TODO Should allow dry runs
@@ -326,12 +320,6 @@ class dtype_plugin_class(plugin_abc):
 
         self._installed_release.uninstall()
         self._installed_release = None
-
-    # def validate_uninstall(self):
-    #     """
-    #     Post-uninstall checks of files and folders
-    #     """
-    #     raise QgistNotImplementedError()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # LOADING / UNLOADING
