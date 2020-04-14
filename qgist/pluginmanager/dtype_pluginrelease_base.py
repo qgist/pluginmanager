@@ -38,10 +38,10 @@ import os
 from .abc import (
     pluginrelease_abc,
     repository_abc,
+    settings_abc,
     )
 from .error import QgistNotAPluginDirectoryError
 from .dtype_metadata import dtype_metadata_class
-from .dtype_settings import dtype_settings_class
 from .dtype_version import dtype_version_class
 
 from ..error import (
@@ -310,7 +310,7 @@ class dtype_pluginrelease_base_class(pluginrelease_abc):
             raise QgistTypeError(tr('"path" must be str'))
         if not cls.is_python_plugin_dir(path):
             raise QgistNotAPluginDirectoryError(tr('"path" does not point to a plugin'))
-        if not isinstance(config, dtype_settings_class): # TODO unused (?)
+        if not isinstance(config, settings_abc): # TODO unused (?)
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
         with open(os.path.join(path, 'metadata.txt'), 'r', encoding = 'utf-8') as f: # TODO is this always UTF-8?
