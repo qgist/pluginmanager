@@ -47,7 +47,7 @@ from .error import (
     QgistPluginIdCollisionError,
     QgistRepoError,
     )
-from .dtype_import import dtype_imports_class
+from .dtype_imports import dtype_imports_class
 from .dtype_plugin import dtype_plugin_class
 
 from ..error import (

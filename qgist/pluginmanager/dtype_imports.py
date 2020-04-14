@@ -6,7 +6,7 @@ QGIST PLUGIN MANAGER
 QGIS Plugin for Managing QGIS Plugins
 https://github.com/qgist/pluginmanager
 
-    qgist/pluginmanager/dtype_import.py: Importing and tracking plugin modules
+    qgist/pluginmanager/dtype_imports.py: Importing and tracking plugin modules
 
     Copyright (C) 2017-2020 QGIST project <info@qgist.org>
 
