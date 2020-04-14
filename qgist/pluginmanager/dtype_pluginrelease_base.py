@@ -129,6 +129,7 @@ class dtype_pluginrelease_base_class(pluginrelease_abc):
             # self.has_processingprovider == other.has_processingprovider,
             # self.has_serverfuncs == other.has_serverfuncs,
             self.repo_type == other.repo_type,
+            (self.repo is other.repo) if (self.repo is not None and other.repo is not None) else True,
             )) # TODO check deprecated?
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
