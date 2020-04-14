@@ -20,6 +20,7 @@ This is a CPython 3.6+ project. Keep exposure to PyQt and QGIS APIs to a minimum
 Exceptions (i.e. current dependencies beyond PyQt):
 
 - xmltodict
+- coverage (for testing)
 
 ## Screenshots
 

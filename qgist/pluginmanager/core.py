@@ -85,6 +85,14 @@ class pluginmanager:
 
     def __init__(self, iface, plugin_root_fld):
 
+        # TODO <HACK>
+        from coverage import Coverage
+        self._cov = Coverage(
+            source = os.path.abspath( os.path.join(os.path.dirname(__file__), '..', '..') )
+            )
+        self._cov.start()
+        # TODO </HACK>
+
         if not conforms_to_spec(iface, IFACE_SPEC):
             raise QgistTypeError(tr('"iface" must be a QGIS iface object'))
         if not isinstance(plugin_root_fld, str):
@@ -154,3 +162,8 @@ class pluginmanager:
 
         for cleanup_action in self._ui_cleanup:
             cleanup_action()
+
+        # TODO <HACK>
+        self._cov.stop()
+        self._cov.html_report(directory = '.covhtml')
+        # TODO </HACK>

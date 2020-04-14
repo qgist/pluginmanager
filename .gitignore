@@ -12,3 +12,5 @@ staging*.py
 .ipynb_checkpoints
 *.ipynb
 plugins.xml*
+.coverage
+.covhtml/
