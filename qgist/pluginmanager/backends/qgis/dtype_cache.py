@@ -37,6 +37,8 @@ import zipfile
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .abc import cache_abc
+
 from ...const import REPO_CACHE_FLD
 
 from ....config import get_config_path
@@ -51,7 +53,7 @@ from ....util import tr
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_cache_class:
+class dtype_cache_class(cache_abc):
     """
     Cache for holding (and managing) plugin ZIP-files locally
 
