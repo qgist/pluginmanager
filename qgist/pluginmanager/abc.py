@@ -34,6 +34,9 @@ import abc
 # ABCs
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class import_abc(abc.ABC):
+    pass
+
 class index_abc(abc.ABC):
     pass
 
