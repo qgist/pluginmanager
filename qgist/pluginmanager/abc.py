@@ -34,5 +34,8 @@ import abc
 # ABCs
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class pluginrelease_abc(abc.ABC):
+    pass
+
 class repository_abc(abc.ABC):
     pass

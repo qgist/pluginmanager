@@ -35,7 +35,10 @@ import os
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .abc import repository_abc
+from .abc import (
+    pluginrelease_abc,
+    repository_abc,
+    )
 from .error import QgistNotAPluginDirectoryError
 from .dtype_metadata import dtype_metadata_class
 from .dtype_settings import dtype_settings_class
@@ -51,7 +54,7 @@ from ..util import tr
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_pluginrelease_base_class:
+class dtype_pluginrelease_base_class(pluginrelease_abc):
     """
     A release of a certain plugin, one version from one backend
 
