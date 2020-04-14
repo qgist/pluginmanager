@@ -34,6 +34,7 @@ import re
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .abc import version_abc
 from .const import (
     VERSION_PREFIXES,
     VERSION_UNSTABLE_SUFFIXES,
@@ -51,7 +52,7 @@ from ..util import tr
 # CLASS
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class dtype_version_class:
+class dtype_version_class(version_abc):
     """
     Allows to represent and compare versions (of QGIS and plugins)
 

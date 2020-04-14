@@ -45,3 +45,6 @@ class settings_abc(abc.ABC):
 
 class settings_group_abc(abc.ABC):
     pass
+
+class version_abc(abc.ABC):
+    pass
