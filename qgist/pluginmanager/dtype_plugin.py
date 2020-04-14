@@ -34,10 +34,12 @@ from typing import Generator, Iterator
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .abc import pluginrelease_abc
+from .abc import (
+    pluginrelease_abc,
+    settings_abc,
+    )
 from .backends import backends
 from .error import QgistNotAPluginDirectoryError
-from .dtype_settings import dtype_settings_class
 
 from ..error import (
     QgistNotImplementedError,
@@ -350,7 +352,7 @@ class dtype_plugin_class:
             raise QgistTypeError(tr('"path" must be str'))
         if not backends[repo_type].dtype_pluginrelease_class.is_python_plugin_dir(path):
             raise QgistNotAPluginDirectoryError(tr('"path" does not point to a plugin'))
-        if not isinstance(config, dtype_settings_class):
+        if not isinstance(config, settings_abc):
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
         if not isinstance(protected, bool):
             raise QgistTypeError(tr('"protected" must be a bool'))

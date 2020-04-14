@@ -46,6 +46,10 @@ import xmltodict
 
 from .dtype_pluginrelease import dtype_pluginrelease_class
 
+from ...abc import (
+    settings_abc,
+    settings_group_abc,
+    )
 from ...const import (
     CONFIG_DELIMITER,
     CONFIG_GROUP_QGISLEGACY_REPOS,
@@ -57,10 +61,6 @@ from ...error import (
     )
 from ...dtype_plugin import dtype_plugin_class
 from ...dtype_repository_base import dtype_repository_base_class
-from ...dtype_settings import (
-    dtype_settings_group_class,
-    dtype_settings_class,
-    )
 from ...dtype_version import dtype_version_class
 
 from ....error import (
@@ -197,7 +197,7 @@ class dtype_repository_class(dtype_repository_base_class):
     @classmethod
     def get_repo_config_groups(cls, config):
 
-        if not isinstance(config, dtype_settings_class):
+        if not isinstance(config, settings_abc):
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
 
         qgislegacy_group = config.get_group(CONFIG_GROUP_QGISLEGACY_REPOS)
@@ -216,7 +216,7 @@ class dtype_repository_class(dtype_repository_base_class):
         Returns: All installed plugins, one (installed) release each
         """
 
-        if not isinstance(config, dtype_settings_class):
+        if not isinstance(config, settings_abc):
             raise QgistTypeError(tr('"config" must be a "dtype_settings_class" object.'))
         if not isinstance(protected, bool):
             raise QgistTypeError(tr('"protected" must be a bool'))
@@ -249,8 +249,8 @@ class dtype_repository_class(dtype_repository_base_class):
     @classmethod
     def from_default(cls, config):
 
-        if not isinstance(config, dtype_settings_class):
-            raise QgistTypeError(tr('"config_group" is not a group of settings'))
+        if not isinstance(config, settings_abc):
+            raise QgistTypeError(tr('"config" is not settings'))
 
         name = tr('QGIS Official Python Plugin Repository')
         repo_id = f'{name:s} ({random.randint(2**31, 2**32 - 1):x})' # avoid collisions!
@@ -271,7 +271,7 @@ class dtype_repository_class(dtype_repository_base_class):
     @classmethod
     def from_config(cls, config_group):
 
-        if not isinstance(config_group, dtype_settings_group_class):
+        if not isinstance(config_group, settings_group_abc):
             raise QgistTypeError(tr('"config_group" is not a group of settings'))
 
         protected = config_group.settings.str_to_bool(config_group.get('protected', None))
