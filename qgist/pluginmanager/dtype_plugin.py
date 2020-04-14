@@ -40,7 +40,12 @@ from .abc import (
     settings_abc,
     )
 from .backends import backends
-from .error import QgistNotAPluginDirectoryError
+from .error import (
+    QgistNotAPluginDirectoryError,
+    QgistIsInstalledError,
+    QgistIsNotInstalledError,
+    QgistProtectedError,
+    )
 
 from ..error import (
     QgistNotImplementedError,
@@ -140,16 +145,6 @@ class dtype_plugin_class(plugin_abc):
     @property
     def installed(self):
         return self._installed_release is not None
-    @installed.setter
-    def installed(self, value):
-        if not isinstance(value, bool):
-            raise QgistTypeError(tr('"value" must be a bool.'))
-        if value == (self._installed_release is not None):
-            return
-        if value:
-            self.install()
-        else:
-            self.uninstall()
 
     @property
     def protected(self):
@@ -157,11 +152,15 @@ class dtype_plugin_class(plugin_abc):
 
     @property
     def active(self):
+        if not self.installed:
+            return False
         return self._active
     @active.setter
     def active(self, value):
         if not isinstance(value, bool):
             raise QgistTypeError(tr('"value" must be a bool.'))
+        if not self.installed:
+            raise QgistIsNotInstalledError(tr('plugin is not installed'))
         if value == self._active:
             return
         if value:
@@ -259,45 +258,80 @@ class dtype_plugin_class(plugin_abc):
 # INSTALL / UNINSTALL
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def install(self):
-        """
-        Allows dry runs
-        Sets installed to True!
-        """
-        raise QgistNotImplementedError()
+    def install(self,
+        release = None,
+        allow_typechange = False,
+        allow_sameversion = False, allow_downgrade = False, allow_update = True,
+        ):
+        "Installs a plugin release"
+        # TODO Should allow dry runs
 
-    def validate_install(self):
-        """
-        Post-install or post-update/-downgrade checks of files and folders
-        """
-        raise QgistNotImplementedError()
+        if self._protected:
+            raise QgistProtectedError(tr('this plugin is protected'))
+
+        if release is None:
+            release = self._available_releases[-1] # take the newest from repo with highest priority
+
+        if not isinstance(release, pluginrelease_abc):
+            raise QgistTypeError(tr('"release" must be a plugin release'))
+        if release.id != self._id:
+            raise QgistValueError(tr('"release" does not belong to this plugin'))
+        if release not in self:
+            raise QgistValueError(tr('"release" is not available'))
+
+        if not isinstance(allow_typechange, bool):
+            raise QgistTypeError(tr('"allow_typechange" must be bool'))
+        if not isinstance(allow_sameversion, bool):
+            raise QgistTypeError(tr('"allow_sameversion" must be bool'))
+        if not isinstance(allow_downgrade, bool):
+            raise QgistTypeError(tr('"allow_downgrade" must be bool'))
+        if not isinstance(allow_update, bool):
+            raise QgistTypeError(tr('"allow_update" must be bool'))
+
+        def _uninstall(allow_x, msg):
+            if not allow_x:
+                raise QgistIsInstalledError(msg)
+            if self._installed_release.repo_type != release.repo_type and not allow_typechange:
+                raise QgistIsInstalledError(tr('change of repo type not allowed'))
+            self.uninstall()
+
+        if self.installed:
+            if self._installed_release.version == release.version:
+                _uninstall(allow_sameversion, tr('plugin release is already installed'))
+            elif self._installed_release.version > release.version:
+                _uninstall(allow_downgrade, tr('plugin would be downgraded'))
+            elif self._installed_release.version < release.version:
+                _uninstall(allow_update, tr('plugin would be updated'))
+
+        release.install()
+        self._installed_release = release
+
+    # def validate_install(self):
+    #     """
+    #     Post-install or post-update/-downgrade checks of files and folders
+    #     """
+    #     raise QgistNotImplementedError()
 
     def uninstall(self):
-        """
-        Allows dry runs
-        Sets installed to False!
-        """
-        raise QgistNotImplementedError()
+        "Uninstalled the currently installed plugin release"
+        # TODO Should allow dry runs
 
-    def validate_uninstall(self):
-        """
-        Post-uninstall checks of files and folders
-        """
-        raise QgistNotImplementedError()
+        if self._protected:
+            raise QgistProtectedError(tr('this plugin is protected'))
+        if not self.installed:
+            raise QgistIsNotInstalledError(tr('plugin is not installed'))
 
-    def upgrade(self, version):
-        """
-        Allows dry runs
-        Also allows (intentional) downgrades
-        """
-        raise QgistNotImplementedError()
+        if self._active:
+            self.unload()
 
-    def get_versions(self):
-        """
-        Get versions of plugin
-        Filter versions compatible to QGIS version
-        """
-        raise QgistNotImplementedError()
+        self._installed_release.uninstall()
+        self._installed_release = None
+
+    # def validate_uninstall(self):
+    #     """
+    #     Post-uninstall checks of files and folders
+    #     """
+    #     raise QgistNotImplementedError()
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # LOADING / UNLOADING
