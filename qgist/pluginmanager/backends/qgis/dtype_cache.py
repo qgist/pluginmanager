@@ -134,7 +134,7 @@ class dtype_cache_class(cache_abc):
         "Translates filename to cache sub-directories, i.e. its location in cache"
 
         filename_hash = hashlib.sha256(filename.encode('utf-8')).hexdigest()
-        return filename_hash[:2], filename_hash[2:4]
+        return filename_hash[0], filename_hash[1]
 
     def _refresh(self):
         "Refreshes, i.e. rebuilds, the _files dict mapping filenames to absolute paths"
