@@ -28,6 +28,7 @@ specific language governing rights and limitations under the License.
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .abc import repository_abc
 from .const import (
     # CONFIG_GROUP_MANAGER_REPOS,
     CONFIG_KEY_ALLOW_DEPRECATED,
@@ -42,7 +43,6 @@ from .error import (
     QgistRepoError,
     )
 from .dtype_plugin import dtype_plugin_class
-from .dtype_repository_base import dtype_repository_base_class
 from .dtype_settings import dtype_settings_class
 
 from ..error import (
@@ -263,7 +263,7 @@ class _repos_wrapper_class:
     def add(self, repo):
         "Add a repository"
 
-        if not isinstance(repo, dtype_repository_base_class):
+        if not isinstance(repo, repository_abc):
             raise QgistTypeError(tr('"repo" is not a repo'))
         if repo.id in self.keys():
             raise QgistValueError(tr('"repo" can not be added - its id is already in list'))
