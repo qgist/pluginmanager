@@ -46,6 +46,7 @@ from .error import QgistNotAPluginDirectoryError
 from .dtype_metadata import dtype_metadata_class
 
 from ..error import (
+    QgistNotImplementedError,
     QgistTypeError,
     QgistValueError,
     )
@@ -187,12 +188,25 @@ class dtype_pluginrelease_base_class(pluginrelease_abc):
         self._repo = parent_repo
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# API
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def install(self):
+        raise QgistNotImplementedError()
+
+    def uninstall(self):
+        raise QgistNotImplementedError()
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # HELPER
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @staticmethod
     def is_python_plugin_dir(in_path):
         "Does a given folder contain a QGIS plugin?"
+
+        if not isinstance(in_path, str):
+            raise QgistTypeError(tr('"in_path" must be a str'))
 
         if not os.path.isdir(in_path):
             return False
@@ -206,6 +220,9 @@ class dtype_pluginrelease_base_class(pluginrelease_abc):
     @classmethod
     def fix_meta_by_setting_defaults(cls, meta):
         "Attempts to fix missing meta data fields by setting them to their defaults"
+
+        if not isinstance(meta, metadata_abc):
+            raise QgistTypeError(tr('"meta" must be meta data'))
 
         if not meta['experimental'].value_set:
             meta['experimental'].value = meta['experimental'].default_value
