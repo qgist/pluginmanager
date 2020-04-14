@@ -51,3 +51,12 @@ class QgistMetaTxtError(Exception):
 
 class QgistPluginIdCollisionError(Exception):
     pass
+
+class QgistIsInstalledError(Exception):
+    pass
+
+class QgistIsNotInstalledError(Exception):
+    pass
+
+class QgistProtectedError(Exception):
+    pass
