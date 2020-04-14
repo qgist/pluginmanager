@@ -174,6 +174,10 @@ class dtype_repository_base_class(repository_abc):
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @property
+    def cache(self):
+        raise QgistNotImplementedError()
+
+    @property
     def url(self):
         raise QgistNotImplementedError()
 

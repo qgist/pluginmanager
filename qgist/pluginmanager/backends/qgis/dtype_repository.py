@@ -44,6 +44,7 @@ import xmltodict
 # IMPORT (Internal)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from .dtype_cache import dtype_cache_class
 from .dtype_pluginrelease import dtype_pluginrelease_class
 
 from ...abc import (
@@ -91,12 +92,22 @@ class dtype_repository_class(dtype_repository_base_class):
 
     _repo_type = REPO_BACKEND_QGISLEGACYPYTHON
 
-    def __init__(self, *args,
+    def __init__(self,
         valid = None, authcfg = None, url = None,
         **kwargs,
         ):
 
-        super().__init__(*args, **kwargs)
+        if 'repo_id' not in kwargs.keys():
+            raise QgistValueError('"repo_id" missing')
+        repo_id = kwargs['repo_id']
+        if not isinstance(repo_id, str):
+            raise QgistTypeError(tr('"repo_id" must be a str.'))
+        if len(repo_id) == 0:
+            raise QgistValueError(tr('"repo_id" must not be empty.'))
+
+        self._cache = dtype_cache_class(repo_id)
+
+        super().__init__(**kwargs)
 
         if not isinstance(valid, bool):
             raise QgistTypeError(tr('"valid" must be bool'))
@@ -114,6 +125,10 @@ class dtype_repository_class(dtype_repository_base_class):
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # SPECIAL PROPERTIES (ONLY THIS REPO TYPE)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @property
+    def cache(self):
+        return self._cache
 
     @property
     def url(self):

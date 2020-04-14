@@ -38,6 +38,7 @@ import shutil
 
 from .dtype_cache import dtype_cache_class
 
+from ...abc import repository_abc
 from ...const import REPO_BACKEND_QGISLEGACYPYTHON
 from ...dtype_metadata import dtype_metadata_class
 from ...dtype_pluginrelease_base import dtype_pluginrelease_base_class
@@ -56,7 +57,22 @@ from ....util import tr
 class dtype_pluginrelease_class(dtype_pluginrelease_base_class):
 
     _repo_type = REPO_BACKEND_QGISLEGACYPYTHON
-    _cache = dtype_cache_class(_repo_type)
+    _cache = dtype_cache_class(_repo_type) # will be overwritten by repo cache
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PROPERTIES
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @property
+    def repo(self):
+        return self._repo
+
+    @repo.setter
+    def repo(self, parent_repo):
+        if not isinstance(parent_repo, repository_abc) and parent_repo is not None:
+            raise QgistTypeError(tr('"parent_repo" must be a repository or None'))
+        self._repo = parent_repo
+        self._cache = self._repo.cache
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # API
