@@ -107,3 +107,48 @@
     - `plugin_times` (UNUSED)
 - returns
     - `True`/`False` (success)
+
+## `def startProcessingPlugin(packageName: str) -> bool`
+
+- does
+    - starts plugin processing
+    - "initialize only the Processing components of a plugin"
+- calls
+    - `_startPlugin(packageName)`
+    - `_unloadPluginModules(packageName)` (if exception or `initProcessing` not present)
+    - `plugins[packageName].initProcessing()`
+    - `_addToActivePlugins(packageName, end - start)`
+- GLOBALS
+    - `plugins` (READ: `plugins[packageName].initProcessing()` | WRITE: `del plugins[packageName]` if exception)
+    - `active_plugins` (UNUSED)
+    - `iface` (UNUSED)
+    - `plugin_times` (UNUSED)
+- returns
+    - `True`/`False` (success)
+
+## `def canUninstallPlugin(packageName: str) -> bool`
+
+- does
+    - Check if
+        - plugin is active (`active_plugins`)
+        - plugin in in `plugins` (results of `classFactory`)
+    - "confirm that the plugin can be uninstalled"
+- calls
+    - `plugins[packageName].canBeUninstalled()` if `canBeUninstalled` is present
+- GLOBALS
+    - `plugins` (READ)
+    - `active_plugins` (READ)
+- returns
+    - `True`/`False` (yes/no)
+
+## `def unloadPlugin(packageName: str) -> bool`
+
+- does
+    - try/except around actual unload function
+    - "unload and delete plugin!"
+- calls
+
+- GLOBALS
+
+- returns
+    - `True`/`False` (success)
