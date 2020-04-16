@@ -91,6 +91,7 @@ class dtype_index_class(index_abc):
         self._imports = dtype_imports_class(
             modules = self._plugin_modules,
             module_names = self._plugin_module_names,
+            index = self,
             )
         self._repos_wrapper = _repos_wrapper_class(
             repos = self._repos,
@@ -466,12 +467,14 @@ class _plugins_wrapper_class:
 # API
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    def keys(self, installed = None, deprecated = None):
+    def keys(self, installed = None, deprecated = None, active = None):
 
         if not isinstance(installed, bool) and installed is not None:
             raise QgistTypeError(tr('"installed" must be bool or None'))
         if not isinstance(deprecated, bool) and deprecated is not None:
             raise QgistTypeError(tr('"deprecated" must be bool or None'))
+
+        # TODO implement active filter
 
         return (
             plugin_id
@@ -482,12 +485,14 @@ class _plugins_wrapper_class:
                 ))
             )
 
-    def values(self, installed = None, deprecated = None):
+    def values(self, installed = None, deprecated = None, active = None):
 
         if not isinstance(installed, bool) and installed is not None:
             raise QgistTypeError(tr('"installed" must be bool or None'))
         if not isinstance(deprecated, bool) and deprecated is not None:
             raise QgistTypeError(tr('"deprecated" must be bool or None'))
+
+        # TODO implement active filter
 
         return (
             plugin
