@@ -70,7 +70,7 @@ class dtype_imports_class(imports_abc):
         if not isinstance(index, index_abc):
             raise QgistTypeError(tr('"index" must be an index'))
 
-        self._modules = modules
+        self._modules = modules # holds return values of `package.classFactory(iface)` (from `_startPlugin`)
         self._module_names = module_names
         self._index = index
 
