@@ -147,8 +147,21 @@
     - try/except around actual unload function
     - "unload and delete plugin!"
 - calls
-
+    - `plugins[packageName].unload()` (plugin GUI unload API)
+    - `_unloadPluginModules(packageName)`
 - GLOBALS
-
+    - `plugins` (WRITE: `del plugins[packageName]`)
+    - `active_plugins` (WRITE: `active_plugins.remove(packageName)`)
 - returns
     - `True`/`False` (success)
+
+## `def _unloadPluginModules(packageName: str)`
+
+- does
+    - Qt resources cleanups
+    - Deleting entries in `sys.modules` (dict)
+    - "unload plugin package with all its modules (files)"
+- calls
+    - `sys.modules[mod].qCleanupResources()` (for mod in `_plugin_modules[packageName]`) if present
+- GLOBALS
+    - `_plugin_modules` (WRITE: `del _plugin_modules[packageName]`)
