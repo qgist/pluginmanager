@@ -165,3 +165,70 @@
     - `sys.modules[mod].qCleanupResources()` (for mod in `_plugin_modules[packageName]`) if present
 - GLOBALS
     - `_plugin_modules` (WRITE: `del _plugin_modules[packageName]`)
+
+## `def isPluginLoaded(packageName: str) -> bool`
+
+- does
+    - check if plugin is present in dict
+    - "find out whether a plugin is active (i.e. has been started)"
+- GLOBALS
+    - `plugins` (READ)
+    - `active_plugins` (READ)
+- returns
+    - `True`/`False` (yes/no)
+
+## `def reloadPlugin(packageName: str)`
+
+- does
+    - "unload and start again a plugin"
+- calls
+    - `unloadPlugin(packageName)`
+    - `loadPlugin(packageName)`
+    - `startPlugin(packageName)`
+- GLOBALS
+    - `active_plugins` (READ)
+
+## `def showPluginHelp(packageName = None: str, filename="index": str, section="": str)`
+
+- does
+     - locates a localized help (index), opens it in browser
+     - "show a help in the user's html browser. The help file should be named index-ll_CC.html or index-ll.html"
+
+## `def pluginDirectory(packageName: str) -> str`
+
+- does
+    - locates plugin root directory (for one plugin)
+    - "return directory where the plugin resides. Plugin must be loaded already"
+- returns
+    - path (to plugin module root directory)
+
+## `def reloadProjectMacros()`
+
+- does
+    - no description, does not look like it's plugin related
+- calls
+    - `unloadProjectMacros()`
+    - `QgsProject.instance().readEntry("Macros", "/pythonCode")`
+    - `openProjectMacro()`
+
+## `def unloadProjectMacros()`
+
+- does
+    - no description, does not look like it's plugin related
+- calls
+    - `closeProjectMacro()`
+
+## `def openProjectMacro()`
+
+- does
+    - no description, does not look like it's plugin related
+
+## `def saveProjectMacro()`
+
+- does
+    - no description, does not look like it's plugin related
+
+## `def closeProjectMacro()`
+
+- does
+    - no description, does not look like it's plugin related
