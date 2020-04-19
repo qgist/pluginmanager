@@ -5,6 +5,7 @@
 
 - `iface`
     - Interface
+    - ASSIGNMENT: `initInterface()`
 - `plugin_paths = []`
     - list of plugin paths
     - ASSIGNMENT (C++): `QgsPythonUtilsImpl::checkSystemImports`
@@ -319,13 +320,17 @@ Variables created by `qgspythonutilsimpl.cpp`:
 ## GLOBALS
 
 - `server_plugin_paths = []`
-    list of plugin paths. it gets filled in by the QGIS python library
+    - list of plugin paths. Never filled ...
+    - UNUSED
 - `server_plugins = {}`
-    dictionary of plugins
+    - dictionary of plugins
+    - WRITE: `startServerPlugin()`
 - `server_active_plugins = []`
-    Interface
+    - Interface
+    - WRITE: `startServerPlugin()`
 - `serverIface = None`
-    initialize 'serverIface' object
+    - initialize 'serverIface' object
+    - ASSIGNMENT: `initServerInterface()`
 
 ## `def initServerInterface(pointer: int)`
 
