@@ -1,5 +1,7 @@
 
-# GLOBALS
+# BLOCK 1
+
+## GLOBALS
 
 - `iface`
     Interface
@@ -202,7 +204,7 @@
 - returns
     - path (to plugin module root directory)
 
-<!-- MACROS -->
+# BLOCK 2
 
 ## `def reloadProjectMacros()`
 
@@ -234,3 +236,16 @@
 
 - does
     - no description, does not look like it's plugin related
+
+# BLOCK 3
+
+## GLOBALS
+
+- `server_plugin_paths = []`
+    list of plugin paths. it gets filled in by the QGIS python library
+- `server_plugins = {}`
+    dictionary of plugins
+- `server_active_plugins = []`
+    Interface
+- `serverIface = None`
+    initialize 'serverIface' object
