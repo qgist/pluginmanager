@@ -202,6 +202,8 @@
 - returns
     - path (to plugin module root directory)
 
+<!-- MACROS -->
+
 ## `def reloadProjectMacros()`
 
 - does
