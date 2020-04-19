@@ -4,20 +4,24 @@
 ## GLOBALS
 
 - `iface`
-    Interface
+    - Interface
 - `plugin_paths = []`
-    list of plugin paths. it gets filled in by the QGIS python library (`qgspythonutilsimpl.cpp`)
+    - list of plugin paths
+    - It gets filled in by the QGIS python library (`qgspythonutilsimpl.cpp`).
 - `plugins = {}`
-    dictionary of plugins
+    - dictionary of plugins
 - `plugin_times = {}`
-    ???
+    - ???
 - `active_plugins = []`
-    list of active (started) plugins
+    - list of active (started) plugins
+    - C++: Read by `QgsPythonUtilsImpl::listActivePlugins()`: `'\n'.join(qgis.utils.active_plugins)`
 - `available_plugins = []`
-    list of plugins in plugin directory and home plugin directory
+    - list of plugins in plugin directory and home plugin directory
+    - C++: Read by `QgsPythonUtilsImpl::pluginList()`: `'\n'.join(qgis.utils.available_plugins)`
+
 - `plugins_metadata_parser = {}`
-    dictionary of plugins providing metadata in a text file (metadata.txt)
-    key = plugin package name, value = config parser instance
+    - dictionary of plugins providing metadata in a text file (metadata.txt)
+    - key = plugin package name, value = config parser instance
 
 Variables created by `qgspythonutilsimpl.cpp`:
 
@@ -59,6 +63,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `plugins_metadata_parser` (RE-ASSIGNMENT: dict of {name/string: config parser})
 - calls
     - `findPlugins(pluginpath)`
+- called by C++
+    - `QgsPythonUtilsImpl::pluginList()`
 
 ## `def pluginMetadata(packageName: str, fct: str) -> str`
 
@@ -67,6 +73,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - "fetch metadata from a plugin - use values from metadata.txt"
 - GLOBALS
     - `plugins_metadata_parser` (READ)
+- called by C++
+    - `QgsPythonUtilsImpl::getPluginMetadata`
 - returns
     - `plugins_metadata_parser[packageName].get('general', fct)` or `"__error__"`
 
@@ -77,6 +85,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - "load plugin's package"
 - calls
     - `__import__(packageName)`
+- called by C++
+    - `QgsPythonUtilsImpl::loadPlugin`
 - returns
     - `True`/`False` (success)
 
@@ -114,6 +124,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `plugins[packageName].initGui()`
     - `_unloadPluginModules(packageName)` (if exception)
     - `_addToActivePlugins(packageName, end - start)`
+- called by C++
+    - `QgsPythonUtilsImpl::startPlugin`
 - GLOBALS
     - `plugins` (READ: `plugins[packageName].initGui()` | WRITE: `del plugins[packageName]` if exception)
     - `active_plugins` (UNUSED)
@@ -132,6 +144,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `_unloadPluginModules(packageName)` (if exception or `initProcessing` not present)
     - `plugins[packageName].initProcessing()`
     - `_addToActivePlugins(packageName, end - start)`
+- called by C++
+    - `QgsPythonUtilsImpl::startProcessingPlugin`
 - GLOBALS
     - `plugins` (READ: `plugins[packageName].initProcessing()` | WRITE: `del plugins[packageName]` if exception)
     - `active_plugins` (UNUSED)
@@ -149,6 +163,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - "confirm that the plugin can be uninstalled"
 - calls
     - `plugins[packageName].canBeUninstalled()` if `canBeUninstalled` is present
+- called by C++
+    - `QgsPythonUtilsImpl::canUninstallPlugin`
 - GLOBALS
     - `plugins` (READ)
     - `active_plugins` (READ)
@@ -163,6 +179,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
 - calls
     - `plugins[packageName].unload()` (plugin GUI unload API)
     - `_unloadPluginModules(packageName)`
+- called by C++
+    - `QgsPythonUtilsImpl::unloadPlugin`
 - GLOBALS
     - `plugins` (WRITE: `del plugins[packageName]`)
     - `active_plugins` (WRITE: `active_plugins.remove(packageName)`)
@@ -185,6 +203,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
 - does
     - check if plugin is present in dict
     - "find out whether a plugin is active (i.e. has been started)"
+- called by C++
+    - `QgsPythonUtilsImpl::isPluginLoaded`
 - GLOBALS
     - `plugins` (READ)
     - `active_plugins` (READ)
