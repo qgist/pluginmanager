@@ -64,6 +64,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
 
 ## `def findPlugins(path: str) -> GENERATOR`
 
+**NO_IMPLEMENTATION**
+
 - does
     - search with os module
     - "for internal use: return list of plugins in given path"
@@ -71,6 +73,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `(pluginName, cp)` # string, config parser
 
 ## `def metadataParser() -> dict`
+
+Only used in `plugindependencies.py`.
 
 - does
     - nothing
@@ -81,6 +85,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `plugins_metadata_parser` (mutable, no copy)
 
 ## `def updateAvailablePlugins()`
+
+**RE_IMPLEMENTATION**
 
 - does
     - plugin search
@@ -99,6 +105,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
 
 ## `def pluginMetadata(packageName: str, fct: str) -> str`
 
+**RE_IMPLEMENTATION**
+
 - does
     - fetch from package meta data field
     - "fetch metadata from a plugin - use values from metadata.txt"
@@ -110,6 +118,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `plugins_metadata_parser[packageName].get('general', fct)` or `"__error__"`
 
 ## `def loadPlugin(packageName: str) -> bool`
+
+**RE_IMPLEMENTATION**
 
 - does
     - import (only)
@@ -127,6 +137,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
 
 ## `def _startPlugin(packageName: str) -> bool`
 
+**NO_IMPLEMENTATION**
+
 - does
     - load plugin by calling its `classFactory` (i.e. regular plugins, not server)
     - "initializes a plugin, but does not load GUI"
@@ -143,6 +155,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
 
 ## `def _addToActivePlugins(packageName: str, duration: float)`
 
+**NO_IMPLEMENTATION**
+
 - does
     - "adds a plugin to the list of active plugins"
 - GLOBALS
@@ -150,6 +164,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `plugin_times` (CHANGE: adding/changing duration)
 
 ## `def startPlugin(packageName: str) -> bool`
+
+**RE_IMPLEMENTATION**
 
 - does
     - starts plugin GUI
@@ -175,6 +191,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
 
 ## `def startProcessingPlugin(packageName: str) -> bool`
 
+**RE_IMPLEMENTATION**
+
 - does
     - starts plugin processing
     - "initialize only the Processing components of a plugin"
@@ -195,6 +213,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
 
 ## `def canUninstallPlugin(packageName: str) -> bool`
 
+**RE_IMPLEMENTATION**
+
 - does
     - Check if
         - plugin is active (`active_plugins`)
@@ -211,6 +231,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `True`/`False` (yes/no)
 
 ## `def unloadPlugin(packageName: str) -> bool`
+
+**RE_IMPLEMENTATION**
 
 - does
     - try/except around actual unload function
@@ -232,6 +254,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
 
 ## `def _unloadPluginModules(packageName: str)`
 
+**NO_IMPLEMENTATION**
+
 - does
     - Qt resources cleanups
     - Deleting entries in `sys.modules` (dict)
@@ -242,6 +266,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `_plugin_modules` (WRITE: `del _plugin_modules[packageName]`)
 
 ## `def isPluginLoaded(packageName: str) -> bool`
+
+**RE_IMPLEMENTATION**
 
 - does
     - check if plugin is present in dict
@@ -255,6 +281,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `True`/`False` (yes/no)
 
 ## `def reloadPlugin(packageName: str)`
+
+**RE_IMPLEMENTATION**
 
 - does
     - "unload and start again a plugin"
@@ -275,6 +303,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
      - "show a help in the user's html browser. The help file should be named index-ll_CC.html or index-ll.html"
 
 ## `def pluginDirectory(packageName: str) -> str`
+
+**RE_IMPLEMENTATION**
 
 - does
     - locates plugin root directory (for one plugin)
@@ -340,6 +370,8 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `serverIface` (ASSIGNMENT)
 
 ## `def startServerPlugin(packageName: str) -> bool`
+
+**RE_IMPLEMENTATION**
 
 - does
     - triggers a plugin's `serverClassFactory` (if plugin is imported)
