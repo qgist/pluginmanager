@@ -19,6 +19,13 @@
     dictionary of plugins providing metadata in a text file (metadata.txt)
     key = plugin package name, value = config parser instance
 
+## `def initInterface(pointer: int)`
+
+- does
+    - creates `iface` object
+- GLOBALS
+    - `iface` (ASSIGNMENT)
+
 ## `def findPlugins(path: str) -> GENERATOR`
 
 - does
@@ -249,3 +256,10 @@
     Interface
 - `serverIface = None`
     initialize 'serverIface' object
+
+## `def initServerInterface(pointer: int)`
+
+- does
+    - creates `serverIface` object
+- GLOBALS
+    - `serverIface` (ASSIGNMENT)
