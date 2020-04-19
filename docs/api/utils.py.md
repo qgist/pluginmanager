@@ -7,23 +7,43 @@
     - Interface
 - `plugin_paths = []`
     - list of plugin paths
-    - It gets filled in by the QGIS python library (`qgspythonutilsimpl.cpp`).
+    - ASSIGNMENT (C++): `QgsPythonUtilsImpl::checkSystemImports`
     - READ: `installer_data.Pluginsget.AllInstalled()`
 - `plugins = {}`
     - dictionary of plugins
+    - WRITE: `_startPlugin()`
+    - WRITE: `startPlugin()`
+    - WRITE: `startProcessingPlugin()`
+    - READ: `canUninstallPlugin()`
+    - WRITE: `unloadPlugin()`
+    - READ: `isPluginLoaded()`
 - `plugin_times = {}`
-    - ???
+    - WRITE: `_addToActivePlugins()`
 - `active_plugins = []`
     - list of active (started) plugins
-    - C++: Read by `QgsPythonUtilsImpl::listActivePlugins()`: `'\n'.join(qgis.utils.active_plugins)`
+    - READ: `QgsPythonUtilsImpl::listActivePlugins()` in `'\n'.join(qgis.utils.active_plugins)`
+    - READ: `_startPlugin()`
+    - WRITE: `_addToActivePlugins()`
+    - READ: `canUninstallPlugin()`
+    - WRITE: `unloadPlugin()`
+    - READ: `isPluginLoaded()`
+    - READ: `reloadPlugin()`
 - `available_plugins = []`
     - list of plugins in plugin directory and home plugin directory
-    - C++: Read by `QgsPythonUtilsImpl::pluginList()`: `'\n'.join(qgis.utils.available_plugins)`
+    - READ (C++): `QgsPythonUtilsImpl::pluginList()` in `'\n'.join(qgis.utils.available_plugins)`
+    - ASSIGNMENT: `updateAvailablePlugins()`
+- `_plugin_modules = {}`
+    - dict of imported (plugin) modules
+    - WRITE: `builtins.__import__`
+    - WRITE: `_unloadPluginModules()`
 
 - `plugins_metadata_parser = {}`
     - dictionary of plugins providing metadata in a text file (metadata.txt)
-    - key = plugin package name, value = config parser instance
+    - key = plugin package name : value = config parser instance
     - WRITE: `installer.pluginInstaller.uninstallPlugin()` (`del` key/value pair)
+    - READ: `metadataParser()` and passes it on via return!
+    - ASSIGNMENT: `updateAvailablePlugins()`
+    - READ: `pluginMetadata()`
 
 Variables created by `qgspythonutilsimpl.cpp`:
 
