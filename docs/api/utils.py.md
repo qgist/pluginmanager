@@ -263,3 +263,18 @@
     - creates `serverIface` object
 - GLOBALS
     - `serverIface` (ASSIGNMENT)
+
+## `def startServerPlugin(packageName: str) -> bool`
+
+- does
+    - triggers a plugin's `serverClassFactory` (if plugin is imported)
+    - "initialize the plugin"
+- calls
+    - `sys.modules[packageName].serverClassFactory(serverIface)`
+    - `_unloadPluginModules(packageName)` (if exception)
+- GLOBALS
+    - `server_plugins` (WRITE: `server_plugins[packageName] = sys.modules[packageName].serverClassFactory(serverIface)`)
+    - `server_active_plugins` (WRITE: `server_active_plugins.append(packageName)`)
+    - `serverIface` (READ)
+- returns
+    - `True`/`False` (success)
