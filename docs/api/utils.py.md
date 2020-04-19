@@ -6,7 +6,7 @@
 - `iface`
     Interface
 - `plugin_paths = []`
-    list of plugin paths. it gets filled in by the QGIS python library
+    list of plugin paths. it gets filled in by the QGIS python library (`qgspythonutilsimpl.cpp`)
 - `plugins = {}`
     dictionary of plugins
 - `plugin_times = {}`
@@ -18,6 +18,11 @@
 - `plugins_metadata_parser = {}`
     dictionary of plugins providing metadata in a text file (metadata.txt)
     key = plugin package name, value = config parser instance
+
+Variables created by `qgspythonutilsimpl.cpp`:
+
+- `sys_plugin_path`
+- `home_plugin_path`
 
 ## `def initInterface(pointer: int)`
 
