@@ -8,6 +8,7 @@
 - `plugin_paths = []`
     - list of plugin paths
     - It gets filled in by the QGIS python library (`qgspythonutilsimpl.cpp`).
+    - READ: `installer_data.Pluginsget.AllInstalled()`
 - `plugins = {}`
     - dictionary of plugins
 - `plugin_times = {}`
@@ -22,11 +23,16 @@
 - `plugins_metadata_parser = {}`
     - dictionary of plugins providing metadata in a text file (metadata.txt)
     - key = plugin package name, value = config parser instance
+    - WRITE: `installer.pluginInstaller.uninstallPlugin()` (`del` key/value pair)
 
 Variables created by `qgspythonutilsimpl.cpp`:
 
 - `sys_plugin_path`
 - `home_plugin_path`
+    - READ: `installer.pluginInstaller.installPlugin()`
+    - READ: `installer.pluginInstaller.uninstallPlugin()`
+    - READ: `installer.pluginInstaller.installFromZipFile()`
+    - READ: `installer_data.removeDir()`
 
 ## `def initInterface(pointer: int)`
 
@@ -65,6 +71,10 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `findPlugins(pluginpath)`
 - called by C++
     - `QgsPythonUtilsImpl::pluginList()`
+- called by Python
+    - `installer.pluginInstaller.__init__`
+    - `installer.pluginInstaller.installPlugin`
+    - `installer.pluginInstaller.installFromZipFile`
 
 ## `def pluginMetadata(packageName: str, fct: str) -> str`
 
@@ -87,6 +97,10 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `__import__(packageName)`
 - called by C++
     - `QgsPythonUtilsImpl::loadPlugin`
+- called by Python
+    - `installer.pluginInstaller.__init__`
+    - `installer.pluginInstaller.installPlugin`
+    - `installer.pluginInstaller.installFromZipFile`
 - returns
     - `True`/`False` (success)
 
@@ -126,6 +140,10 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `_addToActivePlugins(packageName, end - start)`
 - called by C++
     - `QgsPythonUtilsImpl::startPlugin`
+- called by Python
+    - `installer.pluginInstaller.__init__`
+    - `installer.pluginInstaller.installPlugin`
+    - `installer.pluginInstaller.installFromZipFile`
 - GLOBALS
     - `plugins` (READ: `plugins[packageName].initGui()` | WRITE: `del plugins[packageName]` if exception)
     - `active_plugins` (UNUSED)
@@ -181,6 +199,10 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `_unloadPluginModules(packageName)`
 - called by C++
     - `QgsPythonUtilsImpl::unloadPlugin`
+- called by Python
+    - `installer.pluginInstaller.installPlugin`
+    - `installer.pluginInstaller.uninstallPlugin`
+    - `installer.pluginInstaller.installFromZipFile`
 - GLOBALS
     - `plugins` (WRITE: `del plugins[packageName]`)
     - `active_plugins` (WRITE: `active_plugins.remove(packageName)`)
@@ -219,6 +241,9 @@ Variables created by `qgspythonutilsimpl.cpp`:
     - `unloadPlugin(packageName)`
     - `loadPlugin(packageName)`
     - `startPlugin(packageName)`
+- called by Python
+    - `installer.pluginInstaller.installPlugin`
+    - `installer.pluginInstaller.installFromZipFile`
 - GLOBALS
     - `active_plugins` (READ)
 
